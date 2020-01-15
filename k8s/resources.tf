@@ -1,5 +1,5 @@
 locals {
-  prefix = "k8sqt"
+  prefix   = "k8sqt"
   location = "northeurope"
 }
 
@@ -40,7 +40,7 @@ resource "azurerm_kubernetes_cluster" "example" {
 
   default_node_pool {
     name            = "agentpool"
-    node_count           = "1"
+    node_count      = "1"
     vm_size         = "Standard_DS2_v2"
     os_disk_size_gb = 30
 

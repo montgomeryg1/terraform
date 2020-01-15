@@ -1,5 +1,5 @@
 resource "random_string" "random_dr" {
-  length = 6
+  length  = 6
   upper   = false
   lower   = false
   number  = true

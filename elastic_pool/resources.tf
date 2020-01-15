@@ -1,7 +1,7 @@
 resource "random_string" "example" {
-  length = 6
+  length  = 6
   upper   = false
-  lower   = false  
+  lower   = false
   number  = true
   special = false
 }
