@@ -34,7 +34,8 @@ resource "azurerm_kubernetes_cluster" "example" {
     admin_username = "acctestuser1"
 
     ssh_key {
-      key_data = file(var.public_ssh_key_path)
+      // key_data = file(var.public_ssh_key_path)
+      key_data = "${var.public_ssh_key_path}"
     }
   }
 
