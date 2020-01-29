@@ -8,6 +8,7 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
+      
       - name: 'Terraform Format'
         uses: hashicorp/terraform-github-actions@master
         with:
@@ -16,6 +17,7 @@ jobs:
           tf_actions_working_dir: 'containers'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
       - name: 'Terraform Init'
         uses: hashicorp/terraform-github-actions@master
         with:
@@ -32,6 +34,7 @@ jobs:
           tf_actions_working_dir: 'containers'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
       - name: 'Terraform Plan'
         uses: hashicorp/terraform-github-actions@master
         with:
@@ -40,3 +43,22 @@ jobs:
           tf_actions_working_dir: 'containers'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+      - name: Set up Go 1.13
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.13
+        id: go
+
+      - name: Get dependencies
+        run: |
+          if [ -f Gopkg.toml ]; then
+              curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+              dep ensure
+          else
+            go get -v -t -d ./...  
+          fi
+
+      - name: Test
+        working-directory: /home/runner/work/terratest-demo/terratest-demo/test
+        run: go test
