@@ -12,5 +12,5 @@ variable "public_ssh_key_path" {
 }
 
 variable "prefix" {
-  default  = "wgm"  
+  default = "wgm"  
 }
