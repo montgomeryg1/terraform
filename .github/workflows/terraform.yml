@@ -122,9 +122,25 @@ jobs:
           tf_actions_version: 0.12.20
           tf_actions_subcommand: 'plan'
           tf_actions_working_dir: 'k8s'
+          args: '-var="kubernetes_client_id=${{ secrets.kubernetes_client_id}}" -var="kubernetes_client_secret=${{ secrets.kubernetes_client_secret}}"'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}   
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          
+      - name: Set up Go 1.13
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.13
+        id: go
+
+      - name: Get dependencies
+        run: |
+          if [ -f Gopkg.toml ]; then
+              curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+              dep ensure
+          else
+            go get -v -t -d ./...  
+          fi          
