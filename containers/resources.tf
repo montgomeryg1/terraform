@@ -1,5 +1,5 @@
 module "variables" {
-  # source      = "github.com/montgomeryg1/terraform/containers/variables?ref=montgomerg1-patch-2"
+  # source      = "github.com/montgomeryg1/terraform//containers/variables?ref=montgomerg1-patch-2"
   source      = "./variables"
   environment = "${local.environment}"
   size        = "${local.size}"
@@ -18,7 +18,7 @@ resource "azurerm_resource_group" "example" {
   location = "North Europe"
 
   tags = {
-    environment = "sandbox"
+    environment = local.environment
   }
 }
 
@@ -30,6 +30,6 @@ resource "azurerm_container_registry" "example" {
   admin_enabled       = false
 
   tags = {
-    environment = "sandbox"
+    environment = local.environment
   }
 }

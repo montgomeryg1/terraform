@@ -25,3 +25,18 @@ variable "instance_type_map" {
 output "instance_type" {
   value = "${var.instance_type_map[var.size]}"
 }
+
+
+variable "node_count_map" {
+  description = "A map from environment to the type of EC2 instance"
+  type = map
+  default = {
+    small  = 1
+    medium = 2
+    large  = 4
+    xlarge = 8
+  }
+}
+output "node_count" {
+  value = "${var.node_count_map[var.size]}"
+}
