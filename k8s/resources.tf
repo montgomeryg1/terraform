@@ -44,7 +44,7 @@ resource "azurerm_kubernetes_cluster" "example" {
   default_node_pool {
     name            = "agentpool"
     node_count      = module.variables.node_count
-    vm_size         = "Standard_DS2_v2"
+    vm_size         = module.variables.vm_size
     os_disk_size_gb = 30
 
     # Required for advanced networking
