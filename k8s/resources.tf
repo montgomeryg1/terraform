@@ -7,7 +7,7 @@ module "variables" {
 
 
 resource "azurerm_resource_group" "example" {
-  name     = "${var.prefix}-resources"
+  name     = "${local.prefix}-resources"
   location = local.location
 }
 
