@@ -1,3 +1,19 @@
+variable "subnet_map" {
+  description = "A map from environment to a comma-delimited list of the subnets"
+  type = map
+  default = {
+    dev     = "10.1.1.0/24"
+    qa      = "10.1.2.0/24"
+    staging = "10.1.3.0/24"
+    prod    = "10.1.4.0/24"
+  }
+}
+
+output "subnet" {
+  # value = [“${split(“,”, var.subnet_map[var.environment])}”]
+  value = "${var.subnet_map[var.environment]}"
+}
+
 variable "node_count_map" {
   description = "A map from environment to the type of EC2 instance"
   type        = map
