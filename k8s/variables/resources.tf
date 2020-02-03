@@ -1,6 +1,6 @@
 variable "subnet_map" {
   description = "A map from environment to a comma-delimited list of the subnets"
-  type = map
+  type       = map
   default = {
     dev     = "10.1.1.0/24"
     qa      = "10.1.2.0/24"
