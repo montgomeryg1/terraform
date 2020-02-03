@@ -1,3 +1,9 @@
+module "variables" {
+  source      = "git::https://github.com/terraform/containers/variables"
+  environment = "${local.environment}"
+  size        = "${local.size}"
+}
+
 resource "random_string" "example" {
   length  = 4
   upper   = false
