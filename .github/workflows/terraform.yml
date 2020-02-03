@@ -9,12 +9,6 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@master
 
-      - name: Run a Terraform Format  
-        uses: docker://hashicorp/terraform:0.12.20
-        with:
-          entrypoint: terraform
-          args: fmt
-
       - name: 'containers - Terraform Format'
         uses: hashicorp/terraform-github-actions@master
         with:
@@ -94,12 +88,6 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          
-      - name: Run a Terraform Format  
-        uses: docker://hashicorp/terraform:0.12.20
-        with:
-          entrypoint: terraform
-          args: fmt
 
       - name: 'k8s - Terraform Format'
         uses: hashicorp/terraform-github-actions@master

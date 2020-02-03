@@ -1,6 +1,6 @@
 variable "node_count_map" {
   description = "A map from environment to the type of EC2 instance"
-  type = map
+  type        = map
   default = {
     small  = 1
     medium = 2
@@ -15,7 +15,7 @@ output "node_count" {
 
 variable "vm_size_map" {
   description = "A map from environment to the type of EC2 instance"
-  type = map
+  type        = map
   default = {
     small  = "Standard_B2s"
     medium = "Standard_D2s_v3"
