@@ -14,6 +14,15 @@ jobs:
         with:
           entrypoint: terraform
           args: fmt
+      
+      - name: 'containers - Terraform Init'
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 0.12.20
+          tf_actions_subcommand: 'init'
+          tf_actions_working_dir: 'containers'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
           
       - name: 'containers - Terraform Validate'
         uses: hashicorp/terraform-github-actions@master
