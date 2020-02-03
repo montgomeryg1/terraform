@@ -11,7 +11,7 @@ variable "vnet_address_space_map" {
 
 output "vnet_address_space" {
   # value = ["${split(",", var.vnet_address_space_map[var.environment])}"]
-  value = split(",",var.vnet_address_space_map[var.environment])
+  value = split(",", var.vnet_address_space_map[var.environment])
 }
 
 variable "subnet_map" {
