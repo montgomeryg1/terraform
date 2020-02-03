@@ -1,6 +1,8 @@
-locals {
-  prefix   = "k8sqt"
-  location = "northeurope"
+module "variables" {
+  # source      = "github.com/montgomeryg1/terraform//containers/variables?ref=montgomerg1-patch-2"
+  source      = "./variables"
+  environment = "${local.environment}"
+  size        = "${local.size}"
 }
 
 
@@ -41,8 +43,8 @@ resource "azurerm_kubernetes_cluster" "example" {
 
   default_node_pool {
     name            = "agentpool"
-    node_count      = "1"
-    vm_size         = "Standard_DS2_v2"
+    node_count      = module.variables.node_count
+    vm_size         = module.variables.vm_size
     os_disk_size_gb = 30
 
     # Required for advanced networking
