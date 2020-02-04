@@ -9,7 +9,6 @@ import (
 	// "github.com/gruntwork-io/terratest/modules/azure"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	terraformCore "github.com/hashicorp/terraform/terraform"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestTerraformAzure(t *testing.T) {
@@ -25,16 +24,17 @@ func TestTerraformAzure(t *testing.T) {
 	defer terraform.Destroy(t, tfOptions)
 
 	// website::tag::2:: Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
-	terraform.InitAndApply(t, tfOptions)
+	// terraform.InitAndApply(t, tfOptions)
 
 	// Terraform init and plan only
-	// tfPlanOutput := "terraform.tfplan"
-	// terraform.Init(t, tfOptions)
-	// terraform.RunTerraformCommand(t, tfOptions, terraform.FormatArgs(tfOptions, "plan", "-out="+tfPlanOutput)...)
+	tfPlanOutput := "terraform.tfplan"
+	terraform.Init(t, tfOptions)
+	terraform.RunTerraformCommand(t, tfOptions, terraform.FormatArgs(tfOptions, "plan", "-out="+tfPlanOutput)...)
 
-	actualClusterUsername := terraform.Output(t, tfOptions, "cluster_username")
-	expectedClusterUsername := "acctestuser1"
-	assert.Equal(t, expectedClusterUsername, actualClusterUsername)
+	// actualClusterUsername := terraform.Output(t, tfOptions, "cluster_username")
+	// expectedClusterUsername := "acctestuser1"
+	// assert.Equal(t, expectedClusterUsername, actualClusterUsername)
+
 	// Validate the test result
 	// for _, mod := range plan.Diff.Modules {
 	// fmt.Println(mod.Path)
