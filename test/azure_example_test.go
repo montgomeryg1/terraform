@@ -25,17 +25,16 @@ func TestTerraformAzure(t *testing.T) {
 	}
 
 	for _, entry := range files {
-		fmt.Println(entry.Name())
-		if entry.IsDir() && entry.Name()[:1] != "." {
+
+		if entry.IsDir() && entry.Name()[:1] != "." && entry.Name() != "test" {
 			dir := "../" + entry.Name()
 			tfOptions = append(tfOptions, terraform.Options{
 				// The path to where our Terraform code is located
 				TerraformDir: dir,
 			})
+			fmt.Println(entry.Name())
 		}
 	}
-
-	fmt.Println(&tfOptions)
 
 	// website::tag::1:: Configure Terraform setting up a path to Terraform code.
 	// tfOptions := &terraform.Options{
