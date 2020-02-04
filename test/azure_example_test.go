@@ -29,7 +29,7 @@ func TestTerraformAzure(t *testing.T) {
 
 		if entry.IsDir() && entry.Name()[:1] != "." && entry.Name() != "test" {
 			dir := "../" + entry.Name()
-			tfOptions = append(tfOptions, terraform.Options{
+			tfOptions = append(tfOptions, &terraform.Options{
 				// The path to where our Terraform code is located
 				TerraformDir: dir,
 			})
@@ -43,7 +43,7 @@ func TestTerraformAzure(t *testing.T) {
 	// TerraformDir: "../",
 	// }
 
-	for _, tfOption := range &tfOptions {
+	for _, tfOption := range tfOptions {
 		// website::tag::4:: At the end of the test, run `terraform destroy` to clean up any resources that were created
 		defer terraform.Destroy(t, tfOption)
 
