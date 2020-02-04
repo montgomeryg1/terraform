@@ -67,7 +67,7 @@ jobs:
 
       - name: Test
         working-directory: /home/runner/work/terraform/terraform/k8s/test
-        run: go test
+        run: go test -v -run TestTerraformAzure
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
