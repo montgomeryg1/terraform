@@ -7,22 +7,21 @@ module "variables" {
 
 
 resource "azurerm_resource_group" "example" {
-  name     = "${var.prefix}-resources"
+  name     = "${local.prefix}-resources"
   location = local.location
 }
-
 
 resource "azurerm_virtual_network" "example" {
   name                = "${local.prefix}-network"
   location            = azurerm_resource_group.example.location
   resource_group_name = azurerm_resource_group.example.name
-  address_space       = ["10.1.0.0/16"]
+  address_space       = module.variables.vnet_address_space
 }
 
 resource "azurerm_subnet" "example" {
   name                 = "internal"
   resource_group_name  = azurerm_resource_group.example.name
-  address_prefix       = "10.1.0.0/24"
+  address_prefix       = module.variables.subnet
   virtual_network_name = azurerm_virtual_network.example.name
 }
 
@@ -37,7 +36,7 @@ resource "azurerm_kubernetes_cluster" "example" {
 
     ssh_key {
       // key_data = file(var.public_ssh_key_path)
-      key_data = "${var.public_ssh_key_path}"
+      key_data = var.public_ssh_key_path
     }
   }
 
