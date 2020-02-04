@@ -1,6 +1,7 @@
 package test
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -10,8 +11,8 @@ import (
 	// "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
 	// "github.com/gruntwork-io/terratest/modules/azure"
 	"github.com/gruntwork-io/terratest/modules/terraform"
-	terraformCore "github.com/hashicorp/terraform/terraform"
-	// terraformCore "github.com/hashicorp/terraform/plans"
+	// terraformCore "github.com/hashicorp/terraform/terraform"
+	plans "github.com/hashicorp/terraform/plans"
 )
 
 func TestTerraformAzure(t *testing.T) {
@@ -45,10 +46,11 @@ func TestTerraformAzure(t *testing.T) {
 				t.Fatal(err)
 			}
 			defer f.Close()
-			plan, err := terraformCore.ReadPlan(f)
+			plan, err := plans.Read(f)
 			if err != nil {
 				t.Fatal(err)
 			}
+			fmt.Println(plan)
 		}
 	}
 
