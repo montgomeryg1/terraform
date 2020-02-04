@@ -9,7 +9,7 @@ import (
 	// "github.com/gruntwork-io/terratest/modules/azure"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	terraformCore "github.com/hashicorp/terraform/terraform"
-	// "github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestTerraformAzure(t *testing.T) {
@@ -30,11 +30,13 @@ func TestTerraformAzure(t *testing.T) {
 	tfPlanOutput := "terraform.tfplan"
 	terraform.Init(t, tfOptions)
 	terraform.RunTerraformCommand(t, tfOptions, terraform.FormatArgs(tfOptions, "plan", "-out="+tfPlanOutput)...)
-	
-	clusterUsername := terraform.Output(t, tfOptions, "cluster_username")
+
+	actualClusterUsername := terraform.Output(t, tfOptions, "cluster_username")
+	expectedClusterUsername := "acctestuser1"
+	assert.Equal(t, expectedClusterUsername, actualClusterUsername)
 	// Validate the test result
 	// for _, mod := range plan.Diff.Modules {
-		// fmt.Println(mod.Path)
+	// fmt.Println(mod.Path)
 	// }
 
 	// website::tag::3:: Run `terraform output` to get the values of output variables
