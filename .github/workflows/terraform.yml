@@ -75,4 +75,4 @@ jobs:
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           TF_VAR_kubernetes_client_id: ${{ secrets.kubernetes_client_id}}
-          TV_VAR_kubernetes_client_secret: ${{ secrets.kubernetes_client_secret}}
+          TF_VAR_kubernetes_client_secret: ${{ secrets.kubernetes_client_secret}}
