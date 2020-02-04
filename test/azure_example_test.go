@@ -34,6 +34,8 @@ func TestTerraformAzure(t *testing.T) {
 		}
 	}
 
+	fmt.Println(tfOptions)
+
 	// website::tag::1:: Configure Terraform setting up a path to Terraform code.
 	// tfOptions := &terraform.Options{
 	// The path to where our Terraform code is located
