@@ -8,6 +8,7 @@ import (
 	// "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
 	// "github.com/gruntwork-io/terratest/modules/azure"
 	"github.com/gruntwork-io/terratest/modules/terraform"
+	terraformCore "github.com/hashicorp/terraform/terraform"
 	// "github.com/stretchr/testify/assert"
 )
 
@@ -25,7 +26,10 @@ func TestTerraformAzure(t *testing.T) {
 
 	// website::tag::2:: Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
 	// terraform.InitAndApply(t, terraformOptions)
-	terraform.InitAndPlan(t, terraformOptions)
+	// Terraform init and plan only
+	tfPlanOutput := "terraform.tfplan"
+	terraform.Init(t, tfOptions)
+	terraform.RunTerraformCommand(t, tfOptions, terraform.FormatArgs(tfOptions, "plan", "-out="+tfPlanOutput)...)
 
 	// website::tag::3:: Run `terraform output` to get the values of output variables
 	// vmName := terraform.Output(t, terraformOptions, "vm_name")
