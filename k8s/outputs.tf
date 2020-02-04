@@ -27,9 +27,9 @@ output "host" {
 }
 
 output "fqdn" {
-  value = azurerm_kubernetes_cluster.example.kube_config.0.fqdn
+  value = azurerm_kubernetes_cluster.example.fqdn
 }
 
 output "node_resource_group" {
-  value = azurerm_kubernetes_cluster.example.kube_config.0.node_resource_group
+  value = azurerm_kubernetes_cluster.example.node_resource_group
 }
