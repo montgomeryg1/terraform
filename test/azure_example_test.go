@@ -1,7 +1,6 @@
 package test
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -12,7 +11,7 @@ import (
 	// "github.com/gruntwork-io/terratest/modules/azure"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	// terraformCore "github.com/hashicorp/terraform/terraform"
-	plans "github.com/hashicorp/terraform/plans"
+	// plans "github.com/hashicorp/terraform/plans"
 )
 
 func TestTerraformAzure(t *testing.T) {
@@ -39,18 +38,6 @@ func TestTerraformAzure(t *testing.T) {
 			tfPlanOutput := "terraform.tfplan"
 			terraform.Init(t, tfOption)
 			terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "plan", "-out="+tfPlanOutput)...)
-
-			// Read and parse the plan output
-			f, err := os.Open(path.Join(dir, tfPlanOutput))
-			if err != nil {
-				t.Fatal(err)
-			}
-			defer f.Close()
-			plan, err := plans.Read(f)
-			if err != nil {
-				t.Fatal(err)
-			}
-			fmt.Println(plan)
 		}
 	}
 
