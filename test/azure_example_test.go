@@ -42,15 +42,15 @@ func TestTerraformAzure(t *testing.T) {
 	// TerraformDir: "../",
 	// }
 
-	for _, tfOption := range tfOptions {
-		// website::tag::4:: At the end of the test, run `terraform destroy` to clean up any resources that were created
-		defer terraform.Destroy(t, &tfOption)
+	// for _, tfOption := range tfOptions {
+	// website::tag::4:: At the end of the test, run `terraform destroy` to clean up any resources that were created
+	// defer terraform.Destroy(t, &tfOption)
 
-		// Terraform init and plan only
-		tfPlanOutput := "terraform.tfplan"
-		terraform.Init(t, &tfOption)
-		terraform.RunTerraformCommand(t, &tfOption, terraform.FormatArgs(&tfOption, "plan", "-out="+tfPlanOutput)...)
-	}
+	// Terraform init and plan only
+	// tfPlanOutput := "terraform.tfplan"
+	// terraform.Init(t, &tfOption)
+	// terraform.RunTerraformCommand(t, &tfOption, terraform.FormatArgs(&tfOption, "plan", "-out="+tfPlanOutput)...)
+	// }
 
 	// website::tag::2:: Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
 	// terraform.InitAndApply(t, tfOptions)
