@@ -31,7 +31,7 @@ func TestTerraformAzure(t *testing.T) {
 	tfPlanOutput := "terraform.tfplan"
 	terraform.Init(t, tfOptions)
 	terraform.RunTerraformCommand(t, tfOptions, terraform.FormatArgs(tfOptions, "plan", "-out="+tfPlanOutput)...)
-	planJSON, err := terraform.RunTerraformCommandAndGetStdoutE(terraform.FormatArgs(tfOptions, "show", "-json", tfPlanOutput))
+	planJSON, err := terraform.RunTerraformCommandAndGetStdoutE(t, tfOptions, terraform.FormatArgs(tfOptions, "show", "-json", tfPlanOutput)...)
 	
 	fmt.Println(planJSON)
 	// Validate the test result
