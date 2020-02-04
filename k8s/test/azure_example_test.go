@@ -14,22 +14,41 @@ import (
 func TestTerraformAzure(t *testing.T) {
 	t.Parallel()
 
-	// website::tag::1:: Configure Terraform setting up a path to Terraform code.
-	tfOptions := &terraform.Options{
+	containers := terraform.Options{
 		// The path to where our Terraform code is located
-		TerraformDir: "../",
+		TerraformDir: "../../containers",
 	}
 
-	// website::tag::4:: At the end of the test, run `terraform destroy` to clean up any resources that were created
-	defer terraform.Destroy(t, tfOptions)
+	elasticPool := terraform.Options{
+		// The path to where our Terraform code is located
+		TerraformDir: "../../elastic_pool",
+	}
+
+	k8s := terraform.Options{
+		// The path to where our Terraform code is located
+		TerraformDir: "../.",
+	}
+
+	tfOptions := []terraform.Options{containers, elasticPool, k8s}
+
+	// website::tag::1:: Configure Terraform setting up a path to Terraform code.
+	// tfOptions := &terraform.Options{
+	// The path to where our Terraform code is located
+	// TerraformDir: "../",
+	// }
+
+	for _, tfOption := range tfOptions {
+		// website::tag::4:: At the end of the test, run `terraform destroy` to clean up any resources that were created
+		defer terraform.Destroy(t, &tfOption)
+
+		// Terraform init and plan only
+		tfPlanOutput := "terraform.tfplan"
+		terraform.Init(t, &tfOption)
+		terraform.RunTerraformCommand(t, &tfOption, terraform.FormatArgs(&tfOption, "plan", "-out="+tfPlanOutput)...)
+	}
 
 	// website::tag::2:: Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
 	// terraform.InitAndApply(t, tfOptions)
-
-	// Terraform init and plan only
-	tfPlanOutput := "terraform.tfplan"
-	terraform.Init(t, tfOptions)
-	terraform.RunTerraformCommand(t, tfOptions, terraform.FormatArgs(tfOptions, "plan", "-out="+tfPlanOutput)...)
 
 	// website::tag::3:: Run `terraform output` to get the values of output variables
 	// vmName := terraform.Output(t, tfOptions, "vm_name")
