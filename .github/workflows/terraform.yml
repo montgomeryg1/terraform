@@ -77,9 +77,12 @@ jobs:
           TF_VAR_kubernetes_client_id: ${{ secrets.ARM_CLIENT_ID }}
           TF_VAR_kubernetes_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
 
-      - name: Run Terraform Plan Parser
+      - name: Setup Terraform Plan Parser
         uses: actions/setup-node@v1
         with:
           node-version: '10.x'
+
+      - name : Run Terrafomr Plan Parser
+        working-directory: /home/runner/work/terraform/terraform
         run: npm install -g terraform-plan-parser 
         run: parse-terraform-plan --pretty -i k8s.terraform.tfplan
