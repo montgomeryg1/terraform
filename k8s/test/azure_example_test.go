@@ -39,8 +39,10 @@ func TestTerraformAzure(t *testing.T) {
 		log.Fatal(err)
 	}
 
-	for _, file := range files {
-		fmt.Println(file.Name())
+	for _, entry := range files {
+		if entry.IsDir() {
+			fmt.Println(entry.Name())
+		}
 	}
 
 	// website::tag::1:: Configure Terraform setting up a path to Terraform code.
