@@ -17,8 +17,6 @@ import (
 func TestTerraformAzure(t *testing.T) {
 	t.Parallel()
 
-	var tfOptions []terraform.Options
-
 	files, err := ioutil.ReadDir("../.")
 	if err != nil {
 		log.Fatal(err)
@@ -35,9 +33,10 @@ func TestTerraformAzure(t *testing.T) {
 			defer terraform.Destroy(t, tfOption)
 
 			// Terraform init and plan only
-			tfPlanOutput := "terraform.tfplan"
+			// tfPlanOutput := "terraform.tfplan"
 			terraform.Init(t, tfOption)
-			terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "plan", "-out="+tfPlanOutput)...)
+			// terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "plan", "-out="+tfPlanOutput)...)
+			terraform.Plan(t, tfOption)
 		}
 	}
 
