@@ -1,6 +1,9 @@
 package test
 
 import (
+	"fmt"
+	"io/ioutil"
+	"log"
 	"os"
 	"path"
 	"testing"
@@ -30,6 +33,15 @@ func TestTerraformAzure(t *testing.T) {
 	}
 
 	tfOptions := []terraform.Options{containers, elasticPool, k8s}
+
+	files, err := ioutil.ReadDir("../../.")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, file := range files {
+		fmt.Println(file.Name())
+	}
 
 	// website::tag::1:: Configure Terraform setting up a path to Terraform code.
 	// tfOptions := &terraform.Options{
