@@ -40,7 +40,7 @@ func TestTerraformAzure(t *testing.T) {
 	}
 
 	for _, entry := range files {
-		if entry.IsDir() {
+		if entry.IsDir() && entry.Name()[:1] != "." {
 			fmt.Println(entry.Name())
 		}
 	}
