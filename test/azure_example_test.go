@@ -1,7 +1,6 @@
 package test
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -29,12 +28,27 @@ func TestTerraformAzure(t *testing.T) {
 
 		if entry.IsDir() && entry.Name()[:1] != "." && entry.Name() != "test" {
 			dir := "../" + entry.Name()
-			option := &terraform.Options{
+			tfoption := &terraform.Options{
 				// The path to where our Terraform code is located
 				TerraformDir: dir,
 			}
-			tfOptions = append(tfOptions, option)
-			fmt.Println(entry.Name())
+			defer terraform.Destroy(t, tfOption)
+
+			// Terraform init and plan only
+			tfPlanOutput := "terraform.tfplan"
+			terraform.Init(t, tfOption)
+			terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "plan", "-out="+tfPlanOutput)...)
+
+			// Read and parse the plan output
+			f, err := os.Open(path.Join(&tfOption.TerraformDir, tfPlanOutput))
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer f.Close()
+			plan, err := terraformCore.ReadPlan(f)
+			if err != nil {
+				t.Fatal(err)
+			}
 		}
 	}
 
@@ -43,28 +57,6 @@ func TestTerraformAzure(t *testing.T) {
 	// The path to where our Terraform code is located
 	// TerraformDir: "../",
 	// }
-
-	for _, tfOption := range tfOptions {
-		// website::tag::4:: At the end of the test, run `terraform destroy` to clean up any resources that were created
-		defer terraform.Destroy(t, tfOption)
-
-		// Terraform init and plan only
-		tfPlanOutput := "terraform.tfplan"
-		terraform.Init(t, tfOption)
-		terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "plan", "-out="+tfPlanOutput)...)
-
-		// Read and parse the plan output
-		fmt.Println(tfOption.TerraformDir)
-		f, err := os.Open(path.Join(&tfOption.TerraformDir, tfPlanOutput))
-		if err != nil {
-			t.Fatal(err)
-		}
-		defer f.Close()
-		plan, err := terraformCore.ReadPlan(f)
-		if err != nil {
-			t.Fatal(err)
-		}
-	}
 
 	// website::tag::2:: Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
 	// terraform.InitAndApply(t, tfOptions)
