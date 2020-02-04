@@ -31,7 +31,7 @@ func TestTerraformAzure(t *testing.T) {
 	terraform.Init(t, tfOptions)
 	terraform.RunTerraformCommand(t, tfOptions, terraform.FormatArgs(tfOptions, "plan", "-out="+tfPlanOutput)...)
 	
-	clusterUsername := terraform.Output(t, terraformOptions, "cluster_username")
+	clusterUsername := terraform.Output(t, tfOptions, "cluster_username")
 	// Validate the test result
 	// for _, mod := range plan.Diff.Modules {
 		// fmt.Println(mod.Path)
