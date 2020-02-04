@@ -53,7 +53,7 @@ func TestTerraformAzure(t *testing.T) {
 		terraform.RunTerraformCommand(t, &tfOption, terraform.FormatArgs(&tfOption, "plan", "-out="+tfPlanOutput)...)
 
 		// Read and parse the plan output
-		f, err := os.Open(path.Join(tfOptions.TerraformDir, tfPlanOutput))
+		f, err := os.Open(path.Join(&tfOption.TerraformDir, tfPlanOutput))
 		if err != nil {
 			t.Fatal(err)
 		}
