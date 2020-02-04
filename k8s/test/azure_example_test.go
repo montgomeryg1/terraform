@@ -16,13 +16,13 @@ func TestTerraformAzure(t *testing.T) {
 	t.Parallel()
 
 	// website::tag::1:: Configure Terraform setting up a path to Terraform code.
-	terraformOptions := &terraform.Options{
+	tfOptions := &terraform.Options{
 		// The path to where our Terraform code is located
 		TerraformDir: "../",
 	}
 
 	// website::tag::4:: At the end of the test, run `terraform destroy` to clean up any resources that were created
-	defer terraform.Destroy(t, terraformOptions)
+	defer terraform.Destroy(t, tfOptions)
 
 	// website::tag::2:: Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
 	// terraform.InitAndApply(t, terraformOptions)
