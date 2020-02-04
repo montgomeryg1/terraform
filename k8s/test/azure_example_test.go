@@ -38,7 +38,7 @@ func TestTerraformAzure(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer f.Close()
-	plan, err := planfile.Open(f)
+	plan, err := terraformCore.ReadPlan(f)
 	if err != nil {
 		t.Fatal(err)
 	}
