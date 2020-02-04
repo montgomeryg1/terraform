@@ -31,18 +31,9 @@ func TestTerraformAzure(t *testing.T) {
 	terraform.Init(t, tfOptions)
 	terraform.RunTerraformCommand(t, tfOptions, terraform.FormatArgs(tfOptions, "plan", "-out="+tfPlanOutput)...)
 
-	// actualClusterUsername := terraform.Output(t, tfOptions, "cluster_username")
-	// expectedClusterUsername := "acctestuser1"
-	// assert.Equal(t, expectedClusterUsername, actualClusterUsername)
-
-	// Validate the test result
-	// for _, mod := range plan.Diff.Modules {
-	// fmt.Println(mod.Path)
-	// }
-
 	// website::tag::3:: Run `terraform output` to get the values of output variables
-	// vmName := terraform.Output(t, terraformOptions, "vm_name")
-	// resourceGroupName := terraform.Output(t, terraformOptions, "resource_group_name")
+	// vmName := terraform.Output(t, tfOptions, "vm_name")
+	// resourceGroupName := terraform.Output(t, tfOptions, "resource_group_name")
 
 	// website::tag::4:: Look up the size of the given Virtual Machine and ensure it matches the output.
 	// actualVMSize := azure.GetSizeOfVirtualMachine(t, vmName, resourceGroupName, "")
