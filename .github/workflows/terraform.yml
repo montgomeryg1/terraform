@@ -66,5 +66,5 @@ jobs:
           fi          
 
       - name: Test
-        working-directory: /home/runner/work/terraform/terraform/test
-        run: go test -v -run TestTerraformAzureExample
+        working-directory: /home/runner/work/terraform/terraform/k8s/test
+        run: go test
