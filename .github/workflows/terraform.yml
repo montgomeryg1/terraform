@@ -144,3 +144,7 @@ jobs:
           else
             go get -v -t -d ./...  
           fi          
+
+      - name: Test
+        working-directory: ./test
+        run: go test
