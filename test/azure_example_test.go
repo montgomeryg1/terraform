@@ -11,7 +11,8 @@ import (
 	// "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
 	// "github.com/gruntwork-io/terratest/modules/azure"
 	"github.com/gruntwork-io/terratest/modules/terraform"
-	terraformCore "github.com/hashicorp/terraform/terraform"
+	//terraformCore "github.com/hashicorp/terraform/terraform"
+	terraformCore "github.com/hashicorp/terraform/plans"
 )
 
 func TestTerraformAzure(t *testing.T) {
@@ -50,6 +51,17 @@ func TestTerraformAzure(t *testing.T) {
 		tfPlanOutput := "terraform.tfplan"
 		terraform.Init(t, &tfOption)
 		terraform.RunTerraformCommand(t, &tfOption, terraform.FormatArgs(&tfOption, "plan", "-out="+tfPlanOutput)...)
+
+		// Read and parse the plan output
+		f, err := os.Open(path.Join(tfOptions.TerraformDir, tfPlanOutput))
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer f.Close()
+		plan, err := terraformCore.ReadPlan(f)
+		if err != nil {
+			t.Fatal(err)
+		}
 	}
 
 	// website::tag::2:: Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
