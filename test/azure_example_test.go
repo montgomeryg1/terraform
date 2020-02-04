@@ -28,7 +28,7 @@ func TestTerraformAzure(t *testing.T) {
 
 		if entry.IsDir() && entry.Name()[:1] != "." && entry.Name() != "test" {
 			dir := "../" + entry.Name()
-			tfoption := &terraform.Options{
+			tfOption := &terraform.Options{
 				// The path to where our Terraform code is located
 				TerraformDir: dir,
 			}
