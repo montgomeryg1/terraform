@@ -76,3 +76,9 @@ jobs:
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           TF_VAR_kubernetes_client_id: ${{ secrets.ARM_CLIENT_ID }}
           TF_VAR_kubernetes_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+
+      - name: Run a Terraform Plan Parser  
+        uses: docker://node:8-alpine
+        with:
+          entrypoint: npm 
+          args: install -g terraform-plan-parser
