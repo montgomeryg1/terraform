@@ -17,22 +17,7 @@ import (
 func TestTerraformAzure(t *testing.T) {
 	t.Parallel()
 
-	containers := terraform.Options{
-		// The path to where our Terraform code is located
-		TerraformDir: "../../containers",
-	}
-
-	elasticPool := terraform.Options{
-		// The path to where our Terraform code is located
-		TerraformDir: "../../elastic_pool",
-	}
-
-	k8s := terraform.Options{
-		// The path to where our Terraform code is located
-		TerraformDir: "../.",
-	}
-
-	tfOptions := []terraform.Options{containers, elasticPool, k8s}
+	var tfOptions []terraform.Options
 
 	files, err := ioutil.ReadDir("../../.")
 	if err != nil {
@@ -41,6 +26,10 @@ func TestTerraformAzure(t *testing.T) {
 
 	for _, entry := range files {
 		if entry.IsDir() && entry.Name()[:1] != "." {
+			tfOptions = append(tfOptions, terraform.Options{
+				// The path to where our Terraform code is located
+				TerraformDir: entry.Name(),
+			})
 			fmt.Println(entry.Name())
 		}
 	}
