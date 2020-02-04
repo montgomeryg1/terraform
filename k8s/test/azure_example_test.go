@@ -32,7 +32,9 @@ func TestTerraformAzure(t *testing.T) {
 	terraform.Init(t, tfOptions)
 	terraform.RunTerraformCommand(t, tfOptions, terraform.FormatArgs(tfOptions, "plan", "-out="+tfPlanOutput)...)
 	planJSON, err := terraform.RunTerraformCommandAndGetStdoutE(t, tfOptions, terraform.FormatArgs(tfOptions, "show", "-json", tfPlanOutput)...)
-	
+	if err != nil {
+		t.Fatal(err)
+	}
 	fmt.Println(planJSON)
 	// Validate the test result
 	// for _, mod := range plan.Diff.Modules {
