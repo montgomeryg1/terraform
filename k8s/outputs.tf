@@ -25,3 +25,11 @@ output "cluster_password" {
 output "host" {
   value = azurerm_kubernetes_cluster.example.kube_config.0.host
 }
+
+output "fqdn" {
+  value = azure_kubernetes_cluster.example.kube_config.0.fqdn
+}
+
+output "node_resource_group" {
+  value = azure_kubernetes_cluster.example.kube_config.0.node_resource_group
+}
