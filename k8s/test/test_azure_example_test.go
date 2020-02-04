@@ -25,11 +25,11 @@ func TestTerraformAzureExample(t *testing.T) {
 	terraform.InitAndApply(t, terraformOptions)
 
 	// website::tag::3:: Run `terraform output` to get the values of output variables
-	// vmName := terraform.Output(t, terraformOptions, "vm_name")
+	vmName := terraform.Output(t, terraformOptions, "vm_name")
 	resourceGroupName := terraform.Output(t, terraformOptions, "resource_group_name")
 
 	// website::tag::4:: Look up the size of the given Virtual Machine and ensure it matches the output.
-	// actualVMSize := azure.GetSizeOfVirtualMachine(t, vmName, resourceGroupName, "")
-	// expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
-	// assert.Equal(t, expectedVMSize, actualVMSize)
+	actualVMSize := azure.GetSizeOfVirtualMachine(t, vmName, resourceGroupName, "")
+	expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
+	assert.Equal(t, expectedVMSize, actualVMSize)
 }
