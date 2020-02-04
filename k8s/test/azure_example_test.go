@@ -1,6 +1,7 @@
 package test
 
 import (
+	"fmt"
 	"os"
 	"path"
 	"testing"
@@ -30,6 +31,22 @@ func TestTerraformAzure(t *testing.T) {
 	tfPlanOutput := "terraform.tfplan"
 	terraform.Init(t, tfOptions)
 	terraform.RunTerraformCommand(t, tfOptions, terraform.FormatArgs(tfOptions, "plan", "-out="+tfPlanOutput)...)
+	
+	// Read and parse the plan output
+	f, err := os.Open(path.Join(tfOptions.TerraformDir, tfPlanOutput))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer f.Close()
+	plan, err := planfile.Open(f)
+	if err != nil {
+		t.Fatal(err)
+	}
+	
+	// Validate the test result
+	for _, mod := range plan.Diff.Modules {
+		fmt.Println(mod.Path)
+	}
 
 	// website::tag::3:: Run `terraform output` to get the values of output variables
 	// vmName := terraform.Output(t, terraformOptions, "vm_name")
