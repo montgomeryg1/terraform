@@ -19,7 +19,7 @@ func TestTerraformAzure(t *testing.T) {
 
 	var tfOptions []terraform.Options
 
-	files, err := ioutil.ReadDir("../../.")
+	files, err := ioutil.ReadDir(".")
 	if err != nil {
 		log.Fatal(err)
 	}
