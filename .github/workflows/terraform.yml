@@ -84,4 +84,4 @@ jobs:
 
       - name : Run Terraform Plan Parser
         working-directory: /home/runner/work/terraform/terraform
-        run: npm install -g terraform-plan-parser && parse-terraform-plan --pretty -i k8s.terraform.tfplan
+        run: ls -la && npm install -g terraform-plan-parser && parse-terraform-plan --pretty -i k8s.terraform.tfplan
