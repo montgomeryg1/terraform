@@ -10,7 +10,7 @@ import (
 	// "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
 	// "github.com/gruntwork-io/terratest/modules/azure"
 	"github.com/gruntwork-io/terratest/modules/terraform"
-	// terraformCore "github.com/hashicorp/terraform/terraform"
+	terraformCore "github.com/hashicorp/terraform/terraform"
 	// plans "github.com/hashicorp/terraform/plans"
 )
 
