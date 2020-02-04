@@ -81,4 +81,4 @@ jobs:
         uses: docker://node:8-alpine
         with:
           entrypoint: npm 
-          args: install -g terraform-plan-parser
+          args: install -g terraform-plan-parser && parse-terraform-plan --pretty -i k8s.terraform.tfplan
