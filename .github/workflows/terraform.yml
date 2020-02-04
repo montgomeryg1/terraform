@@ -146,5 +146,4 @@ jobs:
           fi          
 
       - name: Test
-        working-directory: ./test
         run: go test -v -run TestTerraformAzureExample
