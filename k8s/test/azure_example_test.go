@@ -25,7 +25,7 @@ func TestTerraformAzure(t *testing.T) {
 	defer terraform.Destroy(t, tfOptions)
 
 	// website::tag::2:: Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
-	terraform.InitAndApply(t, terraformOptions)
+	terraform.InitAndApply(t, tfOptions)
 
 	// Terraform init and plan only
 	// tfPlanOutput := "terraform.tfplan"
