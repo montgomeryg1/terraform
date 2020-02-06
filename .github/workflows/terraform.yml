@@ -81,8 +81,8 @@ jobs:
       - name: Commit changes
         uses: EndBug/add-and-commit@v2 
         with:
-          author_name: George Montgomery
-          author_email: montgomery.wg@gmail.com
+          author: George Montgomery
+          email: montgomery.wg@gmail.com
           message: "GitHub Workflow Commit"
           pattern: "*.tf"
         env:
