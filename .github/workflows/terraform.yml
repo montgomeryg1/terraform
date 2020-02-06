@@ -8,6 +8,8 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
+        with:
+          ref: ${{ github.head_ref }}
 
       # - name: 'k8s - Terraform Format'
         # uses: hashicorp/terraform-github-actions@master
