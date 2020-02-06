@@ -10,7 +10,7 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.head_ref }}
+          ref: master
 
       # - name: 'k8s - Terraform Format'
         # uses: hashicorp/terraform-github-actions@master
@@ -86,7 +86,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v2.5.0
         with:
           commit_message: Apply automatic changes
-          branch: ${{ github.head_ref }}
+          branch: master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
