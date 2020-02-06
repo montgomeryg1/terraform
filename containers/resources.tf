@@ -3,6 +3,7 @@ module "variables" {
   # source      = "./variables"
   environment = local.environment
   size        = local.size
+  region      = var.region
 }
 
 resource "random_string" "example" {
