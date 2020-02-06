@@ -21,7 +21,7 @@ variable "vnet_address_space_map" {
 
 output "vnet_address_space" {
   # value = ["${split(",", var.vnet_address_space_map[var.environment])}"]
-  value = split(",", "${lookup(var.vnet_address_space_map[var.region],var.environment)}")
+  value = split(",", "${lookup(var.vnet_address_space_map[var.region], var.environment)}")
 }
 
 variable "subnet_map" {
@@ -47,7 +47,7 @@ variable "subnet_map" {
 
 output "subnet" {
   #value = "${var.subnet_map[var.environment]}"
-  value = "${lookup(var.subnet_map[var.region],var.environment)}"
+  value = "${lookup(var.subnet_map[var.region], var.environment)}"
 }
 
 variable "node_count_map" {
@@ -71,7 +71,7 @@ variable "node_count_map" {
 }
 output "node_count" {
   # value = "${var.node_count_map[var.size]}"
-  value = "${lookup(var.node_count_map[var.region],var.size)}"
+  value = "${lookup(var.node_count_map[var.region], var.size)}"
 }
 
 
@@ -95,5 +95,5 @@ variable "vm_size_map" {
 }
 output "vm_size" {
   # value = "${var.vm_size_map[var.size]}"
-  value = "${lookup(var.vm_size_map[var.region],var.size)}"
+  value = "${lookup(var.vm_size_map[var.region], var.size)}"
 }
