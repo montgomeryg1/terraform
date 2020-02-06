@@ -8,12 +8,12 @@ module "variables" {
 
 
 resource "azurerm_resource_group" "example" {
-  name     = "${local.prefix}-resources"
+  name     = "${local.environment}-resources"
   location = var.region
 }
 
 resource "azurerm_virtual_network" "example" {
-  name                = "${local.prefix}-network"
+  name                = "${local.environment}-network"
   location            = azurerm_resource_group.example.location
   resource_group_name = azurerm_resource_group.example.name
   address_space       = module.variables.vnet_address_space
@@ -27,9 +27,9 @@ resource "azurerm_subnet" "example" {
 }
 
 resource "azurerm_kubernetes_cluster" "example" {
-  name                = "${local.prefix}-cluster"
+  name                = "${local.environment}-cluster"
   location            = azurerm_resource_group.example.location
-  dns_prefix          = "${local.prefix}-cluster"
+  dns_prefix          = "${local.environment}-cluster"
   resource_group_name = azurerm_resource_group.example.name
 
   linux_profile {
