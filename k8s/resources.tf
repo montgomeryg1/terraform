@@ -1,6 +1,6 @@
 module "variables" {
-  # source      = "github.com/montgomeryg1/terraform//containers/variables?ref=montgomerg1-patch-2"
-  source      = "./variables"
+  source      = "github.com/montgomeryg1/terraform//variables"
+  # source      = "./variables"
   environment = "${local.environment}"
   size        = "${local.size}"
 }
