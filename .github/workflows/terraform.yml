@@ -77,16 +77,14 @@ jobs:
           TF_VAR_kubernetes_client_id: ${{ secrets.ARM_CLIENT_ID }}
           TF_VAR_kubernetes_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
 
-
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v2 
+      - name: Commit changed files
+        uses: stefanzweifel/git-auto-commit-action@v2.5.0
         with:
-          author: George Montgomery
-          email: montgomery.wg@gmail.com
-          message: "GitHub Workflow Commit"
-          pattern: "*.tf"
+          commit_message: Apply automatic changes
+          branch: ${{ github.head_ref }}
+          file_pattern: \*.tf
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       # - name: Setup Terraform Plan Parser
       #   uses: actions/setup-node@v1
