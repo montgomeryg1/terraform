@@ -26,5 +26,5 @@ variable "workspace_to_size_map" {
 }
 
 variable "region" {
-  default = northeurope
+  default = "northeurope"
 }
