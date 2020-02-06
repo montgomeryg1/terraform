@@ -33,7 +33,7 @@ func TestTerraformAzure(t *testing.T) {
 			defer terraform.Destroy(t, tfOption)
 
 			// Terraform init and plan only
-			tfPlanOutput := dir + ".terraform.tfplan"
+			// tfPlanOutput := dir + ".terraform.tfplan"
 			terraform.Init(t, tfOption)
 			// terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "plan", "-out="+tfPlanOutput)...)
 			// terraform.Plan(t, tfOption)
