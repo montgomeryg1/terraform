@@ -51,7 +51,7 @@ output "subnet" {
 }
 
 variable "node_count_map" {
-  description = "A map from environment to the type of EC2 instance"
+  description = "A map from environment to the number of kubernetes nodes"
   type        = map
   default = {
     northeurope = {
@@ -76,7 +76,7 @@ output "node_count" {
 
 
 variable "vm_size_map" {
-  description = "A map from environment to the type of EC2 instance"
+  description = "A map from environment to the size of vm"
   type        = map
   default = {
     northeurope = {
@@ -96,4 +96,28 @@ variable "vm_size_map" {
 output "vm_size" {
   # value = "${var.vm_size_map[var.size]}"
   value = "${lookup(var.vm_size_map[var.region], var.size)}"
+}
+
+
+variable "container_registry_sku_map" {
+  description = "A map from environment to container registry sku"
+  type        = map
+  default = {
+    northeurope = {
+      small  = "Basic"
+      medium = "Basic"
+      large  = "Basic"
+      xlarge = "Basic"
+    }
+    westeurope = {
+      small  = "Basic"
+      medium = "Basic"
+      large  = "Basic"
+      xlarge = "Basic"
+    }
+  }
+}
+output "container_registry_sku" {
+  # value = "${var.vm_size_map[var.size]}"
+  value = "${lookup(var.container_registry_sku_map[var.region], var.size)}"
 }
