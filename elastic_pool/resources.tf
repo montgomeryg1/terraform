@@ -1,11 +1,11 @@
 module "variables" {
-  source      = "github.com/montgomeryg1/terraform//variables"
+  source = "github.com/montgomeryg1/terraform//variables"
   # source      = "./variables"
   environment = local.environment
   size        = local.size
   region      = var.region
 }
-  
+
 resource "random_string" "example" {
   length  = 6
   upper   = false
