@@ -1,15 +1,15 @@
 module "variables" {
   source = "github.com/montgomeryg1/terraform//variables?ref=testing-patch-1"
   # source      = "./variables"
-  environment = "${local.environment}"
-  size        = "${local.size}"
-  region      = "${var.region}"
+  environment = local.environment
+  size        = local.size
+  region      = var.region
 }
 
 
 resource "azurerm_resource_group" "example" {
   name     = "${local.prefix}-resources"
-  location = local.location
+  location = var.region
 }
 
 resource "azurerm_virtual_network" "example" {
