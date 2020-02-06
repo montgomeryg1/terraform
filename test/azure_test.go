@@ -1,7 +1,6 @@
 package test
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -12,12 +11,11 @@ import (
 	// "github.com/gruntwork-io/terratest/modules/azure"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	terraformCore "github.com/hashicorp/terraform/terraform"
+	// plans "github.com/hashicorp/terraform/plans"
 )
 
 func TestTerraformAzure(t *testing.T) {
 	t.Parallel()
-
-	var tfOptions []terraform.Options
 
 	files, err := ioutil.ReadDir("../.")
 	if err != nil {
@@ -26,13 +24,21 @@ func TestTerraformAzure(t *testing.T) {
 
 	for _, entry := range files {
 
-		if entry.IsDir() && entry.Name()[:1] != "." && entry.Name() != "test" {
+		if entry.IsDir() && entry.Name()[:1] != "." && entry.Name() != "test" && entry.Name() != "variables" {
 			dir := "../" + entry.Name()
-			tfOptions = append(tfOptions, terraform.Options{
+			tfOption := &terraform.Options{
 				// The path to where our Terraform code is located
 				TerraformDir: dir,
-			})
-			fmt.Println(entry.Name())
+			}
+			defer terraform.Destroy(t, tfOption)
+
+			// Terraform init and plan only
+			// tfPlanOutput := dir + ".terraform.tfplan"
+			terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
+			terraform.Init(t, tfOption)
+			// terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "plan", "-out="+tfPlanOutput)...)
+			terraform.Plan(t, tfOption)
+			// terraform.Apply(t, tfOption)
 		}
 	}
 
@@ -41,16 +47,6 @@ func TestTerraformAzure(t *testing.T) {
 	// The path to where our Terraform code is located
 	// TerraformDir: "../",
 	// }
-
-	for _, tfOption := range tfOptions {
-		// website::tag::4:: At the end of the test, run `terraform destroy` to clean up any resources that were created
-		defer terraform.Destroy(t, &tfOption)
-
-		// Terraform init and plan only
-		tfPlanOutput := "terraform.tfplan"
-		terraform.Init(t, &tfOption)
-		terraform.RunTerraformCommand(t, &tfOption, terraform.FormatArgs(&tfOption, "plan", "-out="+tfPlanOutput)...)
-	}
 
 	// website::tag::2:: Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
 	// terraform.InitAndApply(t, tfOptions)

@@ -7,16 +7,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@master
-
-      - name: 'k8s - Terraform Format'
-        uses: hashicorp/terraform-github-actions@master
+        uses: actions/checkout@v2
         with:
-          tf_actions_version: 0.12.20
-          tf_actions_subcommand: 'fmt'
-          tf_actions_working_dir: 'k8s'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
+          ref: ${{ github.head_ref }}
+
+      # - name: 'k8s - Terraform Format'
+        # uses: hashicorp/terraform-github-actions@master
+        # with:
+          # tf_actions_version: 0.12.20
+          # tf_actions_subcommand: 'fmt'
+          # tf_actions_working_dir: 'k8s'
+        # env:
+          # GITHUB_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
           
       # - name: 'k8s - Terraform Init'
         # uses: hashicorp/terraform-github-actions@master
@@ -67,12 +69,29 @@ jobs:
 
       - name: Test
         working-directory: /home/runner/work/terraform/terraform/test
-        run: go test -v -run TestTerraformAzure
+        run: go test -v -run TestTerraformAzure -timeout 30m
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           TF_VAR_kubernetes_client_id: ${{ secrets.ARM_CLIENT_ID }}
           TF_VAR_kubernetes_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+
+      - name: Commit changed files
+        uses: stefanzweifel/git-auto-commit-action@v2.5.0
+        with:
+          commit_message: Apply automatic changes
+          branch: ${{ github.head_ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      # - name: Setup Terraform Plan Parser
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     node-version: '10.x'
+
+      # - name : Run Terraform Plan Parser
+      #   working-directory: /home/runner/work/terraform/terraform
+      #   run: ls -la && npm install -g terraform-plan-parser && parse-terraform-plan --pretty -i k8s.terraform.tfplan
