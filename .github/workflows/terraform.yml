@@ -67,7 +67,7 @@ jobs:
 
       - name: Test
         working-directory: /home/runner/work/terraform/terraform/test
-        run: go test -v -run TestTerraformAzure
+        run: go test -v -run TestTerraformAzure -timeout 30m
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
