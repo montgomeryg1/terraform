@@ -36,8 +36,8 @@ func TestTerraformAzure(t *testing.T) {
 			// tfPlanOutput := dir + ".terraform.tfplan"
 			terraform.Init(t, tfOption)
 			// terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "plan", "-out="+tfPlanOutput)...)
-			// terraform.Plan(t, tfOption)
-			terraform.Apply(t, tfOption)
+			terraform.Plan(t, tfOption)
+			// terraform.Apply(t, tfOption)
 		}
 	}
 
