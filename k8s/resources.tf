@@ -1,5 +1,5 @@
 module "variables" {
-  source = "github.com/montgomeryg1/terraform//variables?ref=testing-patch-1"
+  source = "github.com/montgomeryg1/terraform//variables"
   # source      = "./variables"
   environment = local.environment
   size        = local.size
