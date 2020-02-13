@@ -29,10 +29,10 @@ variable "region" {
   default = "northeurope"
 }
 
-variable "subnets" {
-  type = map
-  default = {
-    subnet-1 = "10.0.1.0/24"
-    subnet-2 = "10.0.2.0/24"
-  }
-}
+#variable "subnets" {
+#  type = map
+#  default = {
+#    subnet-1 = "10.0.1.0/24"
+#    subnet-2 = "10.0.2.0/24"
+#  }
+#}
