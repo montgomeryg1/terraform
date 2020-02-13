@@ -7,30 +7,31 @@ module "variables" {
 }
 
 
-resource "azurerm_resource_group" "example" {
+resource "azurerm_resource_group" "sandbox" {
   name     = "${local.environment}-resources"
   location = var.region
 }
 
-resource "azurerm_virtual_network" "example" {
+resource "azurerm_virtual_network" "sandbox" {
   name                = "${local.environment}-network"
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.sandbox.location
+  resource_group_name = azurerm_resource_group.sandbox.name
   address_space       = module.variables.vnet_address_space
 }
 
-resource "azurerm_subnet" "example" {
-  name                 = "internal"
-  resource_group_name  = azurerm_resource_group.example.name
-  address_prefix       = module.variables.subnet
-  virtual_network_name = azurerm_virtual_network.example.name
+resource "azurerm_subnet" "sandbox" {
+  for_each             = module.variables.subnets
+  name                 = each.key
+  address_prefix       = each.value
+  resource_group_name  = azurerm_resource_group.sandbox.name
+  virtual_network_name = azurerm_virtual_network.sandbox.name
 }
 
-resource "azurerm_kubernetes_cluster" "example" {
+resource "azurerm_kubernetes_cluster" "sandbox" {
   name                = "${local.environment}-cluster"
-  location            = azurerm_resource_group.example.location
+  location            = azurerm_resource_group.sandbox.location
   dns_prefix          = "${local.environment}-cluster"
-  resource_group_name = azurerm_resource_group.example.name
+  resource_group_name = azurerm_resource_group.sandbox.name
 
   linux_profile {
     admin_username = "acctestuser1"
@@ -48,7 +49,7 @@ resource "azurerm_kubernetes_cluster" "example" {
     os_disk_size_gb = 30
 
     # Required for advanced networking
-    vnet_subnet_id = azurerm_subnet.example.id
+    vnet_subnet_id = azurerm_subnet.sandbox.id
   }
 
   service_principal {

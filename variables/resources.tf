@@ -24,30 +24,32 @@ output "vnet_address_space" {
   value = split(",", "${lookup(var.vnet_address_space_map[var.region], var.environment)}")
 }
 
-variable "subnet_map" {
+
+
+variable "subnets_map" {
   description = "A map from environment to a comma-delimited list of the subnets"
   type        = map
   default = {
     northeurope = {
-      dev     = "10.1.1.0/24"
-      qa      = "10.2.1.0/24"
-      staging = "10.3.1.0/24"
-      prod    = "10.4.1.0/24"
+      dev     = {subnet-1 = "10.1.1.0/24", subnet-2 = "10.1.2.0/24"}
+      qa      = {subnet-1 = "10.2.1.0/24", subnet-2 = "10.1.2.0/24"}
+      staging = {subnet-1 = "10.3.1.0/24", subnet-2 = "10.1.2.0/24"}
+      prod    = {subnet-1 = "10.4.1.0/24", subnet-2 = "10.1.2.0/24"}
     }
 
     westeurope = {
-      dev     = "10.5.1.0/24"
-      qa      = "10.6.1.0/24"
-      staging = "10.7.1.0/24"
-      prod    = "10.8.1.0/24"
+      dev     = {subnet-1 = "10.5.1.0/24", subnet-2 = "10.1.2.0/24"}
+      qa      = {subnet-1 = "10.6.1.0/24", subnet-2 = "10.1.2.0/24"}
+      staging = {subnet-1 = "10.7.1.0/24", subnet-2 = "10.1.2.0/24"}
+      prod    = {subnet-1 = "10.8.1.0/24", subnet-2 = "10.1.2.0/24"}
     }
 
   }
 }
 
-output "subnet" {
+output "subnets" {
   #value = "${var.subnet_map[var.environment]}"
-  value = "${lookup(var.subnet_map[var.region], var.environment)}"
+  value = "${lookup(var.subnets_map[var.region], var.environment)}"
 }
 
 variable "node_count_map" {
