@@ -31,7 +31,7 @@ resource "azurerm_virtual_network" "sandbox" {
 }
 
 resource "azurerm_subnet" "sandbox" {
-  for_each             = toset(var.subnets)
+  for_each             = var.subnets
   name                 = each.key
   resource_group_name  = azurerm_resource_group.sandbox.name
   virtual_network_name = azurerm_virtual_network.sandbox.name
