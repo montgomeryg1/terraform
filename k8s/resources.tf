@@ -49,7 +49,7 @@ resource "azurerm_kubernetes_cluster" "sandbox" {
     os_disk_size_gb = 30
 
     # Required for advanced networking
-    vnet_subnet_id = azurerm_subnet.sandbox.id
+    vnet_subnet_id = azurerm_subnet.sandbox[0].id
   }
 
   service_principal {
