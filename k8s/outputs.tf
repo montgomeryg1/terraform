@@ -1,35 +1,35 @@
 # output "client_key" {
-# value = azurerm_kubernetes_cluster.example.kube_config.0.client_key
+# value = azurerm_kubernetes_cluster.sandbox.kube_config.0.client_key
 # }
 
 # output "client_certificate" {
-# value = azurerm_kubernetes_cluster.example.kube_config.0.client_certificate
+# value = azurerm_kubernetes_cluster.sandbox.kube_config.0.client_certificate
 # }
 
 # output "cluster_ca_certificate" {
-# value = azurerm_kubernetes_cluster.example.kube_config.0.cluster_ca_certificate
+# value = azurerm_kubernetes_cluster.sandbox.kube_config.0.cluster_ca_certificate
 # }
 
 output "cluster_username" {
-  value = azurerm_kubernetes_cluster.example.kube_config.0.username
+  value = azurerm_kubernetes_cluster.sandbox.kube_config.0.username
 }
 
 output "cluster_password" {
-  value = azurerm_kubernetes_cluster.example.kube_config.0.password
+  value = azurerm_kubernetes_cluster.sandbox.kube_config.0.password
 }
 
 # output "kube_config" {
-# value = azurerm_kubernetes_cluster.example.kube_config_raw
+# value = azurerm_kubernetes_cluster.sandbox.kube_config_raw
 # }
 
 output "host" {
-  value = azurerm_kubernetes_cluster.example.kube_config.0.host
+  value = azurerm_kubernetes_cluster.sandbox.kube_config.0.host
 }
 
 output "fqdn" {
-  value = azurerm_kubernetes_cluster.example.fqdn
+  value = azurerm_kubernetes_cluster.sandbox.fqdn
 }
 
 output "node_resource_group" {
-  value = azurerm_kubernetes_cluster.example.node_resource_group
+  value = azurerm_kubernetes_cluster.sandbox.node_resource_group
 }
