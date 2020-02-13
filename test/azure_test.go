@@ -1,8 +1,6 @@
 package test
 
 import (
-	"io/ioutil"
-	"log"
 	"os"
 	"path"
 	"testing"
@@ -14,42 +12,23 @@ import (
 	// plans "github.com/hashicorp/terraform/plans"
 )
 
-func TestTerraformAzure(t *testing.T) {
+func TestVnet(t *testing.T) {
 	t.Parallel()
 
-	files, err := ioutil.ReadDir("../.")
-	if err != nil {
-		log.Fatal(err)
+	dir := "../vnet"
+	tfOption := &terraform.Options{
+		// The path to where our Terraform code is located
+		TerraformDir: dir,
 	}
+	defer terraform.Destroy(t, tfOption)
 
-	for _, entry := range files {
-
-		if entry.IsDir() && entry.Name()[:1] != "." && entry.Name() != "test" && entry.Name() != "variables" {
-			dir := "../" + entry.Name()
-			tfOption := &terraform.Options{
-				// The path to where our Terraform code is located
-				TerraformDir: dir,
-			}
-			defer terraform.Destroy(t, tfOption)
-
-			// Terraform init and plan only
-			// tfPlanOutput := dir + ".terraform.tfplan"
-			terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
-			terraform.Init(t, tfOption)
-			// terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "plan", "-out="+tfPlanOutput)...)
-			terraform.Plan(t, tfOption)
-			terraform.Apply(t, tfOption)
-		}
-	}
-
-	// website::tag::1:: Configure Terraform setting up a path to Terraform code.
-	// tfOptions := &terraform.Options{
-	// The path to where our Terraform code is located
-	// TerraformDir: "../",
-	// }
-
-	// website::tag::2:: Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
-	// terraform.InitAndApply(t, tfOptions)
+	// Terraform init and plan only
+	// tfPlanOutput := dir + ".terraform.tfplan"
+	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
+	terraform.Init(t, tfOption)
+	// terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "plan", "-out="+tfPlanOutput)...)
+	terraform.Plan(t, tfOption)
+	terraform.Apply(t, tfOption)
 
 	// website::tag::3:: Run `terraform output` to get the values of output variables
 	// vmName := terraform.Output(t, tfOptions, "vm_name")
@@ -61,6 +40,50 @@ func TestTerraformAzure(t *testing.T) {
 	// assert.Equal(t, expectedVMSize, actualVMSize)
 }
 
+func TestContainers(t *testing.T) {
+	t.Parallel()
+
+	dir := "../containers"
+	tfOption := &terraform.Options{
+		// The path to where our Terraform code is located
+		TerraformDir: dir,
+	}
+	defer terraform.Destroy(t, tfOption)
+	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
+	terraform.Init(t, tfOption)
+	terraform.Plan(t, tfOption)
+	terraform.Apply(t, tfOption)
+}
+
+func TestElasticPool(t *testing.T) {
+	t.Parallel()
+
+	dir := "../elastic_pool"
+	tfOption := &terraform.Options{
+		// The path to where our Terraform code is located
+		TerraformDir: dir,
+	}
+	defer terraform.Destroy(t, tfOption)
+	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
+	terraform.Init(t, tfOption)
+	terraform.Plan(t, tfOption)
+	terraform.Apply(t, tfOption)
+}
+
+func TestK8s(t *testing.T) {
+	t.Parallel()
+
+	dir := "../k8s"
+	tfOption := &terraform.Options{
+		// The path to where our Terraform code is located
+		TerraformDir: dir,
+	}
+	defer terraform.Destroy(t, tfOption)
+	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
+	terraform.Init(t, tfOption)
+	terraform.Plan(t, tfOption)
+	terraform.Apply(t, tfOption)
+}
 func TestStorageAccountName(t *testing.T) {
 	t.Parallel()
 
