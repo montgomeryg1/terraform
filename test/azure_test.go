@@ -38,7 +38,7 @@ func TestTerraformAzure(t *testing.T) {
 			terraform.Init(t, tfOption)
 			// terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "plan", "-out="+tfPlanOutput)...)
 			terraform.Plan(t, tfOption)
-			// terraform.Apply(t, tfOption)
+			terraform.Apply(t, tfOption)
 		}
 	}
 
