@@ -1,3 +1,7 @@
+output "resource_group" {
+  value = azurerm_resource_group.sandbox.name
+}
+
 output "sql_server_main_name" {
   value = azurerm_sql_server.sandbox.name
 }

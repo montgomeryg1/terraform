@@ -15,8 +15,8 @@ resource "random_string" "sandbox" {
 }
 
 resource "azurerm_resource_group" "sandbox" {
-  name     = "my-resource-group-${random_string.sandbox.result}"
-  location = "North Europe"
+  name     = "myResourceGroup"
+  location = var.region
 }
 
 resource "azurerm_sql_server" "sandbox" {
@@ -47,6 +47,6 @@ resource "azurerm_sql_database" "sandbox" {
   server_name         = azurerm_sql_server.sandbox.name
   elastic_pool_name   = azurerm_sql_elasticpool.sandbox.name
   tags = {
-    environment = "sandbox"
+    environment = local.environment
   }
 }

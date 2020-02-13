@@ -1,3 +1,6 @@
+output "resource_group" {
+  value = azurerm_resource_group.sandbox.name
+}
 # output "client_key" {
 # value = azurerm_kubernetes_cluster.sandbox.kube_config.0.client_key
 # }

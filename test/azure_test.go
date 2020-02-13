@@ -9,6 +9,7 @@ import (
 	// "github.com/gruntwork-io/terratest/modules/azure"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	terraformCore "github.com/hashicorp/terraform/terraform"
+	"github.com/stretchr/testify/assert"
 	// plans "github.com/hashicorp/terraform/plans"
 )
 
@@ -29,6 +30,9 @@ func TestVnet(t *testing.T) {
 	// terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "plan", "-out="+tfPlanOutput)...)
 	terraform.Plan(t, tfOption)
 	terraform.Apply(t, tfOption)
+	actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
+	expectedResourceGroupName := "myResourceGroup"
+	assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
 
 	// website::tag::3:: Run `terraform output` to get the values of output variables
 	// vmName := terraform.Output(t, tfOptions, "vm_name")
@@ -53,6 +57,9 @@ func TestContainers(t *testing.T) {
 	terraform.Init(t, tfOption)
 	terraform.Plan(t, tfOption)
 	terraform.Apply(t, tfOption)
+	actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
+	expectedResourceGroupName := "myResourceGroup"
+	assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
 }
 
 func TestElasticPool(t *testing.T) {
@@ -68,6 +75,9 @@ func TestElasticPool(t *testing.T) {
 	terraform.Init(t, tfOption)
 	terraform.Plan(t, tfOption)
 	terraform.Apply(t, tfOption)
+	actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
+	expectedResourceGroupName := "myResourceGroup"
+	assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
 }
 
 func TestK8s(t *testing.T) {
@@ -83,6 +93,9 @@ func TestK8s(t *testing.T) {
 	terraform.Init(t, tfOption)
 	terraform.Plan(t, tfOption)
 	terraform.Apply(t, tfOption)
+	actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
+	expectedResourceGroupName := "myResourceGroup"
+	assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
 }
 func TestStorageAccountName(t *testing.T) {
 	t.Parallel()
