@@ -14,7 +14,7 @@ jobs:
         uses: docker://hashicorp/terraform:0.12.20
         with:
           entrypoint: terraform
-          args: fmt
+          args: fmt -recursive
           
       - name: Run a Terraform init  
         uses: docker://hashicorp/terraform:0.12.20
