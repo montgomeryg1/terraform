@@ -21,7 +21,7 @@ func TestFormat(t *testing.T) {
 	defer terraform.Destroy(t, tfOptions)
 
 	// Terraform format
-	terraform.RunTerraformCommand(t, tfOptions, terraform.FormatArgs(tfOption, "fmt")...)
+	terraform.RunTerraformCommand(t, tfOptions, terraform.FormatArgs(tfOptions, "fmt")...)
 }
 
 func TestVnet(t *testing.T) {
