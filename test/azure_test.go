@@ -18,10 +18,10 @@ func TestFormat(t *testing.T) {
 		// The path to where our Terraform code is located
 		TerraformDir: dir,
 	}
-	defer terraform.Destroy(t, tfOption)
+	defer terraform.Destroy(t, tfOptions)
 
 	// Terraform format
-	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
+	terraform.RunTerraformCommand(t, tfOptions, terraform.FormatArgs(tfOption, "fmt")...)
 }
 
 func TestVnet(t *testing.T) {
