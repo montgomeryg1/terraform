@@ -16,7 +16,16 @@ jobs:
           
       - name: 'Terraform version'
         run: terraform version
-      
+
+      - name: 'app_service - Terraform init and plan'
+        run: terraform init ./app_service && terraform plan ./app_service
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          
       - name: 'containers - Terraform init and plan'
         run: terraform init ./containers && terraform plan ./containers
         env:
