@@ -37,8 +37,8 @@ resource "azurerm_container_registry" "sandbox" {
 
 resource "azurerm_container_group" "sandbox" {
   name                = "${random_string.sandbox.result}-continst"
-  location            = "${azurerm_resource_group.sandbox.location}"
-  resource_group_name = "${azurerm_resource_group.sandbox.name}"
+  location            = azurerm_resource_group.sandbox.location
+  resource_group_name = azurerm_resource_group.sandbox.name
   ip_address_type     = "public"
   os_type             = "linux"
 
