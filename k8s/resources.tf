@@ -47,6 +47,10 @@ resource "azurerm_kubernetes_cluster" "sandbox" {
     node_count      = module.variables.node_count
     vm_size         = module.variables.vm_size
     os_disk_size_gb = 30
+      
+    kube_dashboard {
+      enabled = true
+    }      
 
     # Required for advanced networking
     vnet_subnet_id = azurerm_subnet.sandbox["subnet-1"].id
@@ -59,10 +63,6 @@ resource "azurerm_kubernetes_cluster" "sandbox" {
 
   network_profile {
     network_plugin = "azure"
-  }
-
-  kube_dashboard {
-    enabled = true
   }
 }
 
