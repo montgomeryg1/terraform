@@ -19,7 +19,7 @@ resource "azurerm_resource_group" "sandbox" {
   location = var.region
 
   tags = {
-    environment = local.environment
+    environment = sandbox
   }
 }
 
@@ -31,6 +31,6 @@ resource "azurerm_container_registry" "sandbox" {
   admin_enabled       = false
 
   tags = {
-    environment = local.environment
+    environment = sandbox
   }
 }
