@@ -9,8 +9,6 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
-        with:
-          ref: ${{ github.head_ref }}
         
       - name: Run a Terraform format    
         uses: docker://hashicorp/terraform:0.12.20
@@ -22,6 +20,5 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v2.5.0
         with:
           commit_message: Apply automatic changes
-          branch: ${{ github.head_ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
