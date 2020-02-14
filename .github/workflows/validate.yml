@@ -13,21 +13,19 @@ jobs:
       - uses: volcano-coffee-company/setup-terraform@v1
         with:
           version: '~0.12'
-      - run: terraform version
-      
-      - run: terraform init ./elastic_pool && terraform plan ./elastic_pool
-      
-      - name: 'Containers - Terraform Init'
-        uses: docker://hashicorp/terraform:0.12.20
-        with:
-          entrypoint: terraform
-          args: init ./containers
           
-      - name: 'Containers - Terraform Plan'
-        uses: docker://hashicorp/terraform:0.12.20
-        with:
-          entrypoint: terraform
-          args: plan ./containers
+      - name: 'Terraform version'
+        run: terraform version
+      
+      - name: 'Terraform init and plan'
+        run: terraform init ./elastic_pool && terraform plan ./elastic_pool
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
           
       - name: 'k8s - Terraform Init'
         uses: hashicorp/terraform-github-actions@master
