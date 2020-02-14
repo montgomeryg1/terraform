@@ -34,7 +34,6 @@ func TestVnet(t *testing.T) {
 
 	// Terraform init and plan only
 	// tfPlanOutput := dir + ".terraform.tfplan"
-	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
 	terraform.InitAndPlan(t, tfOption)
 	// terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "plan", "-out="+tfPlanOutput)...)
 	// terraform.Apply(t, tfOption)
@@ -50,7 +49,6 @@ func TestContainers(t *testing.T) {
 		TerraformDir: dir,
 	}
 	defer terraform.Destroy(t, tfOption)
-	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
 	terraform.InitAndPlan(t, tfOption)
 	// actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
 	// expectedResourceGroupName := "containers"
@@ -64,7 +62,6 @@ func TestElasticPool(t *testing.T) {
 		TerraformDir: dir,
 	}
 	defer terraform.Destroy(t, tfOption)
-	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
 	terraform.InitAndPlan(t, tfOption)
 	// actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
 	// expectedResourceGroupName := "elasticpool"
@@ -81,7 +78,6 @@ func TestK8s(t *testing.T) {
 		TerraformDir: dir,
 	}
 	defer terraform.Destroy(t, tfOption)
-	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
 	terraform.InitAndApply(t, tfOption)
 	
 	// Look up the cluster node count
