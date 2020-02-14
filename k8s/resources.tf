@@ -50,11 +50,11 @@ resource "azurerm_kubernetes_cluster" "sandbox" {
     # Required for advanced networking
     vnet_subnet_id = azurerm_subnet.sandbox["subnet-1"].id
   }
-  
+
   addon_profile {
     kube_dashboard {
       enabled = true
-    }  
+    }
   }
 
   service_principal {
