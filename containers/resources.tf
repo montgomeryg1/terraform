@@ -15,7 +15,7 @@ resource "random_string" "sandbox" {
 }
 
 resource "azurerm_resource_group" "sandbox" {
-  name     = "myResourceGroup"
+  name     = "containers"
   location = var.region
 
   tags = {
