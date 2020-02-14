@@ -47,7 +47,7 @@ resource "azurerm_container_group" "sandbox" {
     image  = "microsoft/aci-helloworld:latest"
     cpu    = "0.5"
     memory = "1.5"
-    port   = "80"
+    ports   = "80"
   }
 
   container {
