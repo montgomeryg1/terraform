@@ -43,8 +43,8 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          TF_VAR_kubernetes_client_id: ${{ kubernetes_client_id }}
-          TF_VAR_kubernetes_client_secret: ${{ kubernetes_client_secret }}
+          TF_VAR_kubernetes_client_id: ${{ secrets.kubernetes_client_id }}
+          TF_VAR_kubernetes_client_secret: ${{ secrets.kubernetes_client_secret }}
 
       - name: 'vnet - Terraform init and plan'
         run: terraform init ./vnet && terraform plan ./vnet
