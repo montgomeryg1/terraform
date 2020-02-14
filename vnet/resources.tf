@@ -8,7 +8,7 @@ module "variables" {
 
 
 resource "azurerm_resource_group" "sandbox" {
-  name     = "${local.environment}-resources"
+  name     = "myResourceGroup"
   location = var.region
 }
 
