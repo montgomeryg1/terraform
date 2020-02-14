@@ -10,6 +10,9 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v2
         
+      - name: Prepare repository
+        run: git checkout "${GITHUB_REF:11}" 
+               
       - name: Run a Terraform format    
         uses: docker://hashicorp/terraform:0.12.20
         with:
