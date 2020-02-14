@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "sandbox" {
 }
 
 resource "azurerm_virtual_network" "sandbox" {
-  name                = "${local.environment}-network"
+  name                = "network"
   location            = azurerm_resource_group.sandbox.location
   resource_group_name = azurerm_resource_group.sandbox.name
   address_space       = module.variables.vnet_address_space
@@ -28,9 +28,9 @@ resource "azurerm_subnet" "sandbox" {
 }
 
 resource "azurerm_kubernetes_cluster" "sandbox" {
-  name                = "${local.environment}-cluster"
+  name                = "cluster"
   location            = azurerm_resource_group.sandbox.location
-  dns_prefix          = "${local.environment}-cluster"
+  dns_prefix          = "cluster"
   resource_group_name = azurerm_resource_group.sandbox.name
 
   linux_profile {
