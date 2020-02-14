@@ -15,7 +15,19 @@ jobs:
         with:
           entrypoint: terraform
           args: fmt
+          
+      - name: Run a Terraform init  
+        uses: docker://hashicorp/terraform:0.12.20
+        with:
+          entrypoint: terraform
+          args: init
 
+      - name: Run a Terraform validate    
+        uses: docker://hashicorp/terraform:0.12.20
+        with:
+          entrypoint: terraform
+          args: validate
+        
       - name: Commit changed files
         uses: stefanzweifel/git-auto-commit-action@v2.5.0
         with:
