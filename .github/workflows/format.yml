@@ -8,11 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
-        
+        uses: actions/checkout@v1
+
       - name: Prepare repository
-        run: git checkout ${{ github.head_ref }} 
-               
+        run: git checkout ${{ github.head_ref }}
+  
       - name: Run a Terraform format    
         uses: docker://hashicorp/terraform:0.12.20
         with:

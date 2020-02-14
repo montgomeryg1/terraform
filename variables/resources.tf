@@ -31,17 +31,17 @@ variable "subnets_map" {
   type        = map
   default = {
     northeurope = {
-      dev     = {subnet-1 = "10.1.1.0/24", subnet-2 = "10.1.2.0/24"}
-      qa      = {subnet-1 = "10.2.1.0/24", subnet-2 = "10.1.2.0/24"}
-      staging = {subnet-1 = "10.3.1.0/24", subnet-2 = "10.1.2.0/24"}
-      prod    = {subnet-1 = "10.4.1.0/24", subnet-2 = "10.1.2.0/24"}
+      dev     = { subnet-1 = "10.1.1.0/24", subnet-2 = "10.1.2.0/24" }
+      qa      = { subnet-1 = "10.2.1.0/24", subnet-2 = "10.1.2.0/24" }
+      staging = { subnet-1 = "10.3.1.0/24", subnet-2 = "10.1.2.0/24" }
+      prod    = { subnet-1 = "10.4.1.0/24", subnet-2 = "10.1.2.0/24" }
     }
 
     westeurope = {
-      dev     = {subnet-1 = "10.5.1.0/24", subnet-2 = "10.1.2.0/24"}
-      qa      = {subnet-1 = "10.6.1.0/24", subnet-2 = "10.1.2.0/24"}
-      staging = {subnet-1 = "10.7.1.0/24", subnet-2 = "10.1.2.0/24"}
-      prod    = {subnet-1 = "10.8.1.0/24", subnet-2 = "10.1.2.0/24"}
+      dev     = { subnet-1 = "10.5.1.0/24", subnet-2 = "10.1.2.0/24" }
+      qa      = { subnet-1 = "10.6.1.0/24", subnet-2 = "10.1.2.0/24" }
+      staging = { subnet-1 = "10.7.1.0/24", subnet-2 = "10.1.2.0/24" }
+      prod    = { subnet-1 = "10.8.1.0/24", subnet-2 = "10.1.2.0/24" }
     }
 
   }
