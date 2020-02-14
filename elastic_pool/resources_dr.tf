@@ -7,7 +7,7 @@ resource "random_string" "random_dr" {
 }
 
 resource "azurerm_resource_group" "sandbox_dr" {
-  name     = "my-resource-group_dr-${random_string.random_dr.result}"
+  name     = "elasticpool_dr"
   location = "West Europe"
 }
 
