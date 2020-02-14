@@ -78,7 +78,7 @@ func TestK8s(t *testing.T) {
 		TerraformDir: dir,
 	}
 	defer terraform.Destroy(t, tfOption)
-	terraform.InitAndApply(t, tfOption)
+	terraform.InitAndPlan(t, tfOption)
 	
 	// Look up the cluster node count
 	// cluster, err := azure.GetManagedClusterE(t, expectedResourceGroupName, expectedClusterName, "")
