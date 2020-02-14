@@ -39,7 +39,7 @@ resource "azurerm_subnet" "sandbox" {
   virtual_network_name = azurerm_virtual_network.sandbox.name
 }
 
-  
+
 resource "azurerm_subnet_network_security_group_association" "sandbox" {
   for_each                  = module.variables.subnets
   subnet_id                 = azurerm_subnet.sandbox[each.key].id
