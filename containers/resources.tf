@@ -19,7 +19,7 @@ resource "azurerm_resource_group" "sandbox" {
   location = var.region
 
   tags = {
-    environment = sandbox
+    environment = "sandbox"
   }
 }
 
@@ -31,6 +31,33 @@ resource "azurerm_container_registry" "sandbox" {
   admin_enabled       = false
 
   tags = {
-    environment = sandbox
+    environment = "sandbox"
   }
 }
+  
+resource "azurerm_container_group" "sandbox" {
+  name                = "${random_string.sandbox.result}-continst"
+  location            = "${azurerm_resource_group.sandbox.location}"
+  resource_group_name = "${azurerm_resource_group.sandbox.name}"
+  ip_address_type     = "public"
+  os_type             = "linux"
+
+  container {
+    name   = "hw"
+    image  = "microsoft/aci-helloworld:latest"
+    cpu    = "0.5"
+    memory = "1.5"
+    port   = "80"
+  }
+
+  container {
+    name   = "sidecar"
+    image  = "microsoft/aci-tutorial-sidecar"
+    cpu    = "0.5"
+    memory = "1.5"
+  }
+
+  tags = {
+    environment = "sandbox"
+  }
+}  
