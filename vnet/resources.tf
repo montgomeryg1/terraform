@@ -8,7 +8,7 @@ module "variables" {
 
 
 resource "azurerm_resource_group" "sandbox" {
-  name     = "myResourceGroup"
+  name     = "vnet"
   location = var.region
 }
 
