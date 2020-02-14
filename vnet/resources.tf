@@ -41,7 +41,7 @@ resource "azurerm_subnet" "sandbox" {
 
   
 resource "azurerm_subnet_network_security_group_association" "sandbox" {
-  for_each                  = module.variable.subnets
+  for_each                  = module.variables.subnets
   subnet_id                 = azurerm_subnet.sandbox[each.key].id
   network_security_group_id = azurerm_network_security_group.sandbox.id
 }
