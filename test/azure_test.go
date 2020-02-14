@@ -11,6 +11,19 @@ import (
 	// "github.com/stretchr/testify/require"
 )
 
+
+func TestFormat(t *testing.T) {
+	dir := "../."
+	tfOptions := &terraform.Options{
+		// The path to where our Terraform code is located
+		TerraformDir: dir,
+	}
+	defer terraform.Destroy(t, tfOption)
+
+	// Terraform format
+	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
+}
+
 func TestVnet(t *testing.T) {
 	dir := "../vnet"
 	tfOption := &terraform.Options{
