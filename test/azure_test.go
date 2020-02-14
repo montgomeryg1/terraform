@@ -11,8 +11,6 @@ import (
 )
 
 func TestVnet(t *testing.T) {
-	t.Parallel()
-
 	dir := "../vnet"
 	tfOption := &terraform.Options{
 		// The path to where our Terraform code is located
@@ -23,27 +21,15 @@ func TestVnet(t *testing.T) {
 	// Terraform init and plan only
 	// tfPlanOutput := dir + ".terraform.tfplan"
 	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
-	terraform.Init(t, tfOption)
+	terraform.InitAndPlan(t, tfOption)
 	// terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "plan", "-out="+tfPlanOutput)...)
-	terraform.Plan(t, tfOption)
-	terraform.Apply(t, tfOption)
-	actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
-	expectedResourceGroupName := "vnet"
-	assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
-
-	// website::tag::3:: Run `terraform output` to get the values of output variables
-	// vmName := terraform.Output(t, tfOptions, "vm_name")
-	// resourceGroupName := terraform.Output(t, tfOptions, "resource_group_name")
-
-	// website::tag::4:: Look up the size of the given Virtual Machine and ensure it matches the output.
-	// actualVMSize := azure.GetSizeOfVirtualMachine(t, vmName, resourceGroupName, "")
-	// expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
-	// assert.Equal(t, expectedVMSize, actualVMSize)
+	// terraform.Apply(t, tfOption)
+	// actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
+	// expectedResourceGroupName := "vnet"
+	// assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
 }
 
 func TestContainers(t *testing.T) {
-	t.Parallel()
-
 	dir := "../containers"
 	tfOption := &terraform.Options{
 		// The path to where our Terraform code is located
@@ -51,17 +37,13 @@ func TestContainers(t *testing.T) {
 	}
 	defer terraform.Destroy(t, tfOption)
 	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
-	terraform.Init(t, tfOption)
-	terraform.Plan(t, tfOption)
-	terraform.Apply(t, tfOption)
-	actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
-	expectedResourceGroupName := "containers"
-	assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
+	terraform.InitAndPlan(t, tfOption)
+	// actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
+	// expectedResourceGroupName := "containers"
+	// assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
 }
 
 func TestElasticPool(t *testing.T) {
-	t.Parallel()
-
 	dir := "../elastic_pool"
 	tfOption := &terraform.Options{
 		// The path to where our Terraform code is located
@@ -69,17 +51,13 @@ func TestElasticPool(t *testing.T) {
 	}
 	defer terraform.Destroy(t, tfOption)
 	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
-	terraform.Init(t, tfOption)
-	terraform.Plan(t, tfOption)
-	terraform.Apply(t, tfOption)
-	actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
-	expectedResourceGroupName := "elasticpool"
-	assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
+	terraform.InitAndPlan(t, tfOption)
+	// actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
+	// expectedResourceGroupName := "elasticpool"
+	// assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
 }
 
 func TestK8s(t *testing.T) {
-	t.Parallel()
-
 	dir := "../k8s"
 	tfOption := &terraform.Options{
 		// The path to where our Terraform code is located
@@ -87,12 +65,10 @@ func TestK8s(t *testing.T) {
 	}
 	defer terraform.Destroy(t, tfOption)
 	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
-	terraform.Init(t, tfOption)
-	terraform.Plan(t, tfOption)
-	terraform.Apply(t, tfOption)
-	actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
-	expectedResourceGroupName := "k8s"
-	assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
+	terraform.InitAndPlan(t, tfOption)
+	// actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
+	// expectedResourceGroupName := "k8s"
+	// assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
 }
 
 // func TestStorageAccountName(t *testing.T) {
