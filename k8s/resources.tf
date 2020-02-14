@@ -61,3 +61,13 @@ resource "azurerm_kubernetes_cluster" "sandbox" {
     network_plugin = "azure"
   }
 }
+    
+    
+resource "local_file" "kubeconfig" {
+  content  = azurerm_kubernetes_cluster.sandbox.kube_config_raw
+  filename = "kubeconfig"
+
+  depends_on = [
+    azurerm_kubernetes_cluster.sandbox
+  ]
+}
