@@ -8,7 +8,7 @@ module "variables" {
 
 
 resource "azurerm_resource_group" "sandbox" {
-  name     = "${local.environment}-resources"
+  name     = "myResourceGroup"
   location = var.region
 }
 
@@ -22,7 +22,7 @@ resource "azurerm_virtual_network" "sandbox" {
   name                = "virtualNetwork1"
   location            = azurerm_resource_group.sandbox.location
   resource_group_name = azurerm_resource_group.sandbox.name
-  address_space       = ["10.0.0.0/16"]
+  address_space       = module.variables.vnet_address_space
   // dns_servers         = ["10.0.0.4", "10.0.0.5"]
 
   tags = {
