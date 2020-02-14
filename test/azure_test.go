@@ -59,9 +59,9 @@ func TestElasticPool(t *testing.T) {
 }
 
 func TestK8s(t *testing.T) {
-	expectedClusterName := "dev-cluster"
-	expectedResourceGroupName := "k8s"
-	expectedAgentCount := 1
+	// expectedClusterName := "dev-cluster"
+	// expectedResourceGroupName := "k8s"
+	// expectedAgentCount := 1
 	dir := "../k8s"
 	tfOption := &terraform.Options{
 		// The path to where our Terraform code is located
