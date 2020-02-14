@@ -63,6 +63,7 @@ jobs:
               curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
               dep ensure
           else
+            go get github.com/googleapis/gnostic@v0.4.0
             go get -v -t -d ./...  
           fi          
 
