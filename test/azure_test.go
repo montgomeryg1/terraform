@@ -5,14 +5,26 @@ import (
 
 	// "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
 	// "github.com/gruntwork-io/terratest/modules/azure"
+	// "github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/gruntwork-io/terratest/modules/terraform"
-	"github.com/stretchr/testify/assert"
-	// plans "github.com/hashicorp/terraform/plans"
+	// "github.com/stretchr/testify/assert"
+	// "github.com/stretchr/testify/require"
 )
 
-func TestVnet(t *testing.T) {
-	t.Parallel()
 
+func TestFormat(t *testing.T) {
+	dir := "../."
+	tfOptions := &terraform.Options{
+		// The path to where our Terraform code is located
+		TerraformDir: dir,
+	}
+	defer terraform.Destroy(t, tfOptions)
+
+	// Terraform format
+	terraform.RunTerraformCommand(t, tfOptions, terraform.FormatArgs(tfOptions, "fmt")...)
+}
+
+func TestVnet(t *testing.T) {
 	dir := "../vnet"
 	tfOption := &terraform.Options{
 		// The path to where our Terraform code is located
@@ -22,77 +34,59 @@ func TestVnet(t *testing.T) {
 
 	// Terraform init and plan only
 	// tfPlanOutput := dir + ".terraform.tfplan"
-	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
-	terraform.Init(t, tfOption)
+	terraform.InitAndPlan(t, tfOption)
 	// terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "plan", "-out="+tfPlanOutput)...)
-	terraform.Plan(t, tfOption)
-	terraform.Apply(t, tfOption)
-	actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
-	expectedResourceGroupName := "myResourceGroup"
-	assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
-
-	// website::tag::3:: Run `terraform output` to get the values of output variables
-	// vmName := terraform.Output(t, tfOptions, "vm_name")
-	// resourceGroupName := terraform.Output(t, tfOptions, "resource_group_name")
-
-	// website::tag::4:: Look up the size of the given Virtual Machine and ensure it matches the output.
-	// actualVMSize := azure.GetSizeOfVirtualMachine(t, vmName, resourceGroupName, "")
-	// expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
-	// assert.Equal(t, expectedVMSize, actualVMSize)
+	// terraform.Apply(t, tfOption)
+	// actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
+	// expectedResourceGroupName := "vnet"
+	// assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
 }
 
 func TestContainers(t *testing.T) {
-	t.Parallel()
-
 	dir := "../containers"
 	tfOption := &terraform.Options{
 		// The path to where our Terraform code is located
 		TerraformDir: dir,
 	}
 	defer terraform.Destroy(t, tfOption)
-	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
-	terraform.Init(t, tfOption)
-	terraform.Plan(t, tfOption)
-	terraform.Apply(t, tfOption)
-	actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
-	expectedResourceGroupName := "myResourceGroup"
-	assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
+	terraform.InitAndPlan(t, tfOption)
+	// actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
+	// expectedResourceGroupName := "containers"
+	// assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
 }
 
 func TestElasticPool(t *testing.T) {
-	t.Parallel()
-
 	dir := "../elastic_pool"
 	tfOption := &terraform.Options{
 		// The path to where our Terraform code is located
 		TerraformDir: dir,
 	}
 	defer terraform.Destroy(t, tfOption)
-	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
-	terraform.Init(t, tfOption)
-	terraform.Plan(t, tfOption)
-	terraform.Apply(t, tfOption)
-	actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
-	expectedResourceGroupName := "myResourceGroup"
-	assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
+	terraform.InitAndPlan(t, tfOption)
+	// actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
+	// expectedResourceGroupName := "elasticpool"
+	// assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
 }
 
 func TestK8s(t *testing.T) {
-	t.Parallel()
-
+	// expectedClusterName := "dev-cluster"
+	// expectedResourceGroupName := "k8s"
+	// expectedAgentCount := 1
 	dir := "../k8s"
 	tfOption := &terraform.Options{
 		// The path to where our Terraform code is located
 		TerraformDir: dir,
 	}
 	defer terraform.Destroy(t, tfOption)
-	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
-	terraform.Init(t, tfOption)
-	terraform.Plan(t, tfOption)
-	terraform.Apply(t, tfOption)
-	actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
-	expectedResourceGroupName := "myResourceGroup"
-	assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
+	terraform.InitAndPlan(t, tfOption)
+	
+	// Look up the cluster node count
+	// cluster, err := azure.GetManagedClusterE(t, expectedResourceGroupName, expectedClusterName, "")
+	// require.NoError(t, err)
+	// actualCount := *(*cluster.ManagedClusterProperties.AgentPoolProfiles)[0].Count
+
+	// Test that the Node count matches the Terraform specification
+	// assert.Equal(t, int32(expectedAgentCount), actualCount)
 }
 
 // func TestStorageAccountName(t *testing.T) {
