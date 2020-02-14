@@ -9,6 +9,12 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
+      
+      - name: 'Containers - Terraform'
+        uses: docker://hashicorp/terraform:0.12.20
+        with:
+          entrypoint: terraform
+          args: init ./containers && terraform plan ./containers
           
       - name: 'k8s - Terraform Init'
         uses: hashicorp/terraform-github-actions@master
