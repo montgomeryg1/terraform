@@ -4,10 +4,11 @@ import (
 	"testing"
 
 	// "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
-	// "github.com/gruntwork-io/terratest/modules/azure"
+	"github.com/gruntwork-io/terratest/modules/azure"
+	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/gruntwork-io/terratest/modules/terraform"
-	// "github.com/stretchr/testify/assert"
-	// plans "github.com/hashicorp/terraform/plans"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestVnet(t *testing.T) {
@@ -58,6 +59,9 @@ func TestElasticPool(t *testing.T) {
 }
 
 func TestK8s(t *testing.T) {
+	expectedClusterName := "dev-cluster"
+	expectedResourceGroupName := "k8s"
+	expectedAgentCount := 1
 	dir := "../k8s"
 	tfOption := &terraform.Options{
 		// The path to where our Terraform code is located
@@ -65,10 +69,15 @@ func TestK8s(t *testing.T) {
 	}
 	defer terraform.Destroy(t, tfOption)
 	terraform.RunTerraformCommand(t, tfOption, terraform.FormatArgs(tfOption, "fmt")...)
-	terraform.InitAndPlan(t, tfOption)
-	// actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
-	// expectedResourceGroupName := "k8s"
-	// assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
+	terraform.InitAndApply(t, tfOption)
+	
+	// Look up the cluster node count
+	cluster, err := azure.GetManagedClusterE(t, expectedResourceGroupName, expectedClusterName, "")
+	require.NoError(t, err)
+	actualCount := *(*cluster.ManagedClusterProperties.AgentPoolProfiles)[0].Count
+
+	// Test that the Node count matches the Terraform specification
+	assert.Equal(t, int32(expectedAgentCount), actualCount)
 }
 
 // func TestStorageAccountName(t *testing.T) {
