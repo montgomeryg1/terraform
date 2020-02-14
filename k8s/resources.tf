@@ -60,7 +60,7 @@ resource "azurerm_kubernetes_cluster" "sandbox" {
   network_profile {
     network_plugin = "azure"
   }
-      
+
   kube_dashboard {
     enabled = true
   }
