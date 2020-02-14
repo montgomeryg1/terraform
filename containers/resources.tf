@@ -34,7 +34,7 @@ resource "azurerm_container_registry" "sandbox" {
     environment = "sandbox"
   }
 }
-  
+
 resource "azurerm_container_group" "sandbox" {
   name                = "${random_string.sandbox.result}-continst"
   location            = "${azurerm_resource_group.sandbox.location}"
@@ -60,4 +60,4 @@ resource "azurerm_container_group" "sandbox" {
   tags = {
     environment = "sandbox"
   }
-}  
+}
