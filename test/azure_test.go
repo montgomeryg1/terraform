@@ -28,7 +28,7 @@ func TestVnet(t *testing.T) {
 	terraform.Plan(t, tfOption)
 	terraform.Apply(t, tfOption)
 	actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
-	expectedResourceGroupName := "myResourceGroup"
+	expectedResourceGroupName := "vnet"
 	assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
 
 	// website::tag::3:: Run `terraform output` to get the values of output variables
@@ -55,7 +55,7 @@ func TestContainers(t *testing.T) {
 	terraform.Plan(t, tfOption)
 	terraform.Apply(t, tfOption)
 	actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
-	expectedResourceGroupName := "myResourceGroup"
+	expectedResourceGroupName := "containers"
 	assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
 }
 
@@ -73,7 +73,7 @@ func TestElasticPool(t *testing.T) {
 	terraform.Plan(t, tfOption)
 	terraform.Apply(t, tfOption)
 	actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
-	expectedResourceGroupName := "myResourceGroup"
+	expectedResourceGroupName := "elasticpool"
 	assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
 }
 
@@ -91,7 +91,7 @@ func TestK8s(t *testing.T) {
 	terraform.Plan(t, tfOption)
 	terraform.Apply(t, tfOption)
 	actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
-	expectedResourceGroupName := "myResourceGroup"
+	expectedResourceGroupName := "k8s"
 	assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
 }
 
