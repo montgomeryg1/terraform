@@ -1,10 +1,10 @@
-name: 'Format, Init, Validate and Plan'
+name: 'Init, Validate and Plan'
 on:
   # - pull_request
   - push
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'Init, Validate and Plan'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
