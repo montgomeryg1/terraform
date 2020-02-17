@@ -1,8 +1,14 @@
 package test
 
 import (
+	"context"
+	"fmt"
+	"os"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/profiles/latest/containerregistry/mgmt/containerregistry"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure/auth"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	// "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
 	// "github.com/gruntwork-io/terratest/modules/azure"
@@ -39,10 +45,24 @@ func TestContainers(t *testing.T) {
 		TerraformDir: dir,
 	}
 	defer terraform.Destroy(t, tfOptions)
-	terraform.InitAndPlan(t, tfOptions)
-	// actualResourceGroupName := terraform.Output(t, tfOption, "resource_group")
+	terraform.InitAndApply(t, tfOptions)
+	// actualResourceGroupName := terraform.Output(t, tfOptions, "resource_group")
 	// expectedResourceGroupName := "containers"
 	// assert.Equal(t, expectedResourceGroupName, actualResourceGroupName)
+
+	authorizer, err := auth.NewAuthorizerFromEnvironment()
+	if err != nil {
+		t.Fatalf("Cannot get an Azure SDK Authorizer: %v", err)
+	}
+
+	resourceGroupName := terraform.Output(t, tfOptions, "resource_group")
+	acrName := terraform.Output(t, tfOptions, "container_registry")
+
+	// check the container registry is deployed
+	err = testAzureContainerRegistry(authorizer, resourceGroupName, acrName)
+	if err != nil {
+		t.Fatalf("Azure Container Registry test has failed: %e", err)
+	}
 }
 
 func TestElasticPool(t *testing.T) {
@@ -77,6 +97,19 @@ func TestK8s(t *testing.T) {
 
 	// Test that the Node count matches the Terraform specification
 	// assert.Equal(t, int32(expectedAgentCount), actualCount)
+}
+
+func testAzureContainerRegistry(authorizer autorest.Authorizer, resourceGroupName string, acrName string) error {
+	AzureSubscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
+	acrClient := containerregistry.NewRegistriesClient(AzureSubscriptionID)
+	acrClient.Authorizer = authorizer
+
+	_, err := acrClient.Get(context.Background(), resourceGroupName, acrName)
+	if err != nil {
+		return fmt.Errorf("Cannot retrieve Azure Container Registry with name %s in resource group %s: %v", acrName, resourceGroupName, err)
+	}
+
+	return nil
 }
 
 // }
