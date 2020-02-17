@@ -49,7 +49,6 @@ jobs:
 
       - name: Upload artifact
         uses: actions/upload-artifact@v1.0.0
-          # Artifact name
+        with:
           name: Test_Results
-          # Directory containing files to upload
           path: /home/runner/work/terraform/terraform/test/output
