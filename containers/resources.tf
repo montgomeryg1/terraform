@@ -6,7 +6,7 @@ module "variables" {
   region      = var.region
 }
 
-resource "random_string" "sandbox" {
+resource "random_string" "testing" {
   length  = 4
   upper   = false
   lower   = false
@@ -14,31 +14,31 @@ resource "random_string" "sandbox" {
   special = false
 }
 
-resource "azurerm_resource_group" "sandbox" {
+resource "azurerm_resource_group" "testing" {
   name     = "containers"
   location = var.region
 
   tags = {
-    environment = "sandbox"
+    environment = "testing"
   }
 }
 
-resource "azurerm_container_registry" "sandbox" {
-  name                = "myContainerRegistry${random_string.sandbox.result}"
-  resource_group_name = azurerm_resource_group.sandbox.name
-  location            = azurerm_resource_group.sandbox.location
+resource "azurerm_container_registry" "testing" {
+  name                = "myContainerRegistry${random_string.testing.result}"
+  resource_group_name = azurerm_resource_group.testing.name
+  location            = azurerm_resource_group.testing.location
   sku                 = module.variables.container_registry_sku
   admin_enabled       = false
 
   tags = {
-    environment = "sandbox"
+    environment = "testing"
   }
 }
 
-resource "azurerm_container_group" "sandbox" {
-  name                = "${random_string.sandbox.result}-continst"
-  location            = azurerm_resource_group.sandbox.location
-  resource_group_name = azurerm_resource_group.sandbox.name
+resource "azurerm_container_group" "testing" {
+  name                = "${random_string.testing.result}-continst"
+  location            = azurerm_resource_group.testing.location
+  resource_group_name = azurerm_resource_group.testing.name
   ip_address_type     = "public"
   os_type             = "linux"
 
@@ -58,6 +58,6 @@ resource "azurerm_container_group" "sandbox" {
   }
 
   tags = {
-    environment = "sandbox"
+    environment = "testing"
   }
 }

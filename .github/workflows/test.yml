@@ -41,7 +41,7 @@ jobs:
 
       - run: chmod +x terratest_log_parser
 
-      - run: mv terratest_log_parser /usr/local/bin
+      - run: sudo mv terratest_log_parser /usr/local/bin
 
       - name: Save Test Result
         run: |
