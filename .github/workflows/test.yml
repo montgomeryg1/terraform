@@ -36,3 +36,7 @@ jobs:
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           TF_VAR_kubernetes_client_id: ${{ secrets.ARM_CLIENT_ID }}
           TF_VAR_kubernetes_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+
+      - name: Save Test Result
+        run: |
+          terratest_log_parser -testlog test_output.log -outputdir /home/runner/work/terraform/terraform/test
