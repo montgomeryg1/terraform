@@ -45,4 +45,4 @@ jobs:
 
       - name: Save Test Result
         run: |
-          terratest_log_parser -testlog test_output.log -outputdir /home/runner/work/terraform/terraform/test
+          terratest_log_parser -testlog /home/runner/work/terraform/terraform/test_output.log -outputdir /home/runner/work/terraform/terraform/test
