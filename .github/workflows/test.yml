@@ -27,7 +27,7 @@ jobs:
 
       - name: Test
         working-directory: /home/runner/work/terraform/terraform/test
-        run: go test -timeout 60m
+        run: go test -timeout 60m | tee test_output.log
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
@@ -36,6 +36,12 @@ jobs:
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           TF_VAR_kubernetes_client_id: ${{ secrets.ARM_CLIENT_ID }}
           TF_VAR_kubernetes_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+
+      - run: curl --location --silent --fail --show-error -o terratest_log_parser https://github.com/gruntwork-io/terratest/releases/download/v0.13.13/terratest_log_parser_linux_amd64
+
+      - run: chmod +x terratest_log_parser
+
+      - run: mv terratest_log_parser /usr/local/bin
 
       - name: Save Test Result
         run: |
