@@ -86,11 +86,11 @@ func TestTerraformAzureExample(t *testing.T) {
 		TerraformDir: "../terraform-azure-example",
 	}
 
-	// t the end of the test, run `terraform destroy` to clean up any resources that were created
-	defer terraform.Destroy(t, terraformOptions)
-
 	// Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
 	terraform.InitAndApply(t, terraformOptions)
+
+	// t the end of the test, run `terraform destroy` to clean up any resources that were created
+	defer terraform.Destroy(t, terraformOptions)
 
 	maxRetries := 30
 	timeBetweenRetries := 5 * time.Second
