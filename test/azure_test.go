@@ -44,7 +44,7 @@ func TestContainers(t *testing.T) {
 		// The path to where our Terraform code is located
 		TerraformDir: dir,
 	}
-	defer terraform.Destroy(t, tfOptions)
+	// defer terraform.Destroy(t, tfOptions)
 	terraform.InitAndApply(t, tfOptions)
 	// actualResourceGroupName := terraform.Output(t, tfOptions, "resource_group")
 	// expectedResourceGroupName := "containers"
