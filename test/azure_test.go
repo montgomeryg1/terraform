@@ -1,10 +1,13 @@
 package test
 
 import (
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/compute/mgmt/compute"
 	"github.com/gruntwork-io/terratest/modules/azure"
+	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
 	// "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
@@ -89,12 +92,20 @@ func TestTerraformAzureExample(t *testing.T) {
 	// Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
 	terraform.InitAndApply(t, terraformOptions)
 
+	maxRetries := 30
+	timeBetweenRetries := 5 * time.Second
+
 	// Run `terraform output` to get the values of output variables
 	vmName := terraform.Output(t, terraformOptions, "vm_name")
 	resourceGroupName := terraform.Output(t, terraformOptions, "resource_group_name")
+	expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
+	description := fmt.Sprintf("Find virtual machine %s", vmName)
 
 	// Look up the size of the given Virtual Machine and ensure it matches the output.
-	actualVMSize := azure.GetSizeOfVirtualMachine(t, vmName, resourceGroupName, "")
-	expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
-	assert.Equal(t, expectedVMSize, actualVMSize)
+	retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
+		actualVMSize, err := azure.GetSizeOfVirtualMachineE(t, vmName, resourceGroupName, "")
+		assert.Equal(t, expectedVMSize, actualVMSize)
+		return "", err
+	})
+
 }
