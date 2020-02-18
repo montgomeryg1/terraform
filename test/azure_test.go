@@ -3,7 +3,10 @@ package test
 import (
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/profiles/latest/compute/mgmt/compute"
+	"github.com/gruntwork-io/terratest/modules/azure"
 	"github.com/gruntwork-io/terratest/modules/terraform"
+	"github.com/stretchr/testify/assert"
 	// "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
 	// "github.com/gruntwork-io/terratest/modules/azure"
 	// "github.com/gruntwork-io/terratest/modules/k8s"
@@ -69,12 +72,29 @@ func TestK8s(t *testing.T) {
 	}
 	defer terraform.Destroy(t, tfOptions)
 	terraform.InitAndPlan(t, tfOptions)
+}
 
-	// Look up the cluster node count
-	// cluster, err := azure.GetManagedClusterE(t, expectedResourceGroupName, expectedClusterName, "")
-	// require.NoError(t, err)
-	// actualCount := *(*cluster.ManagedClusterProperties.AgentPoolProfiles)[0].Count
+func TestTerraformAzureExample(t *testing.T) {
+	t.Parallel()
 
-	// Test that the Node count matches the Terraform specification
-	// assert.Equal(t, int32(expectedAgentCount), actualCount)
+	// website::tag::1:: Configure Terraform setting up a path to Terraform code.
+	terraformOptions := &terraform.Options{
+		// The path to where our Terraform code is located
+		TerraformDir: "../terraform-azure-example",
+	}
+
+	// t the end of the test, run `terraform destroy` to clean up any resources that were created
+	defer terraform.Destroy(t, terraformOptions)
+
+	// Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
+	terraform.InitAndApply(t, terraformOptions)
+
+	// Run `terraform output` to get the values of output variables
+	vmName := terraform.Output(t, terraformOptions, "vm_name")
+	resourceGroupName := terraform.Output(t, terraformOptions, "resource_group_name")
+
+	// Look up the size of the given Virtual Machine and ensure it matches the output.
+	actualVMSize := azure.GetSizeOfVirtualMachine(t, vmName, resourceGroupName, "")
+	expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
+	assert.Equal(t, expectedVMSize, actualVMSize)
 }
