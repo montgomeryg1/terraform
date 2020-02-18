@@ -100,7 +100,7 @@ func TestK8s(t *testing.T) {
 }
 
 func testAzureContainerRegistry(authorizer autorest.Authorizer, resourceGroupName string, acrName string) error {
-	AzureSubscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
+	AzureSubscriptionID := os.Getenv("ARM_SUBSCRIPTION_ID")
 	acrClient := containerregistry.NewRegistriesClient(AzureSubscriptionID)
 	acrClient.Authorizer = authorizer
 
