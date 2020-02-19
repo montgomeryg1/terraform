@@ -95,12 +95,13 @@ func TestUbuntuVm(t *testing.T) {
 
 	maxRetries := 30
 	timeBetweenRetries := 5 * time.Second
-	description := fmt.Sprintf("Find virtual machine %s", vmName)
+
 	// Run `terraform output` to get the values of output variables
 	vmName := terraform.Output(t, terraformOptions, "vm_name")
 	publicIP := terraform.Output(t, terraformOptions, "public_ip_address")
 	resourceGroupName := terraform.Output(t, terraformOptions, "resource_group_name")
 	expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
+	description := fmt.Sprintf("Find virtual machine %s", vmName)
 
 	// Look up the size of the given Virtual Machine and ensure it matches the output.
 	retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
