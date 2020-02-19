@@ -15,6 +15,6 @@ output "public_ip_address" {
   value = data.azurerm_public_ip.ubuntuvm.ip_address
 }
 
-output "public_ip_name"  {
+output "public_ip_name" {
   value = azurerm_public_ip.ubuntuvm.name
 }
