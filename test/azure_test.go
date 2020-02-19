@@ -92,9 +92,6 @@ func TestUbuntuVm(t *testing.T) {
 	terraform.Destroy(t, terraformOptions)
 	// Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
 	terraform.InitAndApply(t, terraformOptions)
-	time.Sleep(5 * time.Minute)
-	// t the end of the test, run `terraform destroy` to clean up any resources that were created
-	defer terraform.Destroy(t, terraformOptions)
 
 	// Run `terraform output` to get the values of output variables
 	vmName := terraform.Output(t, terraformOptions, "vm_name")
@@ -135,5 +132,7 @@ func TestUbuntuVm(t *testing.T) {
 	// if conn != nil {
 	// 	defer conn.Close()
 	// }
+
+	// t the end of the test, run `terraform destroy` to clean up any resources that were created
 	defer terraform.Destroy(t, terraformOptions)
 }
