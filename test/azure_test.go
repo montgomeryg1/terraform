@@ -88,10 +88,10 @@ func TestUbuntuVm(t *testing.T) {
 		// The path to where our Terraform code is located
 		TerraformDir: "../ubuntu_vm",
 	}
-
+	terraform.Init(t, terraformOptions)
 	terraform.Destroy(t, terraformOptions)
-	// Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
-	terraform.InitAndApply(t, terraformOptions)
+	// Run `terraform apply`. Fail the test if there are any errors.
+	terraform.Apply(t, terraformOptions)
 
 	// Run `terraform output` to get the values of output variables
 	vmName := terraform.Output(t, terraformOptions, "vm_name")
