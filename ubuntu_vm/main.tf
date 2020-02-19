@@ -97,4 +97,4 @@ resource "azurerm_virtual_machine" "testing" {
     disable_password_authentication = false
   }
 }
-  
+
