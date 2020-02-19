@@ -1,4 +1,4 @@
-name: 'Test'
+name: 'Tests'
 on:
   - pull_request
   # - push
@@ -25,7 +25,7 @@ jobs:
             go get -v -t -d ./...  
           fi          
 
-      - name: Test
+      - name: Run Tests
         working-directory: /home/runner/work/terraform/terraform/test
         run: go test -timeout 60m
         env:

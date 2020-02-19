@@ -89,19 +89,18 @@ func TestUbuntuVm(t *testing.T) {
 
 	// Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
 	terraform.InitAndApply(t, terraformOptions)
-
+	time.Sleep(5 * time.Minute)
 	// t the end of the test, run `terraform destroy` to clean up any resources that were created
 	defer terraform.Destroy(t, terraformOptions)
 
 	maxRetries := 30
 	timeBetweenRetries := 5 * time.Second
-
+	description := fmt.Sprintf("Find virtual machine %s", vmName)
 	// Run `terraform output` to get the values of output variables
 	vmName := terraform.Output(t, terraformOptions, "vm_name")
 	publicIP := terraform.Output(t, terraformOptions, "public_ip_address")
 	resourceGroupName := terraform.Output(t, terraformOptions, "resource_group_name")
 	expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
-	description := fmt.Sprintf("Find virtual machine %s", vmName)
 
 	// Look up the size of the given Virtual Machine and ensure it matches the output.
 	retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
