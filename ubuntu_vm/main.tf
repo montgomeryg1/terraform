@@ -16,7 +16,7 @@ terraform {
 # See test/terraform_azure_example_test.go for how to write automated tests for this code.
 # ---------------------------------------------------------------------------------------------------------------------
 
-resource "azurerm_resource_group" "main" {
+resource "azurerm_resource_group" "testing" {
   name     = "${var.prefix}-resources"
   location = "North Europe"
 }
@@ -25,29 +25,38 @@ resource "azurerm_resource_group" "main" {
 # DEPLOY VIRTUAL NETWORK RESOURCES
 # ---------------------------------------------------------------------------------------------------------------------
 
-resource "azurerm_virtual_network" "main" {
+resource "azurerm_virtual_network" "testing" {
   name                = "${var.prefix}-network"
   address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.testing.location
+  resource_group_name = azurerm_resource_group.testing.name
 }
 
 resource "azurerm_subnet" "internal" {
   name                 = "internal"
-  resource_group_name  = azurerm_resource_group.main.name
-  virtual_network_name = azurerm_virtual_network.main.name
+  resource_group_name  = azurerm_resource_group.testing.name
+  virtual_network_name = azurerm_virtual_network.testing.name
   address_prefix       = "10.0.17.0/24"
 }
 
-resource "azurerm_network_interface" "main" {
+resource "azurerm_public_ip" "testing" {
+  name                = "${var.prefix}-pip"
+  location            = azurerm_resource_group.testing.location
+  resource_group_name = azurerm_resource_group.testing.name
+  allocation_method   = "Dynamic"
+
+}
+
+resource "azurerm_network_interface" "testing" {
   name                = "${var.prefix}-nic"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.testing.location
+  resource_group_name = azurerm_resource_group.testing.name
 
   ip_configuration {
     name                          = "terratestconfiguration1"
     subnet_id                     = azurerm_subnet.internal.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.testing.id
   }
 }
 
@@ -55,12 +64,12 @@ resource "azurerm_network_interface" "main" {
 # DEPLOY A VIRTUAL MACHINE RUNNING UBUNTU
 # ---------------------------------------------------------------------------------------------------------------------
 
-resource "azurerm_virtual_machine" "main" {
+resource "azurerm_virtual_machine" "testing" {
   name                             = "${var.prefix}-vm"
-  location                         = azurerm_resource_group.main.location
-  resource_group_name              = azurerm_resource_group.main.name
-  network_interface_ids            = [azurerm_network_interface.main.id]
-  vm_size                          = "Standard_B2s"
+  location                         = azurerm_resource_group.testing.location
+  resource_group_name              = azurerm_resource_group.testing.name
+  network_interface_ids            = [azurerm_network_interface.testing.id]
+  vm_size                          = "Standard_B1s"
   delete_os_disk_on_termination    = true
   delete_data_disks_on_termination = true
 

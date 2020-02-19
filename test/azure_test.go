@@ -2,6 +2,7 @@ package test
 
 import (
 	"fmt"
+	"net"
 	"testing"
 	"time"
 
@@ -77,13 +78,13 @@ func TestK8s(t *testing.T) {
 	terraform.InitAndPlan(t, tfOptions)
 }
 
-func TestTerraformAzureExample(t *testing.T) {
+func TestUbuntuVm(t *testing.T) {
 	t.Parallel()
 
 	// website::tag::1:: Configure Terraform setting up a path to Terraform code.
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
-		TerraformDir: "../terraform-azure-example",
+		TerraformDir: "../ubuntu_vm",
 	}
 
 	// Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
@@ -97,6 +98,7 @@ func TestTerraformAzureExample(t *testing.T) {
 
 	// Run `terraform output` to get the values of output variables
 	vmName := terraform.Output(t, terraformOptions, "vm_name")
+	publicIP := terraform.Output(t, terraformOptions, "public_ip_address")
 	resourceGroupName := terraform.Output(t, terraformOptions, "resource_group_name")
 	expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
 	description := fmt.Sprintf("Find virtual machine %s", vmName)
@@ -107,5 +109,17 @@ func TestTerraformAzureExample(t *testing.T) {
 		assert.Equal(t, expectedVMSize, actualVMSize)
 		return "", err
 	})
+
+	timeout := 5 * time.Second
+	port := "22"
+	conn, err := net.DialTimeout("tcp", publicIP+":"+port, timeout)
+	if err != nil {
+		t.Error("Connecting error:", err)
+	}
+
+	if conn != nil {
+		defer conn.Close()
+		// fmt.Println("Opened", net.JoinHostPort(publicIP, port))
+	}
 
 }
