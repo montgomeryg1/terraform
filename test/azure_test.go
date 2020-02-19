@@ -1,12 +1,15 @@
 package test
 
 import (
+	"context"
 	"fmt"
-	"net"
+	"os"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/compute/mgmt/compute"
+	"github.com/Azure/azure-sdk-for-go/profiles/latest/network/mgmt/network"
+	"github.com/Azure/go-autorest/autorest/azure/auth"
 	"github.com/gruntwork-io/terratest/modules/azure"
 	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -93,33 +96,44 @@ func TestUbuntuVm(t *testing.T) {
 	// t the end of the test, run `terraform destroy` to clean up any resources that were created
 	defer terraform.Destroy(t, terraformOptions)
 
-	maxRetries := 30
-	timeBetweenRetries := 5 * time.Second
-
 	// Run `terraform output` to get the values of output variables
 	vmName := terraform.Output(t, terraformOptions, "vm_name")
-	publicIP := terraform.Output(t, terraformOptions, "public_ip_address")
 	resourceGroupName := terraform.Output(t, terraformOptions, "resource_group_name")
 	expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
 	description := fmt.Sprintf("Find virtual machine %s", vmName)
 
 	// Look up the size of the given Virtual Machine and ensure it matches the output.
+	maxRetries := 30
+	timeBetweenRetries := 5 * time.Second
 	retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
 		actualVMSize, err := azure.GetSizeOfVirtualMachineE(t, vmName, resourceGroupName, "")
 		assert.Equal(t, expectedVMSize, actualVMSize)
 		return "", err
 	})
 
-	timeout := 5 * time.Second
-	port := "22"
-	conn, err := net.DialTimeout("tcp", publicIP+":"+port, timeout)
-	if err != nil {
-		t.Error("Connecting error:", err)
-	}
+	publicIPName := terraform.Output(t, terraformOptions, "public_ip_name")
+	subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
+	publicIPClient := network.NewPublicIPAddressesClient(subscriptionID)
 
-	if conn != nil {
-		defer conn.Close()
-		// fmt.Println("Opened", net.JoinHostPort(publicIP, port))
+	// create an authorizer from env vars or Azure Managed Service Idenity
+	authorizer, err := auth.NewAuthorizerFromEnvironment()
+	if err == nil {
+		publicIPClient.Authorizer = authorizer
 	}
+	pip, _ := publicIPClient.Get(context.Background(), resourceGroupName, publicIPName, "expand")
+
+	//fmt.Printf("The public ip address is %s", pip)
+	fmt.Println("Public IP Address = ", pip)
+	// timeout := 5 * time.Second
+	// publicIP := terraform.Output(t, terraformOptions, "public_ip_address")
+	// port := "22"
+	// conn, err := net.DialTimeout("tcp", publicIP+":"+port, timeout)
+	// if err != nil {
+	// 	t.Error("Connecting error:", err)
+	// }
+
+	// if conn != nil {
+	// 	defer conn.Close()
+	// }
 
 }
