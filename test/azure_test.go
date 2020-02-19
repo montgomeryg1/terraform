@@ -77,7 +77,6 @@ func TestK8s(t *testing.T) {
 		// The path to where our Terraform code is located
 		TerraformDir: dir,
 	}
-	defer terraform.Destroy(t, tfOptions)
 	terraform.InitAndPlan(t, tfOptions)
 }
 
@@ -90,6 +89,7 @@ func TestUbuntuVm(t *testing.T) {
 		TerraformDir: "../ubuntu_vm",
 	}
 
+	terraform.Destroy(t, terraformOptions)
 	// Run `terraform init` and `terraform apply`. Fail the test if there are any errors.
 	terraform.InitAndApply(t, terraformOptions)
 	time.Sleep(5 * time.Minute)
@@ -135,5 +135,5 @@ func TestUbuntuVm(t *testing.T) {
 	// if conn != nil {
 	// 	defer conn.Close()
 	// }
-
+	defer terraform.Destroy(t, terraformOptions)
 }
