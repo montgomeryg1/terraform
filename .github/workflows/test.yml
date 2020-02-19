@@ -27,7 +27,7 @@ jobs:
 
       - name: Run Tests
         working-directory: /home/runner/work/terraform/terraform/test
-        run: go test -timeout 60m
+        run: go test --run TestUbuntuVM -timeout 60m
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
