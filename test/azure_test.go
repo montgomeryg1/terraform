@@ -116,10 +116,10 @@ func TestUbuntuVm(t *testing.T) {
 	if err == nil {
 		publicIPClient.Authorizer = authorizer
 	}
-	pip, _ := publicIPClient.Get(context.Background(), resourceGroupName, publicIPName, "expand")
-
+	ipAddress, _ := publicIPClient.Get(context.Background(), resourceGroupName, publicIPName, "")
+	ipAddr := *ipAddress.PublicIPAddressPropertiesFormat.IPAddress
 	//fmt.Printf("The public ip address is %s", pip)
-	fmt.Println("Public IP Address = ", pip)
+	fmt.Println("Public IP Address = ", ipAddr)
 	// timeout := 5 * time.Second
 	// publicIP := terraform.Output(t, terraformOptions, "public_ip_address")
 	// port := "22"
