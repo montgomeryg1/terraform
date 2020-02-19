@@ -25,7 +25,7 @@ resource "azurerm_resource_group" "testing" {
 # DEPLOY VIRTUAL NETWORK RESOURCES
 # ---------------------------------------------------------------------------------------------------------------------
 
-resource "azurerm_virtual_network" "testing" {
+resource "azurerm_virtual_network" "vnet" {
   name                = "${var.prefix}-network"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.testing.location
@@ -35,11 +35,11 @@ resource "azurerm_virtual_network" "testing" {
 resource "azurerm_subnet" "internal" {
   name                 = "internal"
   resource_group_name  = azurerm_resource_group.testing.name
-  virtual_network_name = azurerm_virtual_network.testing.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefix       = "10.0.17.0/24"
 }
 
-resource "azurerm_public_ip" "testing" {
+resource "azurerm_public_ip" "ubuntuvm" {
   name                = "${var.prefix}-pip"
   location            = azurerm_resource_group.testing.location
   resource_group_name = azurerm_resource_group.testing.name
@@ -47,7 +47,7 @@ resource "azurerm_public_ip" "testing" {
 
 }
 
-resource "azurerm_network_interface" "testing" {
+resource "azurerm_network_interface" "nic" {
   name                = "${var.prefix}-nic"
   location            = azurerm_resource_group.testing.location
   resource_group_name = azurerm_resource_group.testing.name
@@ -56,7 +56,7 @@ resource "azurerm_network_interface" "testing" {
     name                          = "terratestconfiguration1"
     subnet_id                     = azurerm_subnet.internal.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.testing.id
+    public_ip_address_id          = azurerm_public_ip.ubuntuvm.id
   }
 }
 
@@ -68,7 +68,7 @@ resource "azurerm_virtual_machine" "testing" {
   name                             = "${var.prefix}-vm"
   location                         = azurerm_resource_group.testing.location
   resource_group_name              = azurerm_resource_group.testing.name
-  network_interface_ids            = [azurerm_network_interface.testing.id]
+  network_interface_ids            = [azurerm_network_interface.nic.id]
   vm_size                          = "Standard_B1s"
   delete_os_disk_on_termination    = true
   delete_data_disks_on_termination = true
