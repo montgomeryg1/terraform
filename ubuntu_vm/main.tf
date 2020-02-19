@@ -81,7 +81,7 @@ resource "azurerm_virtual_machine" "testing" {
   }
 
   storage_os_disk {
-    name              = "terratestosdisk1"
+    name              = "osdisk1"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
