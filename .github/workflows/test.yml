@@ -25,7 +25,7 @@ jobs:
             go get -v -t -d ./...  
           fi          
 
-      - name: Run Tests
+      - name: Run Terratest 
         working-directory: /home/runner/work/terraform/terraform/test
         run: go test --run TestUbuntuVm -timeout 60m
         env:
