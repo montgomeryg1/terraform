@@ -11,9 +11,12 @@ import (
 	"time"
 
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/stretchr/testify/assert"
 
+	"github.com/Azure/azure-sdk-for-go/profiles/latest/compute/mgmt/compute"
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/network/mgmt/network"
 	"github.com/Azure/go-autorest/autorest/azure/auth"
+	"github.com/gruntwork-io/terratest/modules/azure"
 	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	// "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
@@ -95,23 +98,23 @@ func TestUbuntuVm(t *testing.T) {
 	terraform.InitAndApply(t, terraformOptions)
 
 	// // Run `terraform output` to get the values of output variables
-	// vmName := terraform.Output(t, terraformOptions, "vm_name")
+	vmName := terraform.Output(t, terraformOptions, "vm_name")
 	resourceGroupName := terraform.Output(t, terraformOptions, "resource_group_name")
-	// expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
-	// description := fmt.Sprintf("Find virtual machine %s", vmName)
+	expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
+	description := fmt.Sprintf("Find virtual machine %s", vmName)
 
 	// // Look up the size of the given Virtual Machine and ensure it matches the output.
 	maxRetries := 30
 	timeBetweenRetries := 5 * time.Second
-	// retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
-	// 	actualVMSize, err := azure.GetSizeOfVirtualMachineE(t, vmName, resourceGroupName, "")
-	// 	assert.Equal(t, expectedVMSize, actualVMSize)
-	// 	return "", err
-	// })
+	retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
+		actualVMSize, err := azure.GetSizeOfVirtualMachineE(t, vmName, resourceGroupName, "")
+		assert.Equal(t, expectedVMSize, actualVMSize)
+		return "", err
+	})
 
 	// subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
 	subscriptionID := "60020c84-fca0-4d3b-ab6a-502ba1028851"
-	fmt.Println("The subscription ID is", subscriptionID)
+	//fmt.Println("The subscription ID is", subscriptionID)
 
 	publicIPName := terraform.Output(t, terraformOptions, "public_ip_name")
 	publicIPClient := network.NewPublicIPAddressesClient(subscriptionID)
@@ -137,6 +140,7 @@ func TestUbuntuVm(t *testing.T) {
 	ipAddr := *ipAddress.PublicIPAddressPropertiesFormat.IPAddress
 	fmt.Println("Public IP Address = ", ipAddr)
 
+	// Test port 22 is open on VM
 	timeout := 5 * time.Second
 	port := "22"
 	retry.DoWithRetry(t, "Test open ssh port", maxRetries, timeBetweenRetries, func() (string, error) {
