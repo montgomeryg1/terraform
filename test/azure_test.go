@@ -134,6 +134,7 @@ func TestUbuntuVm(t *testing.T) {
 			t.Error("Connecting error:", err)
 		}
 		if conn != nil {
+			fmt.Println("SSH connection successful")
 			defer conn.Close()
 		}
 		return "", err
