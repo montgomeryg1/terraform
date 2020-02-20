@@ -3,18 +3,13 @@ package test
 import (
 	"context"
 	"fmt"
-	"os"
 	"reflect"
+	"strings"
 	"testing"
-	"time"
 
-	"github.com/Azure/azure-sdk-for-go/profiles/latest/compute/mgmt/compute"
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/network/mgmt/network"
 	"github.com/Azure/go-autorest/autorest/azure/auth"
-	"github.com/gruntwork-io/terratest/modules/azure"
-	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/terraform"
-	"github.com/stretchr/testify/assert"
 	// "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
 	// "github.com/gruntwork-io/terratest/modules/azure"
 	// "github.com/gruntwork-io/terratest/modules/k8s"
@@ -93,36 +88,41 @@ func TestUbuntuVm(t *testing.T) {
 	// Run `terraform apply`. Fail the test if there are any errors.
 	terraform.InitAndApply(t, terraformOptions)
 
-	// Run `terraform output` to get the values of output variables
-	vmName := terraform.Output(t, terraformOptions, "vm_name")
+	// // Run `terraform output` to get the values of output variables
+	// vmName := terraform.Output(t, terraformOptions, "vm_name")
 	resourceGroupName := terraform.Output(t, terraformOptions, "resource_group_name")
-	expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
-	description := fmt.Sprintf("Find virtual machine %s", vmName)
+	// expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
+	// description := fmt.Sprintf("Find virtual machine %s", vmName)
 
-	// Look up the size of the given Virtual Machine and ensure it matches the output.
-	maxRetries := 30
-	timeBetweenRetries := 5 * time.Second
-	retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
-		actualVMSize, err := azure.GetSizeOfVirtualMachineE(t, vmName, resourceGroupName, "")
-		assert.Equal(t, expectedVMSize, actualVMSize)
-		return "", err
-	})
+	// // Look up the size of the given Virtual Machine and ensure it matches the output.
+	// maxRetries := 30
+	// timeBetweenRetries := 5 * time.Second
+	// retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
+	// 	actualVMSize, err := azure.GetSizeOfVirtualMachineE(t, vmName, resourceGroupName, "")
+	// 	assert.Equal(t, expectedVMSize, actualVMSize)
+	// 	return "", err
+	// })
 
 	publicIPName := terraform.Output(t, terraformOptions, "public_ip_name")
-	subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
+	// subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
+	subscriptionID := "60020c84-fca0-4d3b-ab6a-502ba1028851"
 	publicIPClient := network.NewPublicIPAddressesClient(subscriptionID)
 
-	// create an authorizer from env vars or Azure Managed Service Idenity
+	fmt.Println(publicIPName)
+	fmt.Println(subscriptionID)
+
+	// // create an authorizer from env vars or Azure Managed Service Idenity
 	authorizer, err := auth.NewAuthorizerFromEnvironment()
 	if err == nil {
 		publicIPClient.Authorizer = authorizer
 	}
 	ipAddress, _ := publicIPClient.Get(context.Background(), resourceGroupName, publicIPName, "")
-	fmt.Printf("%T\n", ipAddress)
-	fmt.Println(reflect.TypeOf(ipAddress))
-	ipAddr := *ipAddress.PublicIPAddressPropertiesFormat.IPAddress
-	//fmt.Printf("The public ip address is %s", pip)
-	fmt.Println("Public IP Address = ", ipAddr)
+	// fmt.Printf("%T\n", ipAddress)
+	ipType := (reflect.TypeOf(ipAddress))
+	examiner(ipType, 0)
+	// ipAddr := *ipAddress.PublicIPAddressPropertiesFormat.IPAddress
+	// //fmt.Printf("The public ip address is %s", pip)
+	// fmt.Println("Public IP Address = ", ipAddr)
 	// timeout := 5 * time.Second
 	// publicIP := terraform.Output(t, terraformOptions, "public_ip_address")
 	// port := "22"
@@ -137,4 +137,22 @@ func TestUbuntuVm(t *testing.T) {
 
 	// t the end of the test, run `terraform destroy` to clean up any resources that were created
 	defer terraform.Destroy(t, terraformOptions)
+}
+
+func examiner(t reflect.Type, depth int) {
+	fmt.Println(strings.Repeat("\t", depth), "Type is", t.Name(), "and kind is", t.Kind())
+	switch t.Kind() {
+	case reflect.Array, reflect.Chan, reflect.Map, reflect.Ptr, reflect.Slice:
+		fmt.Println(strings.Repeat("\t", depth+1), "Contained type:")
+		examiner(t.Elem(), depth+1)
+	case reflect.Struct:
+		for i := 0; i < t.NumField(); i++ {
+			f := t.Field(i)
+			fmt.Println(strings.Repeat("\t", depth+1), "Field", i+1, "name is", f.Name, "type is", f.Type.Name(), "and kind is", f.Type.Kind())
+			if f.Tag != "" {
+				fmt.Println(strings.Repeat("\t", depth+2), "Tag is", f.Tag)
+				fmt.Println(strings.Repeat("\t", depth+2), "tag1 is", f.Tag.Get("tag1"), "tag2 is", f.Tag.Get("tag2"))
+			}
+		}
+	}
 }
