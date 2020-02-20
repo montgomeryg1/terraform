@@ -82,13 +82,13 @@ variable "vm_size_map" {
   type        = map
   default = {
     northeurope = {
-      small  = "Standard_B2s"
+      small  = "Standard_B1s"
       medium = "Standard_D2s_v3"
       large  = "Standard_F4s_v2"
       xlarge = "Standard_DC4s"
     }
     westeurope = {
-      small  = "Standard_B2s"
+      small  = "Standard_B1s"
       medium = "Standard_D2s_v3"
       large  = "Standard_F4s_v2"
       xlarge = "Standard_DC4s"
