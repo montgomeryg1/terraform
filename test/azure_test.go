@@ -115,11 +115,13 @@ func TestUbuntuVm(t *testing.T) {
 	if err == nil {
 		publicIPClient.Authorizer = authorizer
 	}
-	ipAddress, err := publicIPClient.Get(context.Background(), resourceGroupName, publicIPName, "")
-	if err != nil {
-		t.Error("IP address error:", err)
+	ipAddress, ipErr := publicIPClient.Get(context.Background(), resourceGroupName, publicIPName, "")
+	if ipErr != nil {
+		t.Error("IP address error:", ipErr)
 	}
+
 	ipAddr := *ipAddress.PublicIPAddressPropertiesFormat.IPAddress
+	// ipAddr := ipAddress.IPAddress
 	fmt.Println("Public IP Address = ", ipAddr)
 
 	// timeout := 5 * time.Second
