@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"reflect"
 	"testing"
 	"time"
 
@@ -117,6 +118,8 @@ func TestUbuntuVm(t *testing.T) {
 		publicIPClient.Authorizer = authorizer
 	}
 	ipAddress, _ := publicIPClient.Get(context.Background(), resourceGroupName, publicIPName, "")
+	fmt.Printf("%T\n", ipAddress)
+	fmt.Println(reflect.TypeOf(ipAddress))
 	ipAddr := *ipAddress.PublicIPAddressPropertiesFormat.IPAddress
 	//fmt.Printf("The public ip address is %s", pip)
 	fmt.Println("Public IP Address = ", ipAddr)
