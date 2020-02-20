@@ -3,6 +3,7 @@ package test
 import (
 	"context"
 	"fmt"
+	"os"
 	"reflect"
 	"strings"
 	"testing"
@@ -103,30 +104,27 @@ func TestUbuntuVm(t *testing.T) {
 	// 	return "", err
 	// })
 
-	publicIPName := terraform.Output(t, terraformOptions, "public_ip_name")
-	// subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
-	subscriptionID := "60020c84-fca0-4d3b-ab6a-502ba1028851"
-	publicIPClient := network.NewPublicIPAddressesClient(subscriptionID)
+	subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
+	fmt.Println("The subscription ID is", subscriptionID)
 
-	fmt.Println(publicIPName)
-	fmt.Println(subscriptionID)
+	publicIPName := terraform.Output(t, terraformOptions, "public_ip_name")
+	publicIPClient := network.NewPublicIPAddressesClient(subscriptionID)
 
 	// // create an authorizer from env vars or Azure Managed Service Idenity
 	authorizer, err := auth.NewAuthorizerFromEnvironment()
 	if err == nil {
 		publicIPClient.Authorizer = authorizer
 	}
-	ipAddress, _ := publicIPClient.Get(context.Background(), resourceGroupName, publicIPName, "")
-	// fmt.Printf("%T\n", ipAddress)
-	ipType := (reflect.TypeOf(ipAddress))
-	examiner(ipType, 0)
-	// ipAddr := *ipAddress.PublicIPAddressPropertiesFormat.IPAddress
-	// //fmt.Printf("The public ip address is %s", pip)
-	// fmt.Println("Public IP Address = ", ipAddr)
+	ipAddress, err := publicIPClient.Get(context.Background(), resourceGroupName, publicIPName, "")
+	if err != nil {
+		t.Error("IP address error:", err)
+	}
+	ipAddr := *ipAddress.PublicIPAddressPropertiesFormat.IPAddress
+	fmt.Println("Public IP Address = ", ipAddr)
+
 	// timeout := 5 * time.Second
-	// publicIP := terraform.Output(t, terraformOptions, "public_ip_address")
 	// port := "22"
-	// conn, err := net.DialTimeout("tcp", publicIP+":"+port, timeout)
+	// conn, err := net.DialTimeout("tcp", ipAddr+":"+port, timeout)
 	// if err != nil {
 	// 	t.Error("Connecting error:", err)
 	// }
