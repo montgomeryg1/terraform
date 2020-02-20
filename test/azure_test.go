@@ -97,6 +97,9 @@ func TestUbuntuVm(t *testing.T) {
 	// Run `terraform apply`. Fail the test if there are any errors.
 	terraform.InitAndApply(t, terraformOptions)
 
+	// subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
+	subscriptionID := "60020c84-fca0-4d3b-ab6a-502ba1028851"
+	//fmt.Println("The subscription ID is", subscriptionID)
 	// // Run `terraform output` to get the values of output variables
 	vmName := terraform.Output(t, terraformOptions, "vm_name")
 	resourceGroupName := terraform.Output(t, terraformOptions, "resource_group_name")
@@ -107,14 +110,10 @@ func TestUbuntuVm(t *testing.T) {
 	maxRetries := 30
 	timeBetweenRetries := 5 * time.Second
 	retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
-		actualVMSize, err := azure.GetSizeOfVirtualMachineE(t, vmName, resourceGroupName, "")
+		actualVMSize, err := azure.GetSizeOfVirtualMachineE(t, vmName, resourceGroupName, subscriptionID)
 		assert.Equal(t, expectedVMSize, actualVMSize)
 		return "", err
 	})
-
-	// subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
-	subscriptionID := "60020c84-fca0-4d3b-ab6a-502ba1028851"
-	//fmt.Println("The subscription ID is", subscriptionID)
 
 	publicIPName := terraform.Output(t, terraformOptions, "public_ip_name")
 	publicIPClient := network.NewPublicIPAddressesClient(subscriptionID)
