@@ -3,10 +3,11 @@ package test
 import (
 	"context"
 	"fmt"
-	"os"
+	"net"
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/network/mgmt/network"
 	"github.com/Azure/go-autorest/autorest/azure/auth"
@@ -104,7 +105,8 @@ func TestUbuntuVm(t *testing.T) {
 	// 	return "", err
 	// })
 
-	subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
+	// subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
+	subscriptionID := "60020c84-fca0-4d3b-ab6a-502ba1028851"
 	fmt.Println("The subscription ID is", subscriptionID)
 
 	publicIPName := terraform.Output(t, terraformOptions, "public_ip_name")
@@ -121,19 +123,18 @@ func TestUbuntuVm(t *testing.T) {
 	}
 
 	ipAddr := *ipAddress.PublicIPAddressPropertiesFormat.IPAddress
-	// ipAddr := ipAddress.IPAddress
 	fmt.Println("Public IP Address = ", ipAddr)
 
-	// timeout := 5 * time.Second
-	// port := "22"
-	// conn, err := net.DialTimeout("tcp", ipAddr+":"+port, timeout)
-	// if err != nil {
-	// 	t.Error("Connecting error:", err)
-	// }
+	timeout := 5 * time.Second
+	port := "22"
+	conn, err := net.DialTimeout("tcp", ipAddr+":"+port, timeout)
+	if err != nil {
+		t.Error("Connecting error:", err)
+	}
 
-	// if conn != nil {
-	// 	defer conn.Close()
-	// }
+	if conn != nil {
+		defer conn.Close()
+	}
 
 	// t the end of the test, run `terraform destroy` to clean up any resources that were created
 	defer terraform.Destroy(t, terraformOptions)
