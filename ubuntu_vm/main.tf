@@ -11,6 +11,15 @@ terraform {
   required_version = ">= 0.12"
 }
 
+
+module "variables" {
+  source = "github.com/montgomeryg1/terraform//variables"
+  # source      = "./variables"
+  environment = local.environment
+  size        = local.size
+  region      = var.region
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # DEPLOY A RESOURCE GROUP
 # See test/terraform_azure_example_test.go for how to write automated tests for this code.
@@ -26,17 +35,18 @@ resource "azurerm_resource_group" "testing" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "azurerm_virtual_network" "vnet" {
-  name                = "${var.prefix}-network"
-  address_space       = ["10.0.0.0/16"]
+  name                = "network"
   location            = azurerm_resource_group.testing.location
   resource_group_name = azurerm_resource_group.testing.name
+  address_space       = module.variables.vnet_address_space
 }
 
 resource "azurerm_subnet" "internal" {
-  name                 = "internal"
+  for_each             = module.variables.subnets
+  name                 = each.key
+  address_prefix       = each.value
   resource_group_name  = azurerm_resource_group.testing.name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefix       = "10.0.17.0/24"
 }
 
 resource "azurerm_public_ip" "ubuntuvm" {
@@ -53,8 +63,8 @@ resource "azurerm_network_interface" "nic" {
   resource_group_name = azurerm_resource_group.testing.name
 
   ip_configuration {
-    name                          = "terratestconfiguration1"
-    subnet_id                     = azurerm_subnet.internal.id
+    name                          = "ipconfiguration1"
+    subnet_id                     = azurerm_subnet.internal["subnet-1"].id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.ubuntuvm.id
   }
@@ -69,7 +79,7 @@ resource "azurerm_virtual_machine" "testing" {
   location                         = azurerm_resource_group.testing.location
   resource_group_name              = azurerm_resource_group.testing.name
   network_interface_ids            = [azurerm_network_interface.nic.id]
-  vm_size                          = "Standard_B1s"
+  vm_size                          = module.variables.vm_size
   delete_os_disk_on_termination    = true
   delete_data_disks_on_termination = true
 

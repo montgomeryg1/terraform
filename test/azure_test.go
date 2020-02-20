@@ -11,17 +11,18 @@ import (
 	"time"
 
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/gruntwork-io/terratest/modules/azure"
+	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/compute/mgmt/compute"
+	"github.com/Azure/azure-sdk-for-go/profiles/latest/containerservice/mgmt/containerservice"
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/network/mgmt/network"
 	"github.com/Azure/go-autorest/autorest/azure/auth"
-	"github.com/gruntwork-io/terratest/modules/azure"
 	"github.com/gruntwork-io/terratest/modules/retry"
-	"github.com/gruntwork-io/terratest/modules/terraform"
 	// "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
 	// "github.com/gruntwork-io/terratest/modules/azure"
-	// "github.com/gruntwork-io/terratest/modules/k8s"
 	// "github.com/stretchr/testify/assert"
 	// "github.com/stretchr/testify/require"
 )
@@ -82,7 +83,36 @@ func TestK8s(t *testing.T) {
 		// The path to where our Terraform code is located
 		TerraformDir: dir,
 	}
-	terraform.InitAndPlan(t, tfOptions)
+	terraform.InitAndApply(t, tfOptions)
+	subscriptionID := "60020c84-fca0-4d3b-ab6a-502ba1028851"
+
+	expectedResourceGroupName := terraform.Output(t, tfOptions, "resource_group_name")
+	expectedClusterName := "cluster"
+	expectedAgentCount := 1
+
+	k8sClient := containerservice.NewManagedClustersClient(subscriptionID)
+
+	// // create an authorizer from env vars or Azure Managed Service Idenity
+	var err error
+	var authorizer autorest.Authorizer
+	_, ok := os.LookupEnv("AZURE_CLIENT_SECRET")
+	if ok {
+		authorizer, err = auth.NewAuthorizerFromEnvironment()
+	} else {
+		authorizer, err = auth.NewAuthorizerFromCLI()
+	}
+
+	if err == nil {
+		k8sClient.Authorizer = authorizer
+	}
+	cluster, err := k8sClient.Get(context.Background(), expectedResourceGroupName, expectedClusterName)
+	require.NoError(t, err)
+
+	// Look up the cluster node count
+	actualCount := *(*cluster.ManagedClusterProperties.AgentPoolProfiles)[0].Count
+
+	// Test that the Node count matches the Terraform specification
+	assert.Equal(t, int32(expectedAgentCount), actualCount)
 }
 
 func TestUbuntuVm(t *testing.T) {
