@@ -11,6 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/network/mgmt/network"
 	"github.com/Azure/go-autorest/autorest/azure/auth"
+	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	// "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
 	// "github.com/gruntwork-io/terratest/modules/azure"
@@ -97,8 +98,8 @@ func TestUbuntuVm(t *testing.T) {
 	// description := fmt.Sprintf("Find virtual machine %s", vmName)
 
 	// // Look up the size of the given Virtual Machine and ensure it matches the output.
-	// maxRetries := 30
-	// timeBetweenRetries := 5 * time.Second
+	maxRetries := 30
+	timeBetweenRetries := 5 * time.Second
 	// retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
 	// 	actualVMSize, err := azure.GetSizeOfVirtualMachineE(t, vmName, resourceGroupName, "")
 	// 	assert.Equal(t, expectedVMSize, actualVMSize)
@@ -127,14 +128,16 @@ func TestUbuntuVm(t *testing.T) {
 
 	timeout := 5 * time.Second
 	port := "22"
-	conn, err := net.DialTimeout("tcp", ipAddr+":"+port, timeout)
-	if err != nil {
-		t.Error("Connecting error:", err)
-	}
-
-	if conn != nil {
-		defer conn.Close()
-	}
+	retry.DoWithRetry(t, "Test open ssh port", maxRetries, timeBetweenRetries, func() (string, error) {
+		conn, err := net.DialTimeout("tcp", ipAddr+":"+port, timeout)
+		if err != nil {
+			t.Error("Connecting error:", err)
+		}
+		if conn != nil {
+			defer conn.Close()
+		}
+		return "", err
+	})
 
 	// t the end of the test, run `terraform destroy` to clean up any resources that were created
 	defer terraform.Destroy(t, terraformOptions)
