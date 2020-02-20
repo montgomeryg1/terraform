@@ -4,10 +4,13 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"os"
 	"reflect"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Azure/go-autorest/autorest"
 
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/network/mgmt/network"
 	"github.com/Azure/go-autorest/autorest/azure/auth"
@@ -114,7 +117,15 @@ func TestUbuntuVm(t *testing.T) {
 	publicIPClient := network.NewPublicIPAddressesClient(subscriptionID)
 
 	// // create an authorizer from env vars or Azure Managed Service Idenity
-	authorizer, err := auth.NewAuthorizerFromEnvironment()
+	var err error
+	var authorizer autorest.Authorizer
+	_, ok := os.LookupEnv("AZURE_CLIENT_SECRET")
+	if ok {
+		authorizer, err = auth.NewAuthorizerFromEnvironment()
+	} else {
+		authorizer, err = auth.NewAuthorizerFromCLI()
+	}
+
 	if err == nil {
 		publicIPClient.Authorizer = authorizer
 	}
