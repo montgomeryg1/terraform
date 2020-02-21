@@ -29,7 +29,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)\ubuntu_vm'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/ubuntu_vm'
     backendServiceArm: 'ARM'
     backendAzureRmResourceGroupName: 'artifacts'
     backendAzureRmStorageAccountName: 'artifactsdevelopment'
@@ -41,7 +41,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    workingDirectory: '$(System.DefaultWorkingDirectory)\ubuntu_vm'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/ubuntu_vm'
     backendServiceArm: 'ARM'
     backendAzureRmResourceGroupName: 'artifacts'
     backendAzureRmStorageAccountName: 'artifactsdevelopment'
