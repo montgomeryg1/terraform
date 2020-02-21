@@ -56,11 +56,6 @@ steps:
     workingDirectory: '$(terraform.path)'
     displayName: 'Create terraform.tfvars'
   
-  - script: |
-      terraform validate
-    workingDirectory: '$(terraform.path)'
-    displayName: 'Terraform Validate'
-  
   # - script: |
   #     git config --global --list | grep url. | awk -F '.instead' '{print $1}' | while read line
   #     do
