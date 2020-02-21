@@ -4,7 +4,7 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-name: $(Rev:.r)
+name: $(Build.BuildId)
 
 trigger:
 - master
@@ -23,3 +23,10 @@ steps:
     backendAzureRmStorageAccountName: 'artifactsdevelopment'
     backendAzureRmContainerName: 'blobs'
     backendAzureRmKey: 'containers.tfstate'
+
+- task: TerraformTaskV1@0
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/containers'
+    environmentServiceNameAzureRM: 'ARM'
