@@ -11,7 +11,6 @@ terraform {
   required_version = ">= 0.12"
 }
 
-
 module "variables" {
   # source = "github.com/montgomeryg1/terraform//variables"
   source      = "../variables"
