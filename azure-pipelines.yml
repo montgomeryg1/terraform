@@ -24,4 +24,26 @@ steps:
   inputs:
     terraformVersion: '0.12.3'
 
+
+- task: TerraformTaskV1@0
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)\ubuntu_vm'
+    backendServiceArm: 'ARM'
+    backendAzureRmResourceGroupName: 'artifacts'
+    backendAzureRmStorageAccountName: 'artifactsdevelopment'
+    backendAzureRmContainerName: 'blobs'
+    backendAzureRmKey: 'ubuntu_vm'
     
+    
+- task: TerraformTaskV1@0
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)\ubuntu_vm'
+    backendServiceArm: 'ARM'
+    backendAzureRmResourceGroupName: 'artifacts'
+    backendAzureRmStorageAccountName: 'artifactsdevelopment'
+    backendAzureRmContainerName: 'blobs'
+    backendAzureRmKey: 'ubuntu_vm'
