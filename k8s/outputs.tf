@@ -1,4 +1,4 @@
-output "resource_group" {
+output "resource_group_name" {
   value = azurerm_resource_group.testing.name
 }
 # output "client_key" {
