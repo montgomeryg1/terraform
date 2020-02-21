@@ -34,10 +34,10 @@ variables:
     value: 'containers'
 
 steps:
-  - task: JamiePhillips.Terraform.TerraformTool.TerraformTool@0
-    displayName: 'Use Terraform $(terraform.version)'
+
+  - task: TerraformInstaller@0
     inputs:
-      version: '$(terraform.version)'
+      terraformVersion: '$(terraform.version)'
   
   - script: |
       az login --service-principal -u $(application_id) -p $(ServerAutomationDemo-AppPw) --tenant $(tenant_id)
