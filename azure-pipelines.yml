@@ -13,7 +13,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - group: ServerAutomationDemo
+  - group: ServicePrincipal
   - name: azure_resource_group_name
     value: "TerraformTesting-$(Build.BuildId)"
   - name: subscription_id
