@@ -11,12 +11,13 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: Terraform@2
+- task: TerraformTaskV1@0
   inputs:
-    TemplatePath: '$(System.DefaultWorkingDirectory)/ubuntu_vm'
-    Arguments: 'init'
-    InstallTerraform: true
-    UseAzureSub: true
-    ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
-    ConnectedServiceNameARM: 'ARM'
-    ManageState: false
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/containers'
+    backendServiceArm: 'ARM'
+    backendAzureRmResourceGroupName: 'artifacts'
+    backendAzureRmStorageAccountName: 'artifactsdevelopment'
+    backendAzureRmContainerName: 'blobs'
+    backendAzureRmKey: 'containers.tfstate'
