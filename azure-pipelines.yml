@@ -57,7 +57,7 @@ steps:
     displayName: 'Create terraform.tfvars'
   
   - script: |
-      terraform validate -check-variables=false
+      terraform validate
     workingDirectory: '$(terraform.path)'
     displayName: 'Terraform Validate'
   
