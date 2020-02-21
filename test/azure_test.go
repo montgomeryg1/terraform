@@ -27,6 +27,19 @@ import (
 	// "github.com/stretchr/testify/require"
 )
 
+var authorizer autorest.Authorizer
+
+func init() {
+	var err error
+	// // create an authorizer from env vars or Azure Managed Service Idenity
+	_, ok := os.LookupEnv("AZURE_CLIENT_SECRET")
+	if ok {
+		authorizer, err = auth.NewAuthorizerFromEnvironment()
+	} else {
+		authorizer, err = auth.NewAuthorizerFromCLI()
+	}
+}
+
 func TestVnet(t *testing.T) {
 	dir := "../vnet"
 	tfOptions := &terraform.Options{
@@ -75,9 +88,8 @@ func TestElasticPool(t *testing.T) {
 }
 
 func TestK8s(t *testing.T) {
-	// expectedClusterName := "dev-cluster"
-	// expectedResourceGroupName := "k8s"
-	// expectedAgentCount := 1
+	var err error
+
 	dir := "../k8s"
 	tfOptions := &terraform.Options{
 		// The path to where our Terraform code is located
@@ -91,16 +103,6 @@ func TestK8s(t *testing.T) {
 	expectedAgentCount := 1
 
 	k8sClient := containerservice.NewManagedClustersClient(subscriptionID)
-
-	// // create an authorizer from env vars or Azure Managed Service Idenity
-	var err error
-	var authorizer autorest.Authorizer
-	_, ok := os.LookupEnv("AZURE_CLIENT_SECRET")
-	if ok {
-		authorizer, err = auth.NewAuthorizerFromEnvironment()
-	} else {
-		authorizer, err = auth.NewAuthorizerFromCLI()
-	}
 
 	if err == nil {
 		k8sClient.Authorizer = authorizer
@@ -118,6 +120,8 @@ func TestK8s(t *testing.T) {
 func TestUbuntuVm(t *testing.T) {
 	t.Parallel()
 
+	var err error
+
 	// website::tag::1:: Configure Terraform setting up a path to Terraform code.
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
@@ -129,7 +133,7 @@ func TestUbuntuVm(t *testing.T) {
 
 	// subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
 	subscriptionID := "60020c84-fca0-4d3b-ab6a-502ba1028851"
-	//fmt.Println("The subscription ID is", subscriptionID)
+
 	// // Run `terraform output` to get the values of output variables
 	vmName := terraform.Output(t, terraformOptions, "vm_name")
 	resourceGroupName := terraform.Output(t, terraformOptions, "resource_group_name")
@@ -147,16 +151,6 @@ func TestUbuntuVm(t *testing.T) {
 
 	publicIPName := terraform.Output(t, terraformOptions, "public_ip_name")
 	publicIPClient := network.NewPublicIPAddressesClient(subscriptionID)
-
-	// // create an authorizer from env vars or Azure Managed Service Idenity
-	var err error
-	var authorizer autorest.Authorizer
-	_, ok := os.LookupEnv("AZURE_CLIENT_SECRET")
-	if ok {
-		authorizer, err = auth.NewAuthorizerFromEnvironment()
-	} else {
-		authorizer, err = auth.NewAuthorizerFromCLI()
-	}
 
 	if err == nil {
 		publicIPClient.Authorizer = authorizer
