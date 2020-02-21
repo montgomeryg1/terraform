@@ -21,8 +21,8 @@ steps:
     backendServiceArm: 'ARM'
     backendAzureRmResourceGroupName: 'artifacts'
     backendAzureRmStorageAccountName: 'artifactsdevelopment'
-    backendAzureRmContainerName: 'blobs'
-    backendAzureRmKey: 'containers.tfstate'
+    backendAzureRmContainerName: 'metrix'
+    backendAzureRmKey: 'containers'
 
 - task: TerraformTaskV1@0
   inputs:
