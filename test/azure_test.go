@@ -30,13 +30,13 @@ import (
 var authorizer autorest.Authorizer
 
 func init() {
-	var err error
+
 	// // create an authorizer from env vars or Azure Managed Service Idenity
 	_, ok := os.LookupEnv("AZURE_CLIENT_SECRET")
 	if ok {
-		authorizer, err = auth.NewAuthorizerFromEnvironment()
+		authorizer, _ = auth.NewAuthorizerFromEnvironment()
 	} else {
-		authorizer, err = auth.NewAuthorizerFromCLI()
+		authorizer, _ = auth.NewAuthorizerFromCLI()
 	}
 }
 
