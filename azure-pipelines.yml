@@ -20,8 +20,12 @@ steps:
   displayName: 'Run a multi-line script'
 
 
-- task: TerraformInstaller@0
+- task: Terraform@2
   inputs:
-    terraformVersion: '0.12.21'
-
-
+    TemplatePath: '$(System.DefaultWorkingDirectory)/ubuntu_vm'
+    Arguments: 'init'
+    InstallTerraform: true
+    UseAzureSub: true
+    ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
+    ConnectedServiceNameARM: 'ARM'
+    ManageState: false
