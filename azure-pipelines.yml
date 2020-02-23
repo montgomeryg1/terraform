@@ -54,9 +54,24 @@ steps:
       client_secret = "$(ServerAutomationDemo-AppPw)"
       access_key = "$(access_key)"
       EOT
-    workingDirectory: '$(terraform.path)'
+      : '$(terraform.path)'
     displayName: 'Create terraform.tfvars'
   
+  - script: |
+      cat << EOT >> backend.tf
+      terraform {
+        backend "azurerm" {
+          resource_group_name = "artifacts"
+          storage_account_name = "artifactsdevelopment"
+          container_name = "tf-statefiles"
+          key = "tfstate" 
+          access_key = "$(access_key)"
+        }
+      }
+      EOT
+      : '$(terraform.path)'
+    displayName: "Create backend file"
+    
   # - script: |
   #     git config --global --list | grep url. | awk -F '.instead' '{print $1}' | while read line
   #     do
