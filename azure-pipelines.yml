@@ -58,7 +58,7 @@ steps:
     displayName: 'Create terraform.tfvars'
   
   - script: |
-      cat << EOT >> backend.tf
+      cat << 'EOT' >> backend.tf
       terraform {
         backend "azurerm" {
           resource_group_name = "artifacts"
@@ -83,8 +83,11 @@ steps:
   #   displayName: 'Redirect foo git URLs to use the Access Token So Modules Can Be Pulled In'
 
   - script: |
+      ls -la
+      cat backend.tf
+      cat terraform.tfvars
       terraform init -no-color -input=false
-      terraform plan -out=tfplan -no-color -input=false
+      terraform plan -out=tfplan -no-color -input=false -var-file terraform.tfvars
     displayName: 'Terraform Init and Plan'
     workingDirectory: '$(terraform.path)'
       
