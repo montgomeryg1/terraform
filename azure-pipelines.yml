@@ -71,7 +71,7 @@ steps:
       EOT
       : '$(terraform.path)'
     displayName: "Create backend file"
-    
+
   # - script: |
   #     git config --global --list | grep url. | awk -F '.instead' '{print $1}' | while read line
   #     do
@@ -83,8 +83,8 @@ steps:
   #   displayName: 'Redirect foo git URLs to use the Access Token So Modules Can Be Pulled In'
 
   - script: |
-      terraform init -no-color -input=false
-      terraform plan -out=tfplan -no-color -input=false
+      terraform init -no-color
+      terraform plan -out=tfplan -no-color 
     displayName: 'Terraform Init and Plan'
     workingDirectory: '$(terraform.path)'
       
