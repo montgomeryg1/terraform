@@ -52,6 +52,7 @@ steps:
       subscription_id = "$(subscription_id)"
       client_id = "$(application_id)"
       client_secret = "$(ServerAutomationDemo-AppPw)"
+      access_key = "$(access_key)"
       EOT
     workingDirectory: '$(terraform.path)'
     displayName: 'Create terraform.tfvars'
@@ -67,7 +68,7 @@ steps:
   #   displayName: 'Redirect foo git URLs to use the Access Token So Modules Can Be Pulled In'
 
   - script: |
-      terraform init -backend-config=remote -backend-config=resource_group_name=artifacts -backend-config=storage_account_name=artifactsdevelopment -backend-config=container_name=tf-statefiles -backend-config=key=$(state.key) -backend-config=access_key=$(access_key) -no-color -input=false
+      terraform init -no-color -input=false
       terraform plan -out=tfplan -no-color -input=false
     displayName: 'Terraform Init and Plan'
     workingDirectory: '$(terraform.path)'
