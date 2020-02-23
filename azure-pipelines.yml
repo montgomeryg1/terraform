@@ -47,13 +47,13 @@ steps:
     displayName: 'AZ Login and Set ACCESS_KEY'
     
   - script: |
-      cat << EOT >> terraform.tfvars
-      tenant_id = "$(tenant_id)"
-      subscription_id = "$(subscription_id)"
-      client_id = "$(application_id)"
-      client_secret = "$(ServerAutomationDemo-AppPw)"
-      access_key = "$(access_key)"
-      EOT
+      {
+        echo 'tenant_id = "$(tenant_id)"'
+        echo 'subscription_id = "$(subscription_id)"'
+        echo 'client_id = "$(application_id)"'
+        echo 'client_secret = "$(ServerAutomationDemo-AppPw)"'
+        echo 'access_key = "$(access_key)"'
+      } >> terraform.tfvars
       : '$(terraform.path)'
     displayName: 'Create terraform.tfvars'
   
