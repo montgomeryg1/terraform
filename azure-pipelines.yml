@@ -58,13 +58,15 @@ steps:
   
   - script: |
       {
-        echo 'terrform {'
+        echo 'terraform {'
         echo '  backend "azurerm" {'
         echo '    resource_group_name = "artifacts"'
         echo '    storage_account_name = "artifactsdevelopment"'
         echo '    container_name = "tf-statefiles"'
         echo '    key = "TFSTATE"'
         echo '    access_key = "$(access_key)"'
+        echo '  }'
+        echo '}'
       } >> '$(terraform.path)'/backend.tf
     displayName: "Create backend file"
     
