@@ -83,6 +83,9 @@ steps:
   #   displayName: 'Redirect foo git URLs to use the Access Token So Modules Can Be Pulled In'
 
   - script: |
+      ls -la
+      cat backend.tf
+      cat terraform.tfvars
       terraform init -no-color -input=false
       terraform plan -out=tfplan -no-color -input=false -var-file terraform.tfvars
     displayName: 'Terraform Init and Plan'
