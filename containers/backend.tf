@@ -1,5 +1,5 @@
 terraform {
-    backend "msdn" {
+    backend "remote" {
         resource_group_name = artifacts
         storage_account_name = artifactsdevelopment
         container_name = tf-statefiles
