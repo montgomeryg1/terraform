@@ -53,8 +53,7 @@ steps:
         echo 'client_id = "$(application_id)"'
         echo 'client_secret = "$(ServerAutomationDemo-AppPw)"'
         echo 'access_key = "$(access_key)"'
-      } >> terraform.tfvars
-      : '$(terraform.path)'
+      } >> containers/terraform.tfvars
     displayName: 'Create terraform.tfvars'
   
   - script: |
