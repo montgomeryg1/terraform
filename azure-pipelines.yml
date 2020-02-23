@@ -7,10 +7,10 @@
 name: $(Build.BuildId)
 
 trigger:
-- master
+  - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
 variables:
   - group: ServicePrincipal
@@ -29,23 +29,22 @@ variables:
   - name: access_key
     value: "empty"
   - name: state.key
-    value: 'TFSTATE'
+    value: "TFSTATE"
   - name: terraform.path
-    value: 'containers'
+    value: "containers"
 
 steps:
-
   - task: TerraformInstaller@0
     inputs:
-      terraformVersion: '$(terraform.version)'
-  
+      terraformVersion: "$(terraform.version)"
+
   - script: |
       az login --service-principal -u $(application_id) -p $(ServerAutomationDemo-AppPw) --tenant $(tenant_id)
       ACCESS_KEY=`az storage account keys list -n $(storage_acct) -o json | jq -r '.[0].value'`
       echo "##vso[task.setvariable variable=access_key]$ACCESS_KEY"
       az logout
-    displayName: 'AZ Login and Set ACCESS_KEY'
-    
+    displayName: "Get ACCESS_KEY"
+
   - script: |
       {
         echo 'tenant_id = "$(tenant_id)"'
@@ -54,8 +53,8 @@ steps:
         echo 'client_secret = "$(ServerAutomationDemo-AppPw)"'
         echo 'access_key = "$(access_key)"'
       } >> '$(terraform.path)'/terraform.tfvars
-    displayName: 'Create terraform.tfvars'
-  
+    displayName: "Create terraform.tfvars"
+
   - script: |
       {
         echo 'terraform {'
@@ -69,47 +68,9 @@ steps:
         echo '}'
       } >> '$(terraform.path)'/backend.tf
     displayName: "Create backend file"
-    
-  # - script: |
-  #     git config --global --list | grep url. | awk -F '.instead' '{print $1}' | while read line
-  #     do
-  #       echo $line
-  #       git config --global --remove-section $line
-  #     done
-  #     git config --global url."https://ado:$(System.AccessToken)@foo".insteadOf https://foo
-  #     git init
-  #   displayName: 'Redirect foo git URLs to use the Access Token So Modules Can Be Pulled In'
 
   - script: |
-      ls -la
       terraform init -no-color -input=false
       terraform plan -out=tfplan -no-color -input=false -var-file terraform.tfvars
-    displayName: 'Terraform Init and Plan'
-    workingDirectory: '$(terraform.path)'
-      
-  # - script: |
-  #     git config --global --remove-section url.https://ado:$(System.AccessToken)@MYDOMAIN
-  #   displayName: 'Remove git URL Redirect'
-  #   continueOnError: true
-  #   condition: always()
-
-# steps:
-# - task: TerraformTaskV1@0
-#   inputs:
-#     provider: 'azurerm'
-#     command: 'init'
-#     workingDirectory: '$(System.DefaultWorkingDirectory)/containers'
-#     backendServiceArm: 'ARM'
-#     backendAzureRmResourceGroupName: 'artifacts'
-#     backendAzureRmStorageAccountName: 'artifactsdevelopment'
-#     backendAzureRmContainerName: 'metrix'
-#     backendAzureRmKey: 'containers'
-
-# - task: TerraformTaskV1@0
-#   inputs:
-#     provider: 'azurerm'
-#     command: 'plan'
-#     workingDirectory: '$(System.DefaultWorkingDirectory)/containers'
-#     environmentServiceNameAzureRM: 'ARM'
-
-# terraform init -backend-config=resource_group_name=artifacts -backend-config=storage_account_name=artifactsdevelopment -backend-config=container_name=tf-statefiles -backend-config=key=$(state.key) -backend-config=access_key=$(access_key) -no-color -input=false
+    displayName: "Terraform Init and Plan"
+    workingDirectory: "$(terraform.path)"
