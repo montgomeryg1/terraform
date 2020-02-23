@@ -52,7 +52,7 @@ steps:
       subscription_id = "$(subscription_id)"
       client_id = "$(application_id)"
       client_secret = "$(ServerAutomationDemo-AppPw)"
-      access_key = "$(access_key)"
+      access_key = "$(ACCESS_KEY)"
       EOT
       : '$(terraform.path)'
     displayName: 'Create terraform.tfvars'
