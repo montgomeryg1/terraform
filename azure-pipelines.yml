@@ -67,8 +67,14 @@ steps:
   #   displayName: 'Redirect foo git URLs to use the Access Token So Modules Can Be Pulled In'
   
   - script: |
+      export ARM_CLIENT_ID=$(application_id)
+      export ARM_CLIENT_SECRET=$(ServerAutomationDemo-AppPw)
+      export ARM_SUBSCRIPTION_ID=$(subscription_id)
+      export ARM_TENANT_ID=$(tenant_id)
+
+  - script: |
       printenv | sort
-      terraform inint
+      terraform init
       terraform plan -out=tfplan -no-color -input=false
     displayName: 'Terraform Plan'
     workingDirectory: '$(terraform.path)'
