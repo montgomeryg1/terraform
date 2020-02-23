@@ -84,7 +84,7 @@ steps:
 
   - script: |
       terraform init -no-color -input=false
-      terraform plan -out=tfplan -no-color -input=false
+      terraform plan -out=tfplan -no-color -input=false -var-file terraform.tfvars
     displayName: 'Terraform Init and Plan'
     workingDirectory: '$(terraform.path)'
       
