@@ -39,11 +39,11 @@ steps:
     inputs:
       terraformVersion: '$(terraform.version)'
   
-  - script: |
-      az login --service-principal -u $(application_id) -p $(ServerAutomationDemo-AppPw) --tenant $(tenant_id)
-      ACCESS_KEY=`az storage account keys list -n $(storage_acct) -o json | jq -r '.[0].value'`
-      echo "##vso[task.setvariable variable=access_key]$ACCESS_KEY"
-    displayName: 'AZ Login and Set ACCESS_KEY'
+  # - script: |
+  #     az login --service-principal -u $(application_id) -p $(ServerAutomationDemo-AppPw) --tenant $(tenant_id)
+  #     ACCESS_KEY=`az storage account keys list -n $(storage_acct) -o json | jq -r '.[0].value'`
+  #     echo "##vso[task.setvariable variable=access_key]$ACCESS_KEY"
+  #   displayName: 'AZ Login and Set ACCESS_KEY'
     
   # - script: |
   #     cat << EOT >> terraform.tfvars
@@ -71,12 +71,13 @@ steps:
       export ARM_CLIENT_SECRET=$(ServerAutomationDemo-AppPw)
       export ARM_SUBSCRIPTION_ID=$(subscription_id)
       export ARM_TENANT_ID=$(tenant_id)
+    displayName: 'Set env vars'
 
   - script: |
       printenv | sort
       terraform init
       terraform plan -out=tfplan -no-color -input=false
-    displayName: 'Terraform Plan'
+    displayName: 'Terraform Init and Plan'
     workingDirectory: '$(terraform.path)'
       
   # - script: |
