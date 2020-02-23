@@ -47,7 +47,7 @@ steps:
     displayName: 'AZ Login and Set ACCESS_KEY'
     
   - script: |
-      cat << EOT >> terraform.tfvars
+      cat << 'EOT' >> terraform.tfvars
       tenant_id = "$(tenant_id)"
       subscription_id = "$(subscription_id)"
       client_id = "$(application_id)"
@@ -58,7 +58,7 @@ steps:
     displayName: 'Create terraform.tfvars'
   
   - script: |
-      cat << EOT >> backend.tf
+      cat << 'EOT' >> backend.tf
       terraform {
         backend "azurerm" {
           resource_group_name = "artifacts"
