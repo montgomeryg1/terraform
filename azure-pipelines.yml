@@ -92,4 +92,4 @@ steps:
     displayName: get Go dependencies
 
   - script: |
-      cd '$(terraform.path)'/test && go test --run TestUbuntuVm -timeout 60m
+      cd test && go test --run TestUbuntuVm -timeout 60m
