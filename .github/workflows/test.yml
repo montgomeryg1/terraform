@@ -37,3 +37,8 @@ jobs:
           TF_VAR_client_id: ${{ secrets.ARM_CLIENT_ID }}
           TF_VAR_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
           TF_VAR_tenant_id: ${{ secrets.ARM_TENANT_ID }}
+      
+      - name: terraform destroy
+        run: terraform destroy ./ubuntu_vm
+        if: always()
+
