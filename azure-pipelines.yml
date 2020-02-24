@@ -34,7 +34,7 @@ variables:
   - name: state.key
     value: "TFSTATE"
   - name: terraform.path
-    value: "containers"
+    value: "ubuntu_vm"
 
 steps:
   - task: TerraformInstaller@0
@@ -62,9 +62,9 @@ steps:
         echo 'terraform {'
         echo '  backend "azurerm" {'
         echo '    resource_group_name = "artifacts"'
-        echo '    storage_account_name = "artifactsdevelopment"'
+        echo '    storage_account_name = "$(storage_acct)"'
         echo '    container_name = "tf-statefiles"'
-        echo '    key = "TFSTATE"'
+        echo '    key = "$(state.key)'
         echo '    access_key = "$(access_key)"'
         echo '  }'
         echo '}'

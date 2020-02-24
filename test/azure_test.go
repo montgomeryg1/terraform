@@ -126,12 +126,6 @@ func TestUbuntuVm(t *testing.T) {
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
 		TerraformDir: "../ubuntu_vm",
-		Vars: map[string]interface{}{
-			"subscription_id": os.Getenv("TF_VAR_subscription_id"),
-			"tenant_id":       os.Getenv("TF_VAR_tenant_id"),
-			"client_id":       os.Getenv("TF_VAR_client_id"),
-			"client_secret":   os.Getenv("TF_VAR_client_secret"),
-		},
 	}
 
 	// Run `terraform apply`. Fail the test if there are any errors.
