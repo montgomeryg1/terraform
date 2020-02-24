@@ -7,31 +7,31 @@ module "variables" {
 }
 
 
-resource "azurerm_resource_group" "sandbox" {
+resource "azurerm_resource_group" "testing" {
   name     = "k8s"
   location = var.region
 }
 
-resource "azurerm_virtual_network" "sandbox" {
-  name                = "${local.environment}-network"
-  location            = azurerm_resource_group.sandbox.location
-  resource_group_name = azurerm_resource_group.sandbox.name
+resource "azurerm_virtual_network" "testing" {
+  name                = "network"
+  location            = azurerm_resource_group.testing.location
+  resource_group_name = azurerm_resource_group.testing.name
   address_space       = module.variables.vnet_address_space
 }
 
-resource "azurerm_subnet" "sandbox" {
+resource "azurerm_subnet" "testing" {
   for_each             = module.variables.subnets
   name                 = each.key
   address_prefix       = each.value
-  resource_group_name  = azurerm_resource_group.sandbox.name
-  virtual_network_name = azurerm_virtual_network.sandbox.name
+  resource_group_name  = azurerm_resource_group.testing.name
+  virtual_network_name = azurerm_virtual_network.testing.name
 }
 
-resource "azurerm_kubernetes_cluster" "sandbox" {
-  name                = "${local.environment}-cluster"
-  location            = azurerm_resource_group.sandbox.location
-  dns_prefix          = "${local.environment}-cluster"
-  resource_group_name = azurerm_resource_group.sandbox.name
+resource "azurerm_kubernetes_cluster" "testing" {
+  name                = "cluster"
+  location            = azurerm_resource_group.testing.location
+  dns_prefix          = "cluster"
+  resource_group_name = azurerm_resource_group.testing.name
 
   linux_profile {
     admin_username = "acctestuser1"
@@ -47,9 +47,14 @@ resource "azurerm_kubernetes_cluster" "sandbox" {
     node_count      = module.variables.node_count
     vm_size         = module.variables.vm_size
     os_disk_size_gb = 30
-
     # Required for advanced networking
-    vnet_subnet_id = azurerm_subnet.sandbox["subnet-1"].id
+    vnet_subnet_id = azurerm_subnet.testing["subnet-1"].id
+  }
+
+  addon_profile {
+    kube_dashboard {
+      enabled = true
+    }
   }
 
   service_principal {
@@ -64,10 +69,10 @@ resource "azurerm_kubernetes_cluster" "sandbox" {
 
 
 resource "local_file" "kubeconfig" {
-  content  = azurerm_kubernetes_cluster.sandbox.kube_config_raw
+  content  = azurerm_kubernetes_cluster.testing.kube_config_raw
   filename = "kubeconfig"
 
   depends_on = [
-    azurerm_kubernetes_cluster.sandbox
+    azurerm_kubernetes_cluster.testing
   ]
 }

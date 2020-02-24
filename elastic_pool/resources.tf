@@ -6,7 +6,7 @@ module "variables" {
   region      = var.region
 }
 
-resource "random_string" "sandbox" {
+resource "random_string" "testing" {
   length  = 6
   upper   = false
   lower   = false
@@ -14,25 +14,25 @@ resource "random_string" "sandbox" {
   special = false
 }
 
-resource "azurerm_resource_group" "sandbox" {
+resource "azurerm_resource_group" "testing" {
   name     = "elasticpool"
   location = var.region
 }
 
-resource "azurerm_sql_server" "sandbox" {
-  name                         = "my-sql-server-${random_string.sandbox.result}"
-  resource_group_name          = azurerm_resource_group.sandbox.name
-  location                     = azurerm_resource_group.sandbox.location
+resource "azurerm_sql_server" "testing" {
+  name                         = "my-sql-server-${random_string.testing.result}"
+  resource_group_name          = azurerm_resource_group.testing.name
+  location                     = azurerm_resource_group.testing.location
   version                      = "12.0"
   administrator_login          = "4dm1n157r470r"
   administrator_login_password = "4-v3ry-53cr37-p455w0rd"
 }
 
-resource "azurerm_sql_elasticpool" "sandbox" {
-  name                = "elastic-pool-${random_string.sandbox.result}"
-  resource_group_name = azurerm_resource_group.sandbox.name
-  location            = azurerm_resource_group.sandbox.location
-  server_name         = azurerm_sql_server.sandbox.name
+resource "azurerm_sql_elasticpool" "testing" {
+  name                = "elastic-pool-${random_string.testing.result}"
+  resource_group_name = azurerm_resource_group.testing.name
+  location            = azurerm_resource_group.testing.location
+  server_name         = azurerm_sql_server.testing.name
   edition             = "Basic"
   dtu                 = 50
   db_dtu_min          = 0
@@ -40,12 +40,12 @@ resource "azurerm_sql_elasticpool" "sandbox" {
   pool_size           = 5000
 }
 
-resource "azurerm_sql_database" "sandbox" {
-  name                = "mysqldatabase-${random_string.sandbox.result}"
-  resource_group_name = azurerm_resource_group.sandbox.name
+resource "azurerm_sql_database" "testing" {
+  name                = "mysqldatabase-${random_string.testing.result}"
+  resource_group_name = azurerm_resource_group.testing.name
   location            = "North Europe"
-  server_name         = azurerm_sql_server.sandbox.name
-  elastic_pool_name   = azurerm_sql_elasticpool.sandbox.name
+  server_name         = azurerm_sql_server.testing.name
+  elastic_pool_name   = azurerm_sql_elasticpool.testing.name
   tags = {
     environment = local.environment
   }

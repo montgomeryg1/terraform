@@ -31,17 +31,17 @@ variable "subnets_map" {
   type        = map
   default = {
     northeurope = {
-      dev     = { subnet-1 = "10.1.1.0/24", subnet-2 = "10.1.2.0/24" }
-      qa      = { subnet-1 = "10.2.1.0/24", subnet-2 = "10.1.2.0/24" }
-      staging = { subnet-1 = "10.3.1.0/24", subnet-2 = "10.1.2.0/24" }
-      prod    = { subnet-1 = "10.4.1.0/24", subnet-2 = "10.1.2.0/24" }
+      dev     = { subnet-1 = "10.1.1.0/24", subnet-2 = "10.1.2.0/24", subnet-3 = "10.1.3.0/24" }
+      qa      = { subnet-1 = "10.2.1.0/24", subnet-2 = "10.2.2.0/24", subnet-3 = "10.2.3.0/24" }
+      staging = { subnet-1 = "10.3.1.0/24", subnet-2 = "10.3.2.0/24", subnet-3 = "10.3.3.0/24" }
+      prod    = { subnet-1 = "10.4.1.0/24", subnet-2 = "10.4.2.0/24", subnet-3 = "10.4.3.0/24" }
     }
 
     westeurope = {
-      dev     = { subnet-1 = "10.5.1.0/24", subnet-2 = "10.1.2.0/24" }
-      qa      = { subnet-1 = "10.6.1.0/24", subnet-2 = "10.1.2.0/24" }
-      staging = { subnet-1 = "10.7.1.0/24", subnet-2 = "10.1.2.0/24" }
-      prod    = { subnet-1 = "10.8.1.0/24", subnet-2 = "10.1.2.0/24" }
+      dev     = { subnet-1 = "10.5.1.0/24", subnet-2 = "10.5.2.0/24", subnet-3 = "10.5.3.0/24" }
+      qa      = { subnet-1 = "10.6.1.0/24", subnet-2 = "10.6.2.0/24", subnet-3 = "10.6.3.0/24" }
+      staging = { subnet-1 = "10.7.1.0/24", subnet-2 = "10.7.2.0/24", subnet-3 = "10.7.3.0/24" }
+      prod    = { subnet-1 = "10.8.1.0/24", subnet-2 = "10.8.2.0/24", subnet-3 = "10.8.3.0/24" }
     }
 
   }
@@ -82,13 +82,13 @@ variable "vm_size_map" {
   type        = map
   default = {
     northeurope = {
-      small  = "Standard_B2s"
+      small  = "Standard_B1s"
       medium = "Standard_D2s_v3"
       large  = "Standard_F4s_v2"
       xlarge = "Standard_DC4s"
     }
     westeurope = {
-      small  = "Standard_B2s"
+      small  = "Standard_B1s"
       medium = "Standard_D2s_v3"
       large  = "Standard_F4s_v2"
       xlarge = "Standard_DC4s"

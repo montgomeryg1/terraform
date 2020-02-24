@@ -1,11 +1,11 @@
 output "resource_group" {
-  value = azurerm_resource_group.sandbox.name
+  value = azurerm_resource_group.testing.name
 }
 
 output "container_registry" {
-  value = azurerm_container_registry.sandbox.name
+  value = azurerm_container_registry.testing.name
 }
 
 output "container_registry_url" {
-  value = azurerm_container_registry.sandbox.login_server
+  value = azurerm_container_registry.testing.login_server
 }

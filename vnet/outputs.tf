@@ -1,3 +1,3 @@
 output "resource_group" {
-  value = azurerm_resource_group.sandbox.name
+  value = azurerm_resource_group.testing.name
 }

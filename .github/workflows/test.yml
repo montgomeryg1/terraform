@@ -1,4 +1,4 @@
-name: 'Test'
+name: 'Tests'
 on:
   - pull_request
   # - push
@@ -7,32 +7,38 @@ jobs:
     name: 'Test'
     runs-on: ubuntu-latest
     steps:
-      - name: 'Checkout'
+      - name: 'checkout'
         uses: actions/checkout@v2
 
-      - name: Set up Go 1.13
+      - name: set up Go 1.13
         uses: actions/setup-go@v1
         with:
           go-version: 1.13
         id: go
 
-      - name: Get dependencies
+      - name: get dependencies
         run: |
           if [ -f Gopkg.toml ]; then
               curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
               dep ensure
           else
             go get -v -t -d ./...  
-          fi          
+          fi
+      
+      - name: az Login
+        run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
 
-      - name: Test
+      - name: run ubuntu_vm tests 
         working-directory: /home/runner/work/terraform/terraform/test
-        run: go test -timeout 60m
+        run: go test --run TestUbuntuVm -timeout 60m
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          TF_VAR_kubernetes_client_id: ${{ secrets.ARM_CLIENT_ID }}
-          TF_VAR_kubernetes_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+          TF_VAR_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          TF_VAR_client_id: ${{ secrets.ARM_CLIENT_ID }}
+          TF_VAR_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+          TF_VAR_tenant_id: ${{ secrets.ARM_TENANT_ID }}
+      
+      - name: delete resource group
+        run: az group delete --name ubuntuvm-resources --yes
+        if: failure()
+
