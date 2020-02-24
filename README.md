@@ -1,6 +1,7 @@
 
 # Terraform
 ![Tests](https://github.com/montgomeryg1/terraform/workflows/Test/badge.svg)
+[![Build Status](https://montgomeryg1.visualstudio.com/Terraform/_apis/build/status/montgomeryg1.terraform?branchName=master)](https://montgomeryg1.visualstudio.com/Terraform/_build/latest?definitionId=3&branchName=master)
 
 Collection of terraform scripts for deploying to Azure. Used for practise and testing.
 
