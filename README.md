@@ -1,4 +1,6 @@
+
 # Terraform
+![Tests](https://github.com/montgomeryg1/terraform/workflows/Test/badge.svg)
 
 Collection of terraform scripts for deploying to Azure. Used for practise and testing.
 
