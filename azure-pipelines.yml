@@ -9,6 +9,9 @@ name: $(Build.BuildId)
 trigger:
   - master
 
+pr:
+  - master
+
 pool:
   vmImage: "ubuntu-latest"
 
