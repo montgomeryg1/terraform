@@ -91,4 +91,6 @@ steps:
     displayName: get Go dependencies
 
   - script: |
-      cd test && go test --run TestUbuntuVm -timeout 60m
+      cd test
+      ls -la
+      go test --run TestUbuntuVm -timeout 60m
