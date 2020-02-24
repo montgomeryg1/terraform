@@ -7,16 +7,16 @@ jobs:
     name: 'Test'
     runs-on: ubuntu-latest
     steps:
-      - name: 'Checkout'
+      - name: 'checkout'
         uses: actions/checkout@v2
 
-      - name: Set up Go 1.13
+      - name: set up Go 1.13
         uses: actions/setup-go@v1
         with:
           go-version: 1.13
         id: go
 
-      - name: Get dependencies
+      - name: get dependencies
         run: |
           if [ -f Gopkg.toml ]; then
               curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
@@ -28,7 +28,7 @@ jobs:
       - name: az Login
         run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
 
-      - name: Run ubuntu_vm tests 
+      - name: run ubuntu_vm tests 
         working-directory: /home/runner/work/terraform/terraform/test
         run: go test --run TestUbuntuVm -timeout 60m
         env:
@@ -39,6 +39,6 @@ jobs:
           TF_VAR_tenant_id: ${{ secrets.ARM_TENANT_ID }}
       
       - name: delete resource group
-        run: az group delete ubuntuvm-resources --no-wait --yes
-        if: always()
+        run: az group delete --name ubuntuvm-resources --no-wait --yes
+        if: failure()
 
