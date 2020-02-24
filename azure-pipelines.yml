@@ -95,3 +95,8 @@ steps:
       ls -la
       go test --run TestUbuntuVm -timeout 60m
     displayName: terratest
+
+  - script: |
+      az group delete --name ubuntuvm-resources --yes
+    displayName: cleanup
+    condition: failed()
