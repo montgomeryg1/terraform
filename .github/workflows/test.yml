@@ -39,6 +39,6 @@ jobs:
           TF_VAR_tenant_id: ${{ secrets.ARM_TENANT_ID }}
       
       - name: delete resource group
-        run: az group delete --name ubuntuvm-resources --no-wait --yes
+        run: az group delete --name ubuntuvm-resources --yes
         if: failure()
 
