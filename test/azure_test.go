@@ -131,8 +131,8 @@ func TestUbuntuVm(t *testing.T) {
 	// Run `terraform apply`. Fail the test if there are any errors.
 	terraform.InitAndApply(t, terraformOptions)
 
-	// subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
-	subscriptionID := "60020c84-fca0-4d3b-ab6a-502ba1028851"
+	subscriptionID := os.Getenv("TF_VAR_subscription_id")
+	// subscriptionID := "60020c84-fca0-4d3b-ab6a-502ba1028851"
 
 	// // Run `terraform output` to get the values of output variables
 	vmName := terraform.Output(t, terraformOptions, "vm_name")
@@ -151,7 +151,6 @@ func TestUbuntuVm(t *testing.T) {
 
 	publicIPName := terraform.Output(t, terraformOptions, "public_ip_name")
 	publicIPClient := network.NewPublicIPAddressesClient(subscriptionID)
-
 	if err == nil {
 		publicIPClient.Authorizer = authorizer
 	}
@@ -159,7 +158,6 @@ func TestUbuntuVm(t *testing.T) {
 	if ipErr != nil {
 		t.Error("IP address error:", ipErr)
 	}
-
 	ipAddr := *ipAddress.PublicIPAddressPropertiesFormat.IPAddress
 	fmt.Println("Public IP Address = ", ipAddr)
 

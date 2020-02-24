@@ -34,33 +34,3 @@ jobs:
           TF_VAR_client_id: ${{ secrets.ARM_CLIENT_ID }}
           TF_VAR_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
           TF_VAR_tenant_id: ${{ secrets.ARM_TENANT_ID }}
-
-      - name: Run elastic_pool tests 
-        working-directory: /home/runner/work/terraform/terraform/test
-        run: go test --run TestElasticPool -timeout 60m
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          AZURE_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          AZURE_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          AZURE_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          AZURE_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-
-      - name: Run k8s tests 
-        working-directory: /home/runner/work/terraform/terraform/test
-        run: go test --run TestK8s -timeout 60m
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          AZURE_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          AZURE_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          AZURE_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          AZURE_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          TF_VAR_kubernetes_client_id: ${{ secrets.ARM_CLIENT_ID }}
-          TF_VAR_kubernetes_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
