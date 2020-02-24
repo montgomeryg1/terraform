@@ -64,7 +64,7 @@ steps:
         echo '    resource_group_name = "artifacts"'
         echo '    storage_account_name = "$(storage_acct)"'
         echo '    container_name = "tf-statefiles"'
-        echo '    key = "$(state.key)'
+        echo '    key = "$(state.key)"'
         echo '    access_key = "$(access_key)"'
         echo '  }'
         echo '}'
