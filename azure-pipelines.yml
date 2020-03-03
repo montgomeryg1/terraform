@@ -46,22 +46,22 @@ steps:
   #     echo "##vso[task.setvariable variable=access_key]$ACCESS_KEY"
   #   displayName: "Get ACCESS_KEY"
 
-  # - script: |
-  #     {
-  #       echo 'tenant_id = "$(tenant_id)"'
-  #       echo 'subscription_id = "$(subscription_id)"'
-  #       echo 'client_id = "$(application_id)"'
-  #       echo 'client_secret = "$(ServerAutomationDemo-AppPw)"'
-  #     } >> '$(terraform.path)'/terraform.tfvars
-  #   displayName: "Create terraform.tfvars"
+  - script: |
+      {
+        echo 'tenant_id = "$(tenant_id)"'
+        echo 'subscription_id = "$(subscription_id)"'
+        echo 'client_id = "$(application_id)"'
+        echo 'client_secret = "$(ServerAutomationDemo-AppPw)"'
+      } >> '$(terraform.path)'/terraform.tfvars
+    displayName: "Create terraform.tfvars"
 
 
   - script: |
       cd $(terraform.path)
       terraform workspace new ci
       terraform init
-      terraform plan -no-color -var 'tenant_id=$(tenant_id)' -var 'subscription_id=$(subscription_id)' -var 'client_id=$(application_id)' -var 'client_secret=$(ServerAutomationDemo-AppPw)' 
-      terraform apply -auto-approve -compact-warnings -no-color -var 'tenant_id=$(tenant_id)' -var 'subscription_id=$(subscription_id)' -var 'client_id=$(application_id)' -var 'client_secret=$(ServerAutomationDemo-AppPw)' 
+      terraform plan -no-color
+      terraform apply -auto-approve -compact-warnings -no-color
     displayName: "Terraform init and apply"
 
   - task: AzSKSVTs@4
