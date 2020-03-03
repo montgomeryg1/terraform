@@ -70,7 +70,8 @@ jobs:
   
   - job: Tests
     pool:
-      vmImage: "vs2017-win2016"  
+      vmImage: "vs2017-win2016" 
+    dependsOn: Terraform
     steps:
       - task: AzSKSVTs@4
         inputs:
