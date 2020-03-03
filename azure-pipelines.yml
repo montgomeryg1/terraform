@@ -56,7 +56,7 @@ steps:
       cd ubuntu_vm
       terraform workspace new ci
       terraform init
-      terraform apply
+      terraform apply -auto-approve -compact-warnings -input=false -no-color
     displayName: "Create terraform.tfvars"
 
   - task: AzSKSVTs@4
