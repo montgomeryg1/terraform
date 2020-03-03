@@ -62,9 +62,9 @@ steps:
       script: |
         New-Item -ItemType File -Name terraform.tfvars -Path $(terraform.path)
         Add-Content $(terraform.path)/terraform.tfvars -value "tenant_id = $(tenant_id)"
-        Add-Content $(terraform.path)/terraform.tfvars -value "subscription_id = $(subscription_id)"
-        Add-Content $(terraform.path)/terraform.tfvars -value "client_id = $(application_id)"
-        Add-Content $(terraform.path)/terraform.tfvars -value "client_secret = $(ServerAutomationDemo-AppPw)"
+        Add-Content $(terraform.path)/terraform.tfvars -value "`r`nsubscription_id = $(subscription_id)"
+        Add-Content $(terraform.path)/terraform.tfvars -value "`r`nclient_id = $(application_id)"
+        Add-Content $(terraform.path)/terraform.tfvars -value "`r`nclient_secret = $(ServerAutomationDemo-AppPw)"
     displayName: "Create terraform.tfvars"
 
   - script: |
