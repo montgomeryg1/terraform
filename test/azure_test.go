@@ -131,8 +131,8 @@ func TestUbuntuVm(t *testing.T) {
 	// Run `terraform apply`. Fail the test if there are any errors.
 	terraform.InitAndApply(t, terraformOptions)
 
-	subscriptionID := os.Getenv("TF_VAR_subscription_id")
-	// subscriptionID := "60020c84-fca0-4d3b-ab6a-502ba1028851"
+	// subscriptionID := os.Getenv("TF_VAR_subscription_id")
+	subscriptionID := "60020c84-fca0-4d3b-ab6a-502ba1028851"
 
 	// // Run `terraform output` to get the values of output variables
 	vmName := terraform.Output(t, terraformOptions, "vm_name")
@@ -141,7 +141,7 @@ func TestUbuntuVm(t *testing.T) {
 	description := fmt.Sprintf("Find virtual machine %s", vmName)
 
 	// // Look up the size of the given Virtual Machine and ensure it matches the output.
-	maxRetries := 30
+	maxRetries := 10
 	timeBetweenRetries := 5 * time.Second
 	retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
 		actualVMSize, err := azure.GetSizeOfVirtualMachineE(t, vmName, resourceGroupName, subscriptionID)

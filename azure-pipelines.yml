@@ -36,7 +36,9 @@ steps:
       terraformVersion: "$(terraform.version)"
     displayName: Install Terraform
   
-  - script: az login --service-principal -u $(application_id) -p $(ServerAutomationDemo-AppPw) --tenant $(tenant_id)
+  - script: |
+      az login --service-principal -u $(application_id) -p $(ServerAutomationDemo-AppPw) --tenant $(tenant_id)
+      terraform workspace new ci
     displayName: "Azure CLI login"
 
   # - script: |
