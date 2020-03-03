@@ -56,11 +56,12 @@ steps:
   #   displayName: "Create terraform.tfvars"
 
   - script: |
-      "tenant_id = $(tenant_id)" >> $(terraform.path)/terraform.tfvars
-      "subscription_id = $(subscription_id)" >> $(terraform.path)/terraform.tfvars
-      "client_id = $(application_id)" >> $(terraform.path)/terraform.tfvars
-      "client_secret = $(ServerAutomationDemo-AppPw)" >> $(terraform.path)/terraform.tfvars
-      cd ubuntu_vm
+      New-Item -ItemType File -Name terraform.tfvars -Path $(terraform.path)
+      Add-Content $(terraform.path)/terraform.tfvars -value "tenant_id = $(tenant_id)"
+      Add-Content $(terraform.path)/terraform.tfvars -value "subscription_id = $(subscription_id)"
+      Add-Content $(terraform.path)/terraform.tfvars -value "client_id = $(application_id)"
+      Add-Content $(terraform.path)/terraform.tfvars -value "client_secret = $(ServerAutomationDemo-AppPw)"
+      cd $(terraform.path)
       terraform workspace new ci
       terraform init
       terraform apply -auto-approve -compact-warnings -input=false -no-color
