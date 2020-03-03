@@ -53,6 +53,7 @@ steps:
         echo 'client_id = "$(application_id)"'
         echo 'client_secret = "$(ServerAutomationDemo-AppPw)"'
       } >> '$(terraform.path)'/terraform.tfvars
+      cd ubuntu_vm
       terraform workspace new ci
       terraform init
       terraform apply
