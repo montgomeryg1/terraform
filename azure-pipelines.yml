@@ -45,14 +45,14 @@ steps:
   #     echo "##vso[task.setvariable variable=access_key]$ACCESS_KEY"
   #   displayName: "Get ACCESS_KEY"
 
-  # - script: |
-  #     {
-  #       echo 'tenant_id = "$(tenant_id)"'
-  #       echo 'subscription_id = "$(subscription_id)"'
-  #       echo 'client_id = "$(application_id)"'
-  #       echo 'client_secret = "$(ServerAutomationDemo-AppPw)"'
-  #     } >> '$(terraform.path)'/terraform.tfvars
-  #   displayName: "Create terraform.tfvars"
+  - script: |
+      {
+        echo 'tenant_id = "$(tenant_id)"'
+        echo 'subscription_id = "$(subscription_id)"'
+        echo 'client_id = "$(application_id)"'
+        echo 'client_secret = "$(ServerAutomationDemo-AppPw)"'
+      } >> '$(terraform.path)'/terraform.tfvars
+    displayName: "Create terraform.tfvars"
 
   # - script: |
   #     {
