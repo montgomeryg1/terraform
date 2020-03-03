@@ -73,8 +73,6 @@ jobs:
       vmImage: "vs2017-win2016"  
     steps:
       - task: AzSKSVTs@4
-        container: # inline container specification
-          image: ubuntu:16.04
         inputs:
           ConnectedServiceNameARM: 'ARM'
           GenerateMethodParameterSetSelection: 'ResourceGroupName'
