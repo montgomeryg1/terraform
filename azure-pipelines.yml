@@ -55,17 +55,24 @@ steps:
   #     } >> '$(terraform.path)'/terraform.tfvars
   #   displayName: "Create terraform.tfvars"
 
+
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        New-Item -ItemType File -Name terraform.tfvars -Path $(terraform.path)
+        Add-Content $(terraform.path)/terraform.tfvars -value "tenant_id = $(tenant_id)"
+        Add-Content $(terraform.path)/terraform.tfvars -value "subscription_id = $(subscription_id)"
+        Add-Content $(terraform.path)/terraform.tfvars -value "client_id = $(application_id)"
+        Add-Content $(terraform.path)/terraform.tfvars -value "client_secret = $(ServerAutomationDemo-AppPw)"
+    displayName: "Create terraform.tfvars"
+
   - script: |
-      New-Item -ItemType File -Name terraform.tfvars -Path $(terraform.path)
-      Add-Content $(terraform.path)/terraform.tfvars -value "tenant_id = $(tenant_id)"
-      Add-Content $(terraform.path)/terraform.tfvars -value "subscription_id = $(subscription_id)"
-      Add-Content $(terraform.path)/terraform.tfvars -value "client_id = $(application_id)"
-      Add-Content $(terraform.path)/terraform.tfvars -value "client_secret = $(ServerAutomationDemo-AppPw)"
       cd $(terraform.path)
       terraform workspace new ci
       terraform init
       terraform apply -auto-approve -compact-warnings -input=false -no-color
-    displayName: "Create terraform.tfvars"
+    displayName: "Terraform init and apply"
 
   - task: AzSKSVTs@4
     inputs:
