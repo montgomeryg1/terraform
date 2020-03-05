@@ -50,6 +50,20 @@ jobs:
       #     echo "##vso[task.setvariable variable=access_key]$ACCESS_KEY"
       #   displayName: "Get ACCESS_KEY"
 
+      # - script: |
+      #     {
+      #       echo 'terraform {'
+      #       echo '  backend "azurerm" {'
+      #       echo '    resource_group_name = "artifacts"'
+      #       echo '    storage_account_name = "$(storage_acct)"'
+      #       echo '    container_name = "tf-statefiles"'
+      #       echo '    key = "$(state.key)"'
+      #       echo '    access_key = "$(access_key)"'
+      #       echo '  }'
+      #       echo '}'
+      #     } >> '$(terraform.path)'/backend.tf
+      #   displayName: "Create backend file"      
+
       - script: |
           {
             echo 'tenant_id = "$(tenant_id)"'
@@ -82,19 +96,7 @@ jobs:
   #         SubscriptionId: '60020c84-fca0-4d3b-ab6a-502ba1028851'
   #         EnableOMSLogging: false    
 
-      # - script: |
-      #     {
-      #       echo 'terraform {'
-      #       echo '  backend "azurerm" {'
-      #       echo '    resource_group_name = "artifacts"'
-      #       echo '    storage_account_name = "$(storage_acct)"'
-      #       echo '    container_name = "tf-statefiles"'
-      #       echo '    key = "$(state.key)"'
-      #       echo '    access_key = "$(access_key)"'
-      #       echo '  }'
-      #       echo '}'
-      #     } >> '$(terraform.path)'/backend.tf
-      #   displayName: "Create backend file"
+
 
       # - script: |
       #     terraform init -no-color -input=false
