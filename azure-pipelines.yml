@@ -38,10 +38,10 @@ jobs:
       vmImage: "ubuntu-latest"
     steps:
 
-    - task: WhiteSource Bolt@20
-      inputs:
-        cwd: '*'
-        advance: true
+      - task: WhiteSource Bolt@20
+        inputs:
+          cwd: '*'
+          advance: true
 
       - task: TerraformInstaller@0
         inputs:
