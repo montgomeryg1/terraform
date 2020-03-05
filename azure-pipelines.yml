@@ -28,7 +28,7 @@ variables:
   - name: state.key
     value: "TFSTATE"
   - name: terraform.path
-    value: "app_service"
+    value: "webapp"
 
 jobs:
   - job: Terraform

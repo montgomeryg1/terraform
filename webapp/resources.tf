@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "testing" {
 }
 
 resource "azurerm_app_service_plan" "testing" {
-  name                = "api-appserviceplan-free"
+  name                = "appserviceplan"
   location            = azurerm_resource_group.testing.location
   resource_group_name = azurerm_resource_group.testing.name
 
