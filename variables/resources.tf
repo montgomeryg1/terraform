@@ -130,13 +130,13 @@ variable "app_service_plan_tier_map" {
   type        = map
   default = {
     northeurope = {
-      small  = "Free"
+      small  = "Standard"
       medium = "Standard"
       large  = "Standard"
       xlarge = "Premium"
     }
     westeurope = {
-      small  = "Free"
+      small  = "Standard"
       medium = "Standard"
       large  = "Standard"
       xlarge = "Premium"
@@ -154,13 +154,13 @@ variable "app_service_plan_size_map" {
   type        = map
   default = {
     northeurope = {
-      small  = "F1"
+      small  = "S1"
       medium = "S1"
       large  = "S2"
       xlarge = "P1"
     }
     westeurope = {
-      small  = "F1"
+      small  = "S1"
       medium = "S1"
       large  = "S2"
       xlarge = "P1"
