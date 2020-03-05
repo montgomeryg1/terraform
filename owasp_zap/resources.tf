@@ -137,7 +137,10 @@ resource "azurerm_virtual_machine" "testing" {
     admin_password = var.password
   }
 
-  os_profile_linux_config {
-    disable_password_authentication = false
+  os_profile_windows_config {
+    provision_vm_agent = true
+    enable_automatic_upgrades = true
+    timezone = "GMT Standard Time"
   }
+
 }
