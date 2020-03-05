@@ -61,7 +61,7 @@ resource "azurerm_network_security_rule" "nsr1" {
 }
 
 resource "azurerm_network_security_rule" "nsr2" {
-  name                        = "allow-http/s"
+  name                        = "allow-https"
   priority                    = 110
   direction                   = "Inbound"
   access                      = "Allow"
@@ -120,7 +120,7 @@ resource "azurerm_virtual_machine" "testing" {
   storage_image_reference {
     publisher = "MicrosoftWindowsServer"
     offer     = "WindowsServer"
-    sku       = "2016-Datacenter-Server"
+    sku       = "2019-Datacenter-smalldisk"
     version   = "latest"
   }
 
