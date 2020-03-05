@@ -60,19 +60,33 @@ resource "azurerm_network_security_rule" "nsr1" {
 }
 
 resource "azurerm_network_security_rule" "nsr2" {
-  name                        = "allow-https"
+  name                        = "allow-http"
   priority                    = 110
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
-  destination_port_range      = "80,443"
+  destination_port_range      = "80"
   source_address_prefix       = "Internet"
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.owaspzap.name
   network_security_group_name = azurerm_network_security_group.nsg1.name
 }
 
+
+resource "azurerm_network_security_rule" "nsr3" {
+  name                        = "allow-https"
+  priority                    = 120
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "443"
+  source_address_prefix       = "Internet"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.owaspzap.name
+  network_security_group_name = azurerm_network_security_group.nsg1.name
+}
 # ---------------------------------------------------------------------------------------------------------------------
 # DEPLOY A VIRTUAL MACHINE NETWORK CARD
 # ---------------------------------------------------------------------------------------------------------------------
