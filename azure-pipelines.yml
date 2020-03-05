@@ -104,7 +104,7 @@ jobs:
       #     go test --run TestUbuntuVm -timeout 60m
       #   displayName: Run UbuntuVm Terratest
 
-      - script: |
-          az group delete --name testing-resources --yes
-        displayName: cleanup
-        condition: failed()
+      # - script: |
+      #     az group delete --name testing-resources --yes
+      #   displayName: cleanup
+      #   condition: failed()
