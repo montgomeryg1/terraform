@@ -80,7 +80,7 @@ jobs:
           terraform init
           terraform plan -no-color
           terraform apply -auto-approve -compact-warnings -no-color
-          terraform destroy
+          terraform destroy -auto-approve 
         displayName: "Terraform init and apply"
   
   # - job: Tests
