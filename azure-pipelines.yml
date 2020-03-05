@@ -21,6 +21,8 @@ variables:
     value: "244126a8-5f50-4bbd-843f-add51306a77b"
   - name: terraform.version
     value: "0.12.21"
+  - name: storage_rg
+    value: "artifacts"
   - name: storage_acct
     value: "artifactsdevelopment"
   - name: access_key
@@ -54,7 +56,7 @@ jobs:
       #     {
       #       echo 'terraform {'
       #       echo '  backend "azurerm" {'
-      #       echo '    resource_group_name = "artifacts"'
+      #       echo '    resource_group_name = "$(storage_rg)"'
       #       echo '    storage_account_name = "$(storage_acct)"'
       #       echo '    container_name = "tf-statefiles"'
       #       echo '    key = "$(state.key)"'
