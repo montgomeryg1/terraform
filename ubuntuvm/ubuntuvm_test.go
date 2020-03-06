@@ -12,19 +12,15 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/compute/mgmt/compute"
 	"github.com/gruntwork-io/terratest/modules/retry"
-	// "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
-	// "github.com/gruntwork-io/terratest/modules/azure"
-	// "github.com/stretchr/testify/assert"
-	// "github.com/stretchr/testify/require"
 )
 
 func TestUbuntuVm(t *testing.T) {
 	t.Parallel()
 
-	os.Setenv("ARM_CLIENT_ID", "__applicationID__")
-	os.Setenv("ARM_CLIENT_SECRET", "__applicationSecret__")
-	os.Setenv("ARM_SUBSCRIPTION_ID", "__subscriptionID__")
-	os.Setenv("ARM_TENANT_ID", "__tenantID__")
+	os.Setenv("AZURE_CLIENT_ID", "__applicationID__")
+	os.Setenv("AZURE_CLIENT_SECRET", "__applicationSecret__")
+	os.Setenv("AZURE_SUBSCRIPTION_ID", "__subscriptionID__")
+	os.Setenv("AZURE_TENANT_ID", "__tenantID__")
 
 	// Configure Terraform setting up a path to Terraform code.
 	terraformOptions := &terraform.Options{
