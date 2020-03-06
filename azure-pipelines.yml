@@ -91,7 +91,7 @@ jobs:
 
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(Build.ArtifactStagingDirectory)/test'
+          SourceFolder: test
           Contents: '**'
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
