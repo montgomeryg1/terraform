@@ -1,17 +1,14 @@
 package test
 
 import (
-	"fmt"
 	"os"
 	"testing"
-	"time"
 
 	"github.com/gruntwork-io/terratest/modules/azure"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/compute/mgmt/compute"
-	"github.com/gruntwork-io/terratest/modules/retry"
 )
 
 func TestUbuntuVm(t *testing.T) {
@@ -38,7 +35,7 @@ func TestUbuntuVm(t *testing.T) {
 	vmName := terraform.Output(t, terraformOptions, "vm_name")
 	resourceGroupName := terraform.Output(t, terraformOptions, "resource_group_name")
 	expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
-	actualVMSize, err := azure.GetSizeOfVirtualMachineE(t, vmName, resourceGroupName, subscriptionID)
+	actualVMSize := azure.GetSizeOfVirtualMachine(t, vmName, resourceGroupName, subscriptionID)
 	assert.Equal(t, expectedVMSize, actualVMSize)
 
 	// description := fmt.Sprintf("Find virtual machine %s", vmName)
