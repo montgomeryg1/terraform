@@ -123,3 +123,51 @@ output "container_registry_sku" {
   # value = "${var.vm_size_map[var.size]}"
   value = "${lookup(var.container_registry_sku_map[var.region], var.size)}"
 }
+
+
+variable "app_service_plan_tier_map" {
+  description = "A map for app service plan sku tier"
+  type        = map
+  default = {
+    northeurope = {
+      small  = "Standard"
+      medium = "Standard"
+      large  = "Standard"
+      xlarge = "Premium"
+    }
+    westeurope = {
+      small  = "Standard"
+      medium = "Standard"
+      large  = "Standard"
+      xlarge = "Premium"
+    }
+  }
+}
+
+output "app_service_plan_tier" {
+  value = "${lookup(var.app_service_plan_tier_map[var.region], var.size)}"
+}
+
+
+variable "app_service_plan_size_map" {
+  description = "A map for app service plan sku size"
+  type        = map
+  default = {
+    northeurope = {
+      small  = "S1"
+      medium = "S1"
+      large  = "S2"
+      xlarge = "P1"
+    }
+    westeurope = {
+      small  = "S1"
+      medium = "S1"
+      large  = "S2"
+      xlarge = "P1"
+    }
+  }
+}
+
+output "app_service_plan_size" {
+  value = "${lookup(var.app_service_plan_size_map[var.region], var.size)}"
+}

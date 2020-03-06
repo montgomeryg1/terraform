@@ -25,20 +25,20 @@ jobs:
             go get -v -t -d ./...  
           fi
       
-      - name: az Login
-        run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
+      # - name: az Login
+      #   run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
 
-      - name: run ubuntu_vm tests 
-        working-directory: /home/runner/work/terraform/terraform/test
-        run: go test --run TestUbuntuVm -timeout 60m
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TF_VAR_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          TF_VAR_client_id: ${{ secrets.ARM_CLIENT_ID }}
-          TF_VAR_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
-          TF_VAR_tenant_id: ${{ secrets.ARM_TENANT_ID }}
+      # - name: run ubuntu_vm tests 
+      #   working-directory: /home/runner/work/terraform/terraform/test
+      #   run: go test --run TestUbuntuVm -timeout 60m
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     TF_VAR_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      #     TF_VAR_client_id: ${{ secrets.ARM_CLIENT_ID }}
+      #     TF_VAR_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+      #     TF_VAR_tenant_id: ${{ secrets.ARM_TENANT_ID }}
       
-      - name: delete resource group
-        run: az group delete --name ubuntuvm-resources --yes
-        if: failure()
+      # - name: delete resource group
+      #   run: az group delete --name testing-resources --yes
+      #   if: failure()
 

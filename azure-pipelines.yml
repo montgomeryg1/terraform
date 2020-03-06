@@ -21,88 +21,101 @@ variables:
     value: "244126a8-5f50-4bbd-843f-add51306a77b"
   - name: terraform.version
     value: "0.12.21"
+  - name: storage_rg
+    value: "artifacts"
   - name: storage_acct
     value: "artifactsdevelopment"
   - name: access_key
     value: "empty"
   - name: state.key
-    value: "TFSTATE"
+    value: "webapp"
   - name: terraform.path
-    value: "ubuntu_vm"
+    value: "webapp"
 
-steps:
+jobs:
+  - job: Terraform
+    steps:
 
-  - task: WhiteSource Bolt@20
-    inputs:
-      cwd: '*'
-      advance: true
+      - task: WhiteSource Bolt@20
+        inputs:
+          cwd: '*'
+      - task: TerraformInstaller@0
+        inputs:
+          terraformVersion: "$(terraform.version)"
+        displayName: Install Terraform
 
-  - task: TerraformInstaller@0
-    inputs:
-      terraformVersion: "$(terraform.version)"
-    displayName: Install Terraform
-  
-  - script: |
-      az login --service-principal -u $(application_id) -p $(ServerAutomationDemo-AppPw) --tenant $(tenant_id)
-      terraform workspace new ci
-    displayName: "Azure CLI login"
+      - script: |
+          az login --service-principal -u $(application_id) -p $(ServerAutomationDemo-AppPw) --tenant $(tenant_id)
+          ACCESS_KEY=`az storage account keys list -n $(storage_acct) -o json | jq -r '.[0].value'`
+          echo "##vso[task.setvariable variable=access_key]$ACCESS_KEY"
+        displayName: "Azure CLI Login"
 
-  # - script: |
-  #     az login --service-principal -u $(application_id) -p $(ServerAutomationDemo-AppPw) --tenant $(tenant_id)
-  #     ACCESS_KEY=`az storage account keys list -n $(storage_acct) -o json | jq -r '.[0].value'`
-  #     echo "##vso[task.setvariable variable=access_key]$ACCESS_KEY"
-  #   displayName: "Get ACCESS_KEY"
+      - script: |
+          {
+            echo 'terraform {'
+            echo '  backend "azurerm" {'
+            echo '    resource_group_name = "$(storage_rg)"'
+            echo '    storage_account_name = "$(storage_acct)"'
+            echo '    container_name = "tf-statefiles"'
+            echo '    key = "$(state.key)"'
+            echo '    access_key = "$(access_key)"'
+            echo '  }'
+            echo '}'
+          } >> '$(terraform.path)'/backend.tf
+        displayName: "Create backend file"      
 
-  - script: |
-      {
-        echo 'tenant_id = "$(tenant_id)"'
-        echo 'subscription_id = "$(subscription_id)"'
-        echo 'client_id = "$(application_id)"'
-        echo 'client_secret = "$(ServerAutomationDemo-AppPw)"'
-      } >> '$(terraform.path)'/terraform.tfvars
-    displayName: "Create terraform.tfvars"
+      - script: |
+          {
+            echo 'tenant_id = "$(tenant_id)"'
+            echo 'subscription_id = "$(subscription_id)"'
+            echo 'client_id = "$(application_id)"'
+            echo 'client_secret = "$(ServerAutomationDemo-AppPw)"'
+          } >> '$(terraform.path)'/terraform.tfvars
+        displayName: "Create terraform.tfvars"
 
-  # - script: |
-  #     {
-  #       echo 'terraform {'
-  #       echo '  backend "azurerm" {'
-  #       echo '    resource_group_name = "artifacts"'
-  #       echo '    storage_account_name = "$(storage_acct)"'
-  #       echo '    container_name = "tf-statefiles"'
-  #       echo '    key = "$(state.key)"'
-  #       echo '    access_key = "$(access_key)"'
-  #       echo '  }'
-  #       echo '}'
-  #     } >> '$(terraform.path)'/backend.tf
-  #   displayName: "Create backend file"
 
-  # - script: |
-  #     terraform init -no-color -input=false
-  #     terraform plan -out=tfplan -no-color -input=false -var-file terraform.tfvars
-  #   displayName: "Terraform Init and Plan"
-  #   workingDirectory: "$(terraform.path)"
+      - script: |
+          cd $(terraform.path)
+          terraform workspace new ci
+          terraform init
+          terraform plan -no-color
+        displayName: "Terraform init and plan" 
 
-  - task: GoTool@0
-    inputs:
-      version: '1.13'
-    displayName: Install Go
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: '$(terraform.path)'
+          Contents: '**'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+          CleanTargetFolder: true
+          OverWrite: true
 
-  - script: |
-      if [ -f Gopkg.toml ]; then
-          curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-          dep ensure
-      else
-        go get -v -t -d ./...  
-      fi
-    displayName: Get Go dependencies
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'        
 
-  - script: |
-      cd test
-      ls -la
-      go test --run TestUbuntuVm -timeout 60m
-    displayName: Run UbuntuVm Terratest
+      # - task: GoTool@0
+      #   inputs:
+      #     version: '1.13'
+      #   displayName: Install Go
 
-  - script: |
-      az group delete --name ubuntuvm-resources --yes
-    displayName: cleanup
-    condition: failed()
+      # - script: |
+      #     if [ -f Gopkg.toml ]; then
+      #         curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+      #         dep ensure
+      #     else
+      #       go get -v -t -d ./...  
+      #     fi
+      #   displayName: Get Go dependencies
+
+      # - script: |
+      #     cd test
+      #     ls -la
+      #     go test --run TestUbuntuVm -timeout 60m
+      #   displayName: Run UbuntuVm Terratest
+
+      # - script: |
+      #     az group delete --name testing-resources --yes
+      #   displayName: cleanup
+      #   condition: failed()

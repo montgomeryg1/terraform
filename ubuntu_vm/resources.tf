@@ -13,7 +13,7 @@ module "variables" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "azurerm_resource_group" "testing" {
-  name     = "${var.prefix}-resources"
+  name     = "testing-resources"
   location = "North Europe"
 }
 
