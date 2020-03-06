@@ -79,3 +79,12 @@ func TestUbuntuVm(t *testing.T) {
 	// at the end of the test, run `terraform destroy` to clean up any resources that were created
 	// defer terraform.Destroy(t, terraformOptions)
 }
+
+func TestSomething(t *testing.T) {
+
+	var a string = "Hello"
+	var b string = "Hello"
+
+	assert.Equal(t, a, b, "The two words should be the same.")
+
+}
