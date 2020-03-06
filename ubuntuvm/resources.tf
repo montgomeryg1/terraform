@@ -1,7 +1,7 @@
 
 module "variables" {
-  # source = "github.com/montgomeryg1/terraform//variables"
-  source      = "../variables"
+  source = "github.com/montgomeryg1/terraform//variables"
+  # source      = "../variables"
   environment = local.environment
   size        = local.size
   region      = var.region
@@ -37,7 +37,7 @@ resource "azurerm_subnet" "internal" {
 }
 
 resource "azurerm_public_ip" "ubuntuvm" {
-  name                = "${var.prefix}-pip"
+  name                = "pip"
   location            = azurerm_resource_group.testing.location
   resource_group_name = azurerm_resource_group.testing.name
   allocation_method   = "Dynamic"
@@ -45,7 +45,7 @@ resource "azurerm_public_ip" "ubuntuvm" {
 }
 
 resource "azurerm_network_interface" "nic" {
-  name                = "${var.prefix}-nic"
+  name                = "nic"
   location            = azurerm_resource_group.testing.location
   resource_group_name = azurerm_resource_group.testing.name
 
@@ -62,7 +62,7 @@ resource "azurerm_network_interface" "nic" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "azurerm_virtual_machine" "testing" {
-  name                             = "${var.prefix}-vm"
+  name                             = "vm"
   location                         = azurerm_resource_group.testing.location
   resource_group_name              = azurerm_resource_group.testing.name
   network_interface_ids            = [azurerm_network_interface.nic.id]
