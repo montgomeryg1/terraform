@@ -30,18 +30,11 @@ resource "azurerm_app_service" "testing" {
 
   site_config {
     app_command_line = ""
-    linux_fx_version = "DOCKER|dockusgeorgus/node-web-app:latest"
-    always_on = true
+    linux_fx_version = "DOCKER|appsvcsample/python-helloworld:latest"
   }
 
   app_settings = {
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
     "DOCKER_REGISTRY_SERVER_URL"          = "https://index.docker.io"
-  }
-
-  connection_string {
-    name  = "Database"
-    type  = "SQLServer"
-    value = "Server=some-server.mydomain.com;Integrated Security=SSPI"
   }
 }

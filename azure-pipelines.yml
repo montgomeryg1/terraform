@@ -79,8 +79,7 @@ jobs:
           terraform workspace new ci
           terraform init
           terraform plan -no-color
-          terraform apply -auto-approve -compact-warnings -no-color
-        displayName: "Terraform init and apply" 
+        displayName: "Terraform init and plan" 
 
       # - task: GoTool@0
       #   inputs:
