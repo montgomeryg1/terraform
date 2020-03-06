@@ -4,8 +4,6 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
-	"github.com/gruntwork-io/terratest/modules/azure"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
 )
@@ -28,15 +26,16 @@ func TestUbuntuVm(t *testing.T) {
 	// Run `terraform apply`. Fail the test if there are any errors.
 	// terraform.InitAndApply(t, terraformOptions)
 
-	//subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
+	// subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
 
 	// Run `terraform output` to get the values of output variables
-	vmName := terraform.Output(t, terraformOptions, "vm_name")
-	resourceGroupName := terraform.Output(t, terraformOptions, "resource_group_name")
-	actualVMSize := azure.GetSizeOfVirtualMachine(t, vmName, resourceGroupName, "")
-	expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
-
-	assert.Equal(t, expectedVMSize, actualVMSize)
+	// vmName := terraform.Output(t, terraformOptions, "vm_name")
+	// resourceGroupName := terraform.Output(t, terraformOptions, "resource_group_name")
+	actualVMSize := terraform.Output(t, terraformOptions, "vm_size")
+	//actualVMSize := azure.GetSizeOfVirtualMachine(t, vmName, resourceGroupName, subscriptionID)
+	//expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
+	assert.Equal(t, "Standard_B1s", actualVMSize)
+	//assert.Equal(t, expectedVMSize, actualVMSize)
 
 	// description := fmt.Sprintf("Find virtual machine %s", vmName)
 
