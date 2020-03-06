@@ -81,6 +81,20 @@ jobs:
           terraform plan -no-color
         displayName: "Terraform init and plan" 
 
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: '$(terraform.path)'
+          Contents: '**'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+          CleanTargetFolder: true
+          OverWrite: true
+
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'        
+
       # - task: GoTool@0
       #   inputs:
       #     version: '1.13'
