@@ -9,7 +9,7 @@ pr:
 pool:
   vmImage: "ubuntu-latest"
 
-# variables:
+variables:
   # - name: terraform.version
   #   value: "0.12.23"
   # - name: storage_rg
@@ -18,8 +18,8 @@ pool:
   #   value: "artifactsdevelopment"
   # - name: access_key
   #   value: "empty"
-  # - name: terraform.name
-  #   value: "ubuntuvm"
+  - name: terraform.name
+    value: "ubuntuvm"
 
 jobs:
   - job: Terraform
