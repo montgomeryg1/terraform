@@ -9,18 +9,17 @@ pr:
 pool:
   vmImage: "ubuntu-latest"
 
-variables:
-  - group: CI
-  - name: terraform.version
-    value: "0.12.23"
-  - name: storage_rg
-    value: "artifacts"
-  - name: storage_acct
-    value: "artifactsdevelopment"
-  - name: access_key
-    value: "empty"
-  - name: terraform.name
-    value: "ubuntuvm"
+# variables:
+  # - name: terraform.version
+  #   value: "0.12.23"
+  # - name: storage_rg
+  #   value: "artifacts"
+  # - name: storage_acct
+  #   value: "artifactsdevelopment"
+  # - name: access_key
+  #   value: "empty"
+  # - name: terraform.name
+  #   value: "ubuntuvm"
 
 jobs:
   - job: Terraform
@@ -30,39 +29,34 @@ jobs:
         inputs:
           cwd: '*'
 
-      - task: TerraformInstaller@0
-        inputs:
-          terraformVersion: "$(terraform.version)"
-        displayName: Install Terraform
+      # - script: |
+      #     az login --service-principal -u $(applicationID) -p $(applicationSecret) --tenant $(tenantID)
+      #     ACCESS_KEY=`az storage account keys list -n $(storage_acct) -o json | jq -r '.[0].value'`
+      #     echo "##vso[task.setvariable variable=access_key]$ACCESS_KEY"
+      #   displayName: "Azure CLI Login"
 
-      - script: |
-          az login --service-principal -u $(applicationID) -p $(applicationSecret) --tenant $(tenantID)
-          ACCESS_KEY=`az storage account keys list -n $(storage_acct) -o json | jq -r '.[0].value'`
-          echo "##vso[task.setvariable variable=access_key]$ACCESS_KEY"
-        displayName: "Azure CLI Login"
+      # - script: |
+      #     {
+      #       echo 'terraform {'
+      #       echo '  backend "azurerm" {'
+      #       echo '    resource_group_name = "$(storage_rg)"'
+      #       echo '    storage_account_name = "$(storage_acct)"'
+      #       echo '    container_name = "tf-statefiles"'
+      #       echo '    key = "$(terraform.name)"'
+      #       echo '    access_key = "$(access_key)"'
+      #       echo '  }'
+      #       echo '}'
+      #     } >> '$(terraform.name)'/backend.tf
+      #   displayName: "Create backend file"      
 
-      - script: |
-          {
-            echo 'terraform {'
-            echo '  backend "azurerm" {'
-            echo '    resource_group_name = "$(storage_rg)"'
-            echo '    storage_account_name = "$(storage_acct)"'
-            echo '    container_name = "tf-statefiles"'
-            echo '    key = "$(terraform.name)"'
-            echo '    access_key = "$(access_key)"'
-            echo '  }'
-            echo '}'
-          } >> '$(terraform.name)'/backend.tf
-        displayName: "Create backend file"      
-
-      - script: |
-          {
-            echo 'tenant_id = "$(tenantID)"'
-            echo 'subscription_id = "$(subscriptionID)"'
-            echo 'client_id = "$(applicationID)"'
-            echo 'client_secret = "$(applicationSecret)"'
-          } >> '$(terraform.name)'/terraform.tfvars
-        displayName: "Create terraform.tfvars"
+      # - script: |
+      #     {
+      #       echo 'tenant_id = "$(tenantID)"'
+      #       echo 'subscription_id = "$(subscriptionID)"'
+      #       echo 'client_id = "$(applicationID)"'
+      #       echo 'client_secret = "$(applicationSecret)"'
+      #     } >> '$(terraform.name)'/terraform.tfvars
+      #   displayName: "Create terraform.tfvars"
 
 
       # - script: |
@@ -79,13 +73,6 @@ jobs:
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
           CleanTargetFolder: true
           OverWrite: true
-
-      # - task: CopyFiles@2
-      #   inputs:
-      #     SourceFolder: test
-      #     Contents: '**'
-      #     TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
 
       - task: PublishBuildArtifacts@1
         inputs:
@@ -106,12 +93,6 @@ jobs:
       #       go get -v -t -d ./...  
       #     fi
       #   displayName: Get Go dependencies
-
-      # - script: |
-      #     cd test
-      #     ls -la
-      #     go test --run TestUbuntuVm -timeout 60m
-      #   displayName: Run UbuntuVm Terratest
 
       # - script: |
       #     az group delete --name testing-resources --yes
