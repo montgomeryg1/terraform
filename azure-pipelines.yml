@@ -28,9 +28,9 @@ variables:
   - name: access_key
     value: "empty"
   - name: state.key
-    value: "webapp"
+    value: "ubuntuvm"
   - name: terraform.path
-    value: "webapp"
+    value: "ubuntuvm"
 
 jobs:
   - job: Terraform
