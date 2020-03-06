@@ -20,16 +20,14 @@ variables:
   - name: tenant_id
     value: "244126a8-5f50-4bbd-843f-add51306a77b"
   - name: terraform.version
-    value: "0.12.21"
+    value: "0.12.23"
   - name: storage_rg
     value: "artifacts"
   - name: storage_acct
     value: "artifactsdevelopment"
   - name: access_key
     value: "empty"
-  - name: state.key
-    value: "ubuntuvm"
-  - name: terraform.path
+  - name: terraform.name
     value: "ubuntuvm"
 
 jobs:
@@ -57,11 +55,11 @@ jobs:
             echo '    resource_group_name = "$(storage_rg)"'
             echo '    storage_account_name = "$(storage_acct)"'
             echo '    container_name = "tf-statefiles"'
-            echo '    key = "$(state.key)"'
+            echo '    key = "$(terraform.name)"'
             echo '    access_key = "$(access_key)"'
             echo '  }'
             echo '}'
-          } >> '$(terraform.path)'/backend.tf
+          } >> '$(terraform.name)'/backend.tf
         displayName: "Create backend file"      
 
       - script: |
@@ -70,12 +68,12 @@ jobs:
             echo 'subscription_id = "$(subscription_id)"'
             echo 'client_id = "$(application_id)"'
             echo 'client_secret = "$(ServerAutomationDemo-AppPw)"'
-          } >> '$(terraform.path)'/terraform.tfvars
+          } >> '$(terraform.name)'/terraform.tfvars
         displayName: "Create terraform.tfvars"
 
 
       # - script: |
-      #     cd $(terraform.path)
+      #     cd $(terraform.name)
       #     terraform workspace new ci
       #     terraform init -no-color
       #     terraform plan -no-color
@@ -83,7 +81,7 @@ jobs:
 
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(terraform.path)'
+          SourceFolder: '$(terraform.name)'
           Contents: '**'
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
           CleanTargetFolder: true
