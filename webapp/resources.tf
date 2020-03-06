@@ -29,12 +29,14 @@ resource "azurerm_app_service" "testing" {
   app_service_plan_id = azurerm_app_service_plan.testing.id
 
   site_config {
-    dotnet_framework_version = "v4.0"
-    scm_type                 = "LocalGit"
+    app_command_line = ""
+    linux_fx_version = "DOCKER|dockusgeorgus/node-web-app:latest"
+    always_on = true
   }
 
   app_settings = {
-    "SOME_KEY" = "some-value"
+    "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
+    "DOCKER_REGISTRY_SERVER_URL"          = "https://index.docker.io"
   }
 
   connection_string {

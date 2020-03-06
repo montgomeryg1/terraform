@@ -28,9 +28,9 @@ variables:
   - name: access_key
     value: "empty"
   - name: state.key
-    value: "owasp_zap"
+    value: "webapp"
   - name: terraform.path
-    value: "owasp_zap"
+    value: "webapp"
 
 jobs:
   - job: Terraform
