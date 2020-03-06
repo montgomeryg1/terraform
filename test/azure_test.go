@@ -125,7 +125,7 @@ func TestUbuntuVm(t *testing.T) {
 	// website::tag::1:: Configure Terraform setting up a path to Terraform code.
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
-		TerraformDir: "../ubuntu_vm",
+		TerraformDir: ".",
 	}
 
 	// Run `terraform apply`. Fail the test if there are any errors.
@@ -176,7 +176,7 @@ func TestUbuntuVm(t *testing.T) {
 		return "", err
 	})
 
-	// t the end of the test, run `terraform destroy` to clean up any resources that were created
+	// at the end of the test, run `terraform destroy` to clean up any resources that were created
 	defer terraform.Destroy(t, terraformOptions)
 }
 
