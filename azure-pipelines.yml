@@ -74,12 +74,12 @@ jobs:
         displayName: "Create terraform.tfvars"
 
 
-      - script: |
-          cd $(terraform.path)
-          terraform workspace new ci
-          terraform init
-          terraform plan -no-color
-        displayName: "Terraform init and plan" 
+      # - script: |
+      #     cd $(terraform.path)
+      #     terraform workspace new ci
+      #     terraform init -no-color
+      #     terraform plan -no-color
+      #   displayName: "Terraform init and plan" 
 
       - task: CopyFiles@2
         inputs:
