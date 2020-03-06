@@ -10,15 +10,7 @@ pool:
   vmImage: "ubuntu-latest"
 
 variables:
-  - group: ServicePrincipal
-  - name: azure_resource_group_name
-    value: "TerraformTesting-$(Build.BuildId)"
-  - name: subscription_id
-    value: "60020c84-fca0-4d3b-ab6a-502ba1028851"
-  - name: application_id
-    value: "5305bcc1-1bf5-4af7-b7b9-b9440b2ff28e"
-  - name: tenant_id
-    value: "244126a8-5f50-4bbd-843f-add51306a77b"
+  - group: CI
   - name: terraform.version
     value: "0.12.23"
   - name: storage_rg
@@ -43,7 +35,7 @@ jobs:
         displayName: Install Terraform
 
       - script: |
-          az login --service-principal -u $(application_id) -p $(ServerAutomationDemo-AppPw) --tenant $(tenant_id)
+          az login --service-principal -u $(applicationID) -p $(applicationSecret) --tenant $(tenantID)
           ACCESS_KEY=`az storage account keys list -n $(storage_acct) -o json | jq -r '.[0].value'`
           echo "##vso[task.setvariable variable=access_key]$ACCESS_KEY"
         displayName: "Azure CLI Login"
@@ -64,10 +56,10 @@ jobs:
 
       - script: |
           {
-            echo 'tenant_id = "$(tenant_id)"'
-            echo 'subscription_id = "$(subscription_id)"'
-            echo 'client_id = "$(application_id)"'
-            echo 'client_secret = "$(ServerAutomationDemo-AppPw)"'
+            echo 'tenant_id = "$(tenantID)"'
+            echo 'subscription_id = "$(subscriptionID)"'
+            echo 'client_id = "$(applicationID)"'
+            echo 'client_secret = "$(applicationSecret)"'
           } >> '$(terraform.name)'/terraform.tfvars
         displayName: "Create terraform.tfvars"
 
