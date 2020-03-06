@@ -29,6 +29,7 @@ jobs:
       - task: WhiteSource Bolt@20
         inputs:
           cwd: 'webapp/myExpressApp'
+          
       - task: TerraformInstaller@0
         inputs:
           terraformVersion: "$(terraform.version)"

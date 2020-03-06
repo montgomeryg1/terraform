@@ -126,6 +126,7 @@ func TestUbuntuVm(t *testing.T) {
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
 		TerraformDir: ".",
+		NoColor:      true,
 	}
 
 	// Run `terraform apply`. Fail the test if there are any errors.
