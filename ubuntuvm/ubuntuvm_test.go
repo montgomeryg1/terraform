@@ -32,23 +32,25 @@ func TestUbuntuVm(t *testing.T) {
 	// Run `terraform apply`. Fail the test if there are any errors.
 	// terraform.InitAndApply(t, terraformOptions)
 
-	// subscriptionID := os.Getenv("TF_VAR_subscription_id")
-	subscriptionID := "60020c84-fca0-4d3b-ab6a-502ba1028851"
+	subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
 
 	// Run `terraform output` to get the values of output variables
 	vmName := terraform.Output(t, terraformOptions, "vm_name")
 	resourceGroupName := terraform.Output(t, terraformOptions, "resource_group_name")
 	expectedVMSize := compute.VirtualMachineSizeTypes("Standard_B1s")
-	description := fmt.Sprintf("Find virtual machine %s", vmName)
+	actualVMSize, err := azure.GetSizeOfVirtualMachineE(t, vmName, resourceGroupName, subscriptionID)
+	assert.Equal(t, expectedVMSize, actualVMSize)
 
-	// Look up the size of the given Virtual Machine and ensure it matches the output.
-	maxRetries := 10
-	timeBetweenRetries := 5 * time.Second
-	retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
-		actualVMSize, err := azure.GetSizeOfVirtualMachineE(t, vmName, resourceGroupName, subscriptionID)
-		assert.Equal(t, expectedVMSize, actualVMSize)
-		return "", err
-	})
+	// description := fmt.Sprintf("Find virtual machine %s", vmName)
+
+	// // Look up the size of the given Virtual Machine and ensure it matches the output.
+	// maxRetries := 10
+	// timeBetweenRetries := 5 * time.Second
+	// retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
+	// 	actualVMSize, err := azure.GetSizeOfVirtualMachineE(t, vmName, resourceGroupName, subscriptionID)
+	// 	assert.Equal(t, expectedVMSize, actualVMSize)
+	// 	return "", err
+	// })
 
 	// publicIPName := terraform.Output(t, terraformOptions, "public_ip_name")
 	// publicIPClient := network.NewPublicIPAddressesClient(subscriptionID)
