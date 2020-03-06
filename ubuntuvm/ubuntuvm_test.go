@@ -2,6 +2,7 @@ package test
 
 import (
 	"fmt"
+	"os"
 	"testing"
 	"time"
 
@@ -19,6 +20,11 @@ import (
 
 func TestUbuntuVm(t *testing.T) {
 	t.Parallel()
+
+	os.Setenv("ARM_CLIENT_ID", "__applicationID__")
+	os.Setenv("ARM_CLIENT_SECRET", "__applicationSecret__")
+	os.Setenv("ARM_SUBSCRIPTION_ID", "__subscriptionID__")
+	os.Setenv("ARM_TENANT_ID", "__tenantID__")
 
 	// Configure Terraform setting up a path to Terraform code.
 	terraformOptions := &terraform.Options{
