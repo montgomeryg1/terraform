@@ -37,32 +37,42 @@ jobs:
           echo "##vso[task.setvariable variable=access_key]$ACCESS_KEY"
         displayName: "Azure CLI Login"
 
-      - script: |
-          {
-            echo 'terraform {'
-            echo '  backend "azurerm" {'
-            echo '    resource_group_name = "$(storage_rg)"'
-            echo '    storage_account_name = "$(storage_acct)"'
-            echo '    container_name = "tf-statefiles"'
-            echo '    key = "$(terraform.name)"'
-            echo '    access_key = "$(access_key)"'
-            echo '  }'
-            echo '}'
-          } >> '$(terraform.name)'/backend.tf
-        displayName: "Create backend file"      
+      # - script: |
+      #     {
+      #       echo 'terraform {'
+      #       echo '  backend "azurerm" {'
+      #       echo '    resource_group_name = "$(storage_rg)"'
+      #       echo '    storage_account_name = "$(storage_acct)"'
+      #       echo '    container_name = "tf-statefiles"'
+      #       echo '    key = "$(terraform.name)"'
+      #       echo '    access_key = "$(access_key)"'
+      #       echo '  }'
+      #       echo '}'
+      #     } >> '$(terraform.name)'/backend.tf
+      #   displayName: "Create backend file"      
 
-      - script: |
-            {
-              echo 'tenant_id = "$(tenantID)"'
-              echo 'subscription_id = "$(subscriptionID)"'
-              echo 'client_id = "$(applicationID)"'
-              echo 'client_secret = "$(applicationSecret)"'
-            } >> '$(terraform.name)'/terraform.tfvars
-        displayName: "Create terraform.tfvars"
+      # - script: |
+      #       {
+      #         echo 'tenant_id = "$(tenantID)"'
+      #         echo 'subscription_id = "$(subscriptionID)"'
+      #         echo 'client_id = "$(applicationID)"'
+      #         echo 'client_secret = "$(applicationSecret)"'
+      #       } >> '$(terraform.name)'/terraform.tfvars
+      #   displayName: "Create terraform.tfvars"
 
+      - task: replacetokens@3
+        inputs:
+          targetFiles: '**/*.tf'
+          encoding: 'auto'
+          writeBOM: true
+          actionOnMissing: 'warn'
+          keepToken: false
+          tokenPrefix: '__'
+          tokenSuffix: '__'
 
       - script: |
           cd $(terraform.name)
+          cat backend.tf
           terraform workspace new ci
           terraform init -no-color
           terraform apply -no-color
