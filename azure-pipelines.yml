@@ -10,6 +10,8 @@ pool:
   vmImage: "ubuntu-latest"
 
 variables:
+  - group: CI
+  - group: CI_release
   - name: terraform.version
     value: "0.12.23"
   - name: storage_rg
