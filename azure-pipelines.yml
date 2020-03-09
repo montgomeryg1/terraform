@@ -70,6 +70,12 @@ jobs:
           tokenPrefix: '__'
           tokenSuffix: '__'
 
+
+      - task: TerraformInstaller@0
+        displayName: 'Install Terraform 0.12.23'
+        inputs:
+          terraformVersion: 0.12.23
+
       - script: |
           cd $(terraform.name)
           cat backend.tf
