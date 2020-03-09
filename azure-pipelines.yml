@@ -61,12 +61,12 @@ jobs:
       #   displayName: "Create terraform.tfvars"
 
       - task: replacetokens@3
+        displayName: 'Replace tokens in **/backend.tf **/terraform.tfvars **/*.go'
         inputs:
-          targetFiles: '**/*.tf'
-          encoding: 'auto'
-          writeBOM: true
-          actionOnMissing: 'warn'
-          keepToken: false
+          targetFiles: |
+            **/backend.tf
+            **/terraform.tfvars
+            **/*.go
           tokenPrefix: '__'
           tokenSuffix: '__'
 
