@@ -151,9 +151,9 @@ resource "azurerm_virtual_machine" "vm" {
   }
 
   os_profile_windows_config {
-    provision_vm_agent = true
+    provision_vm_agent        = true
     enable_automatic_upgrades = true
-    timezone = "GMT Standard Time"
+    timezone                  = "GMT Standard Time"
   }
 
 }
